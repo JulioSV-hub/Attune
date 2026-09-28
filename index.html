@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Attune - Psicologia Online em Portugu&ecirc;s | Dubai</title>
+  <meta name="description" content="Plataforma de psicologia online em portugu&ecirc;s para brasileiros em Dubai. Cursos, v&iacute;deos, materiais, atividades terap&ecirc;uticas e atendimento.">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+          },
+        },
+      },
+    }
+  </script>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    * { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+    html { scroll-behavior: smooth; }
+    body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+    
+    /* Custom animations */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-in { animation: fadeIn 0.3s ease-out; }
+    
+    /* Smooth transitions */
+    .nav-link { transition: all 0.2s ease; }
+    
+    /* Hide scrollbar but allow scrolling */
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-800 antialiased">
+  <div id="app" class="animate-fade-in">
+    <!-- App content will be rendered here by JavaScript -->
+    <div class="min-h-screen flex items-center justify-center">
+      <div class="text-center">
+        <div class="w-16 h-16 border-4 border-teal-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+        <p class="text-gray-500">Carregando...</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="i18n.js"></script>
+  <script src="pages.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
