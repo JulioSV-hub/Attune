@@ -43,9 +43,7 @@ window.SV_DEFAULTS = {
     { id: 'c4', ordem: 4, tipo: 'curso', icone: '🧠', titulo: 'Mindfulness para Iniciantes', descricao: 'Introdução à prática de atenção plena para reduzir estresse.', aulas: 6, duracao: 90, link: '', liberado: false },
     { id: 'c5', ordem: 5, tipo: 'curso', icone: '🎯', titulo: 'Inteligência Emocional', descricao: 'Desenvolva sua capacidade de reconhecer e gerenciar emoções.', aulas: 10, duracao: 140, link: '', liberado: false },
     { id: 'c6', ordem: 6, tipo: 'curso', icone: '😴', titulo: 'Sono e Bem-estar', descricao: 'Estratégias para melhorar a qualidade do sono e descanso.', aulas: 5, duracao: 75, link: '', liberado: false },
-    { id: 'v1', ordem: 7, tipo: 'video', icone: '🏠', titulo: 'Lidando com a Saudade de Casa', descricao: 'Como enfrentar a saudade ao viver longe do Brasil.', aulas: 0, duracao: 25, link: '', liberado: false },
-    { id: 'v2', ordem: 8, tipo: 'video', icone: '🌎', titulo: 'Adaptação Cultural em Dubai', descricao: 'Dicas para se adaptar à cultura local mantendo sua identidade.', aulas: 0, duracao: 30, link: '', liberado: false },
-    { id: 'v3', ordem: 9, tipo: 'video', icone: '💬', titulo: 'Comunicação Assertiva', descricao: 'Aprenda a se comunicar de forma clara e respeitosa.', aulas: 0, duracao: 20, link: '', liberado: false },
+    { id: 'v3', ordem: 7, tipo: 'video', icone: '💬', titulo: 'Comunicação Assertiva', descricao: 'Aprenda a se comunicar de forma clara e respeitosa.', aulas: 0, duracao: 20, link: '', liberado: false },
   ],
 
   materiais: [
