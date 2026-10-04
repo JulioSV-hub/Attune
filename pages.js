@@ -30,6 +30,8 @@ function renderHome() {
     </div>
   </section>
 
+  ${outubroRosa() ? renderOutubroRosaSecao() : ''}
+
   <!-- Features Section -->
   <section class="py-20 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -96,6 +98,33 @@ function renderHome() {
       <button onclick="navigate('plans')" class="bg-white text-teal-700 px-10 py-4 rounded-xl font-bold text-lg hover:bg-teal-50 transition shadow-lg">
         ${t('hero_secondary_cta')}
       </button>
+    </div>
+  </section>`;
+}
+
+function renderOutubroRosaSecao() {
+  const card = (emoji, titulo, texto) => `
+        <div class="bg-white/80 p-6 rounded-2xl border border-pink-100">
+          <div class="text-3xl mb-3">${emoji}</div>
+          <h3 class="font-bold text-pink-700 mb-2">${titulo}</h3>
+          <p class="text-gray-600 text-sm leading-relaxed">${texto}</p>
+        </div>`;
+  return `
+  <section class="py-16 bg-gradient-to-br from-pink-50 to-rose-100">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-10">
+        ${lacoRosa('w-14 h-14 mx-auto mb-4', '#ec4899')}
+        <h2 class="text-3xl md:text-4xl font-bold text-pink-700 mb-4">Outubro Rosa</h2>
+        <p class="text-lg text-gray-700 max-w-3xl mx-auto">Outubro é o mês de conscientização sobre o câncer de mama. Quando descoberto cedo, as chances de tratamento são muito maiores. Cuidar de você também é prevenção.</p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        ${card('&#128269;', 'Conheça seu corpo', 'Observe suas mamas no dia a dia. Caroços, mudanças na pele ou no mamilo e secreções merecem atenção.')}
+        ${card('&#129658;', 'Faça seus exames', 'Converse com seu médico ou enfermeiro sobre a mamografia e a periodicidade indicada para você.')}
+        ${card('&#128151;', 'Cuide das emoções', 'O diagnóstico e o tratamento mexem com a saúde emocional de quem passa por eles e de quem está por perto. Pedir ajuda faz parte do cuidado.')}
+      </div>
+      <div class="text-center mt-10">
+        <button onclick="navigate('schedule')" class="bg-pink-600 text-white px-8 py-3 rounded-xl font-bold hover:bg-pink-700 transition shadow-md">Agende uma conversa</button>
+      </div>
     </div>
   </section>`;
 }

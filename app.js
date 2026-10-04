@@ -67,6 +67,7 @@ function checkAuth() {
 function render() {
   const root = document.getElementById('app');
   root.innerHTML = `
+    ${outubroRosa() ? renderOutubroRosaFaixa() : ''}
     ${renderNav()}
     <main class="min-h-screen">
       ${renderPage()}
@@ -74,6 +75,24 @@ function render() {
     ${renderFooter()}
   `;
   attachEventListeners();
+}
+
+// Campanha Outubro Rosa: aparece só durante o mês de outubro.
+function outubroRosa() {
+  return new Date().getMonth() === 9;
+}
+
+// Laço da campanha em SVG (o emoji de laço aparece amarelo em alguns sistemas).
+function lacoRosa(cls, cor) {
+  return `<svg class="${cls}" viewBox="0 0 64 64" aria-hidden="true"><path fill="${cor}" d="M32 4c-7 0-12 5-12 12 0 6 4 12 8 18L14 58l8 2 10-16 10 16 8-2-14-24c4-6 8-12 8-18 0-7-5-12-12-12zm0 8c3 0 5 2 5 5 0 3-2 7-5 11-3-4-5-8-5-11 0-3 2-5 5-5z"/></svg>`;
+}
+
+function renderOutubroRosaFaixa() {
+  return `
+  <div class="bg-pink-500 text-white text-sm font-medium px-4 py-2 flex items-center justify-center gap-2 text-center">
+    ${lacoRosa('w-4 h-4 flex-shrink-0', '#fff')}
+    <span>Outubro Rosa: cuide de você e incentive as mulheres ao seu redor a fazerem seus exames.</span>
+  </div>`;
 }
 
 function renderNav() {
