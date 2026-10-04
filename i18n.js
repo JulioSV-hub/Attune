@@ -14,7 +14,7 @@ const translations = {
 
     // Hero section
     hero_title: "Entenda como você se comunica, sente e se comporta",
-    hero_subtitle: "Cursos e materiais sobre comunicação e análise comportamental com uma psiquiatra brasileira, além de atendimento online",
+    hero_subtitle: "Cursos e materiais sobre comunicação e análise comportamental com uma enfermeira especialista em saúde mental, além de atendimento online",
     hero_cta: "Comece Agora",
     hero_secondary_cta: "Conhecer Planos",
 
@@ -35,9 +35,9 @@ const translations = {
 
     // About
     about_title: "Sobre a Profissional",
-    about_text: "Médica psiquiatra no Brasil, com foco em comunicação e análise comportamental. Une a prática clínica a cursos e materiais que ajudam você a entender seus padrões de comportamento e a se comunicar melhor nas relações pessoais e profissionais.",
-    about_credential1: "CRM Ativo - Brasil",
-    about_credential2: "Médica Psiquiatra",
+    about_text: "Enfermeira com pós-graduação em psiquiatria, atuando no Brasil com foco em comunicação e análise comportamental. Une a prática clínica a cursos e materiais que ajudam você a entender seus padrões de comportamento e a se comunicar melhor nas relações pessoais e profissionais.",
+    about_credential1: "COREN Ativo - Brasil",
+    about_credential2: "Pós-graduada em Psiquiatria",
     about_credential3: "Análise Comportamental",
     about_credential4: "Comunicação Interpessoal",
 
@@ -214,7 +214,7 @@ const translations = {
 
     // Hero section
     hero_title: "Understand how you communicate, feel and behave",
-    hero_subtitle: "Courses and materials on communication and behavioral analysis with a Brazilian psychiatrist, plus online appointments",
+    hero_subtitle: "Courses and materials on communication and behavioral analysis with a Brazilian mental health nurse, plus online appointments",
     hero_cta: "Get Started",
     hero_secondary_cta: "View Plans",
 
@@ -235,9 +235,9 @@ const translations = {
 
     // About
     about_title: "About the Professional",
-    about_text: "Psychiatrist based in Brazil, focused on communication and behavioral analysis. She combines clinical practice with courses and materials that help you understand your behavior patterns and communicate better in personal and professional relationships.",
-    about_credential1: "Active CRM - Brazil",
-    about_credential2: "Psychiatrist",
+    about_text: "Nurse with a postgraduate degree in psychiatry, based in Brazil and focused on communication and behavioral analysis. She combines clinical practice with courses and materials that help you understand your behavior patterns and communicate better in personal and professional relationships.",
+    about_credential1: "Active COREN - Brazil",
+    about_credential2: "Postgraduate in Psychiatry",
     about_credential3: "Behavioral Analysis",
     about_credential4: "Interpersonal Communication",
 

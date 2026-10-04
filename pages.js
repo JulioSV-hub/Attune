@@ -71,10 +71,10 @@ function renderHome() {
           <div class="w-80 h-96 bg-gradient-to-br from-teal-100 to-emerald-100 rounded-2xl flex items-center justify-center shadow-lg overflow-hidden">
             <div class="text-center">
               <div class="w-48 h-48 rounded-full mx-auto mb-4 overflow-hidden border-4 border-white shadow-lg">
-                <img src="foto.jpg" alt="Dra. Claudia Alves de Assis - Psiquiatra" class="w-full h-full object-cover object-top">
+                <img src="foto.jpg" alt="Claudia Alves de Assis - Enfermeira" class="w-full h-full object-cover object-top">
               </div>
-              <p class="text-teal-700 font-semibold text-lg">Dra. Claudia Alves de Assis</p>
-              <p class="text-teal-600 text-sm">CRM 00000 &middot; RQE 00000</p>
+              <p class="text-teal-700 font-semibold text-lg">Claudia Alves de Assis</p>
+              <p class="text-teal-600 text-sm">Enfermeira &middot; COREN 000000</p>
             </div>
           </div>
         </div>
