@@ -6,6 +6,30 @@ const app = {
   billingCycle: 'monthly',
 };
 
+// Conteúdo editável pelo painel (site, planos, cursos, materiais, atividades).
+// Preenchido por js/store.js, que chama startApp quando termina de carregar.
+let content = null;
+
+// Escapa texto vindo do banco antes de inserir no HTML.
+function esc(value) {
+  return String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+
+// Aceita apenas links https; qualquer outra coisa vira vazio.
+function safeUrl(value) {
+  try {
+    const url = new URL(String(value || '').trim());
+    return url.protocol === 'https:' ? url.href : '';
+  } catch {
+    return '';
+  }
+}
+
+function formatPreco(n) {
+  const v = Number(n) || 0;
+  return v.toLocaleString('pt-BR', { minimumFractionDigits: v % 1 ? 2 : 0, maximumFractionDigits: 2 });
+}
+
 // Simple SPA Router
 function navigate(page) {
   app.currentPage = page;
@@ -53,10 +77,6 @@ function render() {
 }
 
 function renderNav() {
-  const langOptions = currentLang === 'pt' 
-    ? '<button onclick="setLanguage(\'en\'); render();" class="text-sm bg-white/10 hover:bg-white/20 px-3 py-1 rounded-full transition">EN</button>'
-    : '<button onclick="setLanguage(\'pt\'); render();" class="text-sm bg-white/10 hover:bg-white/20 px-3 py-1 rounded-full transition">PT</button>';
-
   return `
   <nav class="bg-gradient-to-r from-teal-700 to-teal-600 text-white shadow-lg sticky top-0 z-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -81,10 +101,9 @@ function renderNav() {
         </div>
 
         <div class="flex items-center gap-3">
-          ${langOptions}
-          ${app.isLoggedIn 
+          ${app.isLoggedIn
             ? `<div class="flex items-center gap-2">
-                <span class="text-sm hidden sm:inline">${app.user.name}</span>
+                <span class="text-sm hidden sm:inline">${esc(app.user.name)}</span>
                 <button onclick="mockLogout()" class="text-sm bg-white/10 hover:bg-white/20 px-3 py-1 rounded-full transition">${t('nav_logout')}</button>
               </div>`
             : `<button onclick="navigate('login')" class="text-sm bg-white/20 hover:bg-white/30 px-4 py-1.5 rounded-full transition font-medium">${t('nav_login')}</button>`
@@ -153,6 +172,7 @@ function renderFooter() {
             <a class="hover:text-white cursor-pointer transition">${t('footer_privacy')}</a>
             <a class="hover:text-white cursor-pointer transition">${t('footer_terms')}</a>
             <a class="hover:text-white cursor-pointer transition">${t('footer_contact')}</a>
+            <a href="admin/" class="hover:text-white transition">Área da profissional</a>
           </div>
         </div>
       </div>
@@ -198,31 +218,151 @@ function attachEventListeners() {
   }
 
   const scheduleForm = document.getElementById('schedule-form');
-  if (scheduleForm) {
-    scheduleForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const successMsg = document.getElementById('schedule-success');
-      if (successMsg) {
-        successMsg.classList.remove('hidden');
-        setTimeout(() => successMsg.classList.add('hidden'), 5000);
-      }
-    });
-  }
+  if (scheduleForm) setupScheduleForm(scheduleForm);
 }
 
-// Initialize
-document.addEventListener('DOMContentLoaded', () => {
+// ---------------------------------------------------------------------------
+// Agendamento: abre o WhatsApp da profissional com a mensagem pronta e registra o pedido no painel.
+
+function isoLocal(d) {
+  const pad = n => String(n).padStart(2, '0');
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+}
+
+function parseLocal(iso) {
+  const [a, m, d] = iso.split('-').map(Number);
+  return new Date(a, m - 1, d);
+}
+
+// Horários do dia da semana; no dia de hoje, só os que começam daqui a mais de 1 hora.
+function horariosDisponiveis(iso) {
+  let lista = [...((content.site.horarios || {})[parseLocal(iso).getDay()] || [])].sort();
+  if (iso === isoLocal(new Date())) {
+    const agora = new Date();
+    const minutosAgora = agora.getHours() * 60 + agora.getMinutes();
+    lista = lista.filter(h => {
+      const [hh, mm] = h.split(':').map(Number);
+      return hh * 60 + mm > minutosAgora + 60;
+    });
+  }
+  return lista;
+}
+
+function setupScheduleForm(form) {
+  const dataInput = form.querySelector('#sched-data');
+  const horarioSelect = form.querySelector('#sched-horario');
+  const erro = form.querySelector('#sched-erro');
+  const ok = form.querySelector('#sched-ok');
+  const enviarBtn = form.querySelector('button[type=submit]');
+
+  const hoje = new Date();
+  const limite = new Date(hoje);
+  limite.setMonth(limite.getMonth() + 6);
+  dataInput.min = isoLocal(hoje);
+  dataInput.max = isoLocal(limite);
+
+  function resetHorarios() {
+    horarioSelect.innerHTML = '';
+    horarioSelect.add(new Option(t('schedule_time_pick_date'), ''));
+    horarioSelect.disabled = true;
+  }
+
+  dataInput.addEventListener('change', () => {
+    const anterior = horarioSelect.value;
+    if (!dataInput.value) return resetHorarios();
+    const lista = horariosDisponiveis(dataInput.value);
+    horarioSelect.innerHTML = '';
+    horarioSelect.disabled = lista.length === 0;
+    horarioSelect.add(new Option(lista.length ? t('schedule_time_select') : t('schedule_time_none'), ''));
+    lista.forEach(h => horarioSelect.add(new Option(h, h)));
+    if (lista.includes(anterior)) horarioSelect.value = anterior;
+  });
+
+  function mostrarErro(msg, campo) {
+    erro.textContent = msg;
+    erro.classList.toggle('hidden', !msg);
+    if (msg) ok.classList.add('hidden');
+    if (campo) campo.focus();
+  }
+
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const site = content.site;
+    const nome = form.nome.value.trim();
+    const email = form.email.value.trim();
+    const data = dataInput.value;
+    const horario = horarioSelect.value;
+    const modalidade = form.modalidade.value === 'presencial' ? t('schedule_type_presencial') : t('schedule_type_online');
+    const motivo = form.motivo.value.trim();
+
+    if (nome.length < 2) return mostrarErro('Informe seu nome.', form.nome);
+    if (email && !form.email.checkValidity()) return mostrarErro('E-mail inválido.', form.email);
+    if (!data) return mostrarErro('Escolha a data desejada.', dataInput);
+    if (data < dataInput.min || data > dataInput.max) {
+      return mostrarErro('Escolha uma data entre hoje e os próximos 6 meses.', dataInput);
+    }
+    if (!horariosDisponiveis(data).length) return mostrarErro('Não há atendimento neste dia. Escolha outra data.', dataInput);
+    if (!horario) return mostrarErro('Escolha um horário.', horarioSelect);
+
+    const numero = String(site.whatsapp || '').replace(/\D/g, '');
+    if (numero.length < 12) {
+      return mostrarErro('O agendamento pelo WhatsApp ainda não está configurado. Tente novamente mais tarde.');
+    }
+    mostrarErro('');
+
+    const [a, m, d] = data.split('-');
+    const diaSemana = parseLocal(data).toLocaleDateString('pt-BR', { weekday: 'long' });
+    const linhas = [
+      `Olá, ${site.profissional}! Gostaria de agendar uma consulta.`,
+      '',
+      `*Nome:* ${nome}`,
+      email ? `*E-mail:* ${email}` : null,
+      `*Data desejada:* ${d}/${m}/${a} (${diaSemana})`,
+      `*Horário:* ${horario}`,
+      `*Modalidade:* ${modalidade}`,
+      motivo ? `*Motivo:* ${motivo}` : null,
+    ].filter(l => l !== null);
+
+    // Registra o pedido e, na mesma ação do clique, abre o WhatsApp
+    // (abrir depois de aguardar a gravação faria o navegador bloquear a janela).
+    const gravacao = window.SV?.criarAgendamento?.({ nome, email, data, horario, modalidade, motivo });
+    window.open(`https://wa.me/${numero}?text=${encodeURIComponent(linhas.join('\n'))}`, '_blank', 'noopener');
+    if (!gravacao) return;
+
+    enviarBtn.disabled = true;
+    gravacao
+      .then(() => {
+        form.reset();
+        resetHorarios();
+        ok.classList.remove('hidden');
+      })
+      .catch(err => {
+        console.error(err);
+        mostrarErro('O WhatsApp foi aberto, mas não conseguimos registrar o pedido aqui. Envie a mensagem normalmente.');
+      })
+      .finally(() => { enviarBtn.disabled = false; });
+  });
+}
+
+// ---------------------------------------------------------------------------
+// Inicialização: js/store.js chama startApp com o conteúdo carregado.
+
+function startApp(conteudo) {
+  if (content) return;
+  content = conteudo;
   checkAuth();
-  // Handle hash navigation
   const hash = window.location.hash.slice(1);
   if (hash) app.currentPage = hash;
   render();
-});
+}
+
+// Se o carregamento do conteúdo falhar por completo (ex.: módulo bloqueado), mostra o conteúdo inicial.
+setTimeout(() => startApp(structuredClone(window.SV_DEFAULTS)), 10000);
 
 window.addEventListener('hashchange', () => {
   const hash = window.location.hash.slice(1);
   if (hash && hash !== app.currentPage) {
     app.currentPage = hash;
-    render();
+    if (content) render();
   }
 });

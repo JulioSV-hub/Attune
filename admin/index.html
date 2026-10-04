@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Painel da Profissional - Sobre voc&ecirc;</title>
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+    [hidden] { display: none !important; }
+  </style>
+  <style type="text/tailwindcss">
+    .btn { @apply inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl font-medium text-sm transition disabled:opacity-60 disabled:cursor-wait; }
+    .btn-primary { @apply bg-teal-600 text-white hover:bg-teal-700 shadow-sm; }
+    .btn-outline { @apply border border-gray-300 text-gray-700 bg-white hover:border-teal-400 hover:text-teal-700; }
+    .btn-small { @apply px-3 py-1.5 text-xs; }
+    .input { @apply w-full px-3 py-2 border border-gray-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500; }
+    .label { @apply block text-sm font-medium text-gray-700 mb-1; }
+    .hint { @apply block text-xs text-gray-500 mt-1; }
+    .card { @apply bg-white rounded-2xl shadow-sm border border-gray-100 p-6; }
+    .tab { @apply px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100 whitespace-nowrap; }
+    .tab.active { @apply bg-teal-600 text-white hover:bg-teal-600; }
+    .icon-btn { @apply w-8 h-8 inline-flex items-center justify-center rounded-lg border border-gray-200 bg-white text-gray-600 hover:border-teal-400 hover:text-teal-700 disabled:opacity-30; }
+    .icon-btn.danger { @apply hover:border-red-400 hover:text-red-600; }
+    .form-error { @apply bg-red-50 border border-red-200 text-red-700 p-3 rounded-lg text-sm; }
+    .link-button { @apply text-sm text-teal-700 hover:underline; }
+    .admin-table { @apply w-full text-sm; }
+    .admin-table th { @apply text-left font-semibold text-gray-600 px-3 py-2 border-b border-gray-200 whitespace-nowrap; }
+    .admin-table td { @apply px-3 py-3 border-b border-gray-100 align-top; }
+    .muted { @apply text-xs text-gray-500; }
+    .status-badge { @apply inline-block text-xs px-2 py-1 rounded-full font-medium whitespace-nowrap; }
+    .status-pendente { @apply bg-amber-100 text-amber-800; }
+    .status-confirmado { @apply bg-teal-100 text-teal-800; }
+    .status-concluido { @apply bg-gray-100 text-gray-700; }
+    .status-cancelado { @apply bg-red-100 text-red-700; }
+    fieldset { @apply border border-gray-200 rounded-xl p-5 mb-6; }
+    legend { @apply px-2 font-semibold text-gray-800; }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-800 antialiased">
+  <nav class="bg-gradient-to-r from-teal-700 to-teal-600 text-white shadow-lg">
+    <div class="max-w-6xl mx-auto px-4 flex items-center justify-between h-16 gap-3">
+      <a href="../" class="flex items-center gap-2 font-bold text-lg">
+        <img src="../favicon.svg" alt="" class="w-8 h-8">
+        <span>Sobre voc&ecirc;</span>
+      </a>
+      <div class="flex items-center gap-2">
+        <span class="text-sm hidden md:inline text-teal-100" id="usuarioEmail"></span>
+        <a href="../" target="_blank" rel="noopener" class="text-sm bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-full">Ver site</a>
+        <button type="button" id="alterarSenhaBtn" class="text-sm bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-full" hidden>Senha</button>
+        <button type="button" id="sairBtn" class="text-sm bg-white/20 hover:bg-white/30 px-3 py-1.5 rounded-full" hidden>Sair</button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="min-h-screen">
+    <!-- Carregando -->
+    <section id="viewCarregando" class="py-24 text-center">
+      <div class="w-12 h-12 border-4 border-teal-500 border-t-transparent rounded-full animate-spin mx-auto" aria-label="Carregando"></div>
+    </section>
+
+    <!-- Firebase não configurado -->
+    <section id="viewNaoConfigurado" class="py-16 px-4" hidden>
+      <div class="card max-w-md mx-auto text-center">
+        <h2 class="text-xl font-bold mb-2">Painel indispon&iacute;vel</h2>
+        <p class="text-gray-600">O Firebase ainda n&atilde;o foi configurado neste site. Siga o guia <strong>SETUP-FIREBASE.md</strong> do projeto.</p>
+      </div>
+    </section>
+
+    <!-- Login -->
+    <section id="viewLogin" class="py-16 px-4" hidden>
+      <div class="card max-w-md mx-auto">
+        <div class="text-center mb-6">
+          <h2 class="text-2xl font-bold">&Aacute;rea da Profissional</h2>
+          <p class="text-gray-500 text-sm mt-1">Acesse o painel de gerenciamento</p>
+        </div>
+        <form id="loginForm" class="space-y-4">
+          <div>
+            <label for="loginEmail" class="label">E-mail</label>
+            <input type="email" id="loginEmail" required autocomplete="username" class="input" placeholder="seu@email.com">
+          </div>
+          <div>
+            <label for="loginSenha" class="label">Senha</label>
+            <div class="password-field relative">
+              <input type="password" id="loginSenha" required autocomplete="current-password" class="input pr-20" placeholder="Sua senha">
+              <button type="button" class="toggle-senha absolute right-2 top-1/2 -translate-y-1/2 text-xs text-teal-700 px-2 py-1">Mostrar</button>
+            </div>
+          </div>
+          <p class="form-error" id="loginErro" role="alert" hidden></p>
+          <button type="submit" class="btn btn-primary w-full py-3">Entrar</button>
+        </form>
+        <div class="text-center mt-4">
+          <button type="button" class="link-button" id="esqueciBtn">Esqueci minha senha</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sem permissão -->
+    <section id="viewSemPermissao" class="py-16 px-4" hidden>
+      <div class="card max-w-md mx-auto text-center">
+        <h2 class="text-xl font-bold mb-2">Sem acesso</h2>
+        <p class="text-gray-600 mb-4">Esta conta n&atilde;o tem permiss&atilde;o de administradora.</p>
+        <p class="muted">Para liberar, o desenvolvedor cria o documento <code>admins/<span id="semPermissaoUid"></span></code> no Firestore.</p>
+      </div>
+    </section>
+
+    <!-- Troca de senha (obrigatória no primeiro acesso ou pelo botão "Senha") -->
+    <section id="viewTrocarSenha" class="py-16 px-4" hidden>
+      <div class="card max-w-md mx-auto">
+        <div class="text-center mb-6">
+          <h2 class="text-2xl font-bold" id="trocarSenhaTitulo">Crie sua senha</h2>
+          <p class="text-gray-500 text-sm mt-1" id="trocarSenhaTexto"></p>
+        </div>
+        <form id="trocarSenhaForm" class="space-y-4" novalidate>
+          <input type="email" id="trocarSenhaUsuario" autocomplete="username" hidden>
+          <div>
+            <label for="senhaAtual" class="label">Senha atual</label>
+            <div class="password-field relative">
+              <input type="password" id="senhaAtual" required autocomplete="current-password" class="input pr-20">
+              <button type="button" class="toggle-senha absolute right-2 top-1/2 -translate-y-1/2 text-xs text-teal-700 px-2 py-1">Mostrar</button>
+            </div>
+          </div>
+          <div>
+            <label for="senhaNova" class="label">Nova senha</label>
+            <div class="password-field relative">
+              <input type="password" id="senhaNova" required autocomplete="new-password" minlength="8" class="input pr-20">
+              <button type="button" class="toggle-senha absolute right-2 top-1/2 -translate-y-1/2 text-xs text-teal-700 px-2 py-1">Mostrar</button>
+            </div>
+            <span class="hint">M&iacute;nimo de 8 caracteres, com letras e n&uacute;meros.</span>
+          </div>
+          <div>
+            <label for="senhaConfirmar" class="label">Confirme a nova senha</label>
+            <div class="password-field relative">
+              <input type="password" id="senhaConfirmar" required autocomplete="new-password" class="input pr-20">
+              <button type="button" class="toggle-senha absolute right-2 top-1/2 -translate-y-1/2 text-xs text-teal-700 px-2 py-1">Mostrar</button>
+            </div>
+          </div>
+          <p class="form-error" id="trocarSenhaErro" role="alert" hidden></p>
+          <button type="submit" class="btn btn-primary w-full py-3">Salvar nova senha</button>
+        </form>
+        <div class="text-center mt-4">
+          <button type="button" class="link-button" id="trocarSenhaCancelar" hidden>Voltar ao painel</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Painel -->
+    <div id="viewPainel" hidden>
+      <div class="max-w-6xl mx-auto px-4 pt-8">
+        <h1 class="text-2xl md:text-3xl font-bold">Painel da Profissional</h1>
+        <p class="text-gray-500 mt-1">Gerencie conte&uacute;do, textos e agendamentos. As altera&ccedil;&otilde;es aparecem no site na hora.</p>
+        <nav class="flex gap-2 overflow-x-auto mt-6 pb-2" role="tablist">
+          <button type="button" class="tab active" data-tab="agendamentos" role="tab">Agendamentos <span class="ml-1 bg-amber-400 text-amber-950 text-xs px-1.5 rounded-full" id="pendentesBadge" hidden></span></button>
+          <button type="button" class="tab" data-tab="cursos" role="tab">Cursos e v&iacute;deos</button>
+          <button type="button" class="tab" data-tab="materiais" role="tab">Materiais</button>
+          <button type="button" class="tab" data-tab="atividades" role="tab">Atividades</button>
+          <button type="button" class="tab" data-tab="site" role="tab">Textos e dados</button>
+          <button type="button" class="tab" data-tab="planos" role="tab">Planos</button>
+        </nav>
+      </div>
+
+      <section class="max-w-6xl mx-auto px-4 py-6">
+
+        <!-- AGENDAMENTOS -->
+        <div data-panel="agendamentos">
+          <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+            <h2 class="text-xl font-bold">Pedidos de agendamento</h2>
+            <div class="flex gap-2">
+              <select id="agFiltro" class="input w-auto" aria-label="Filtrar agendamentos">
+                <option value="proximos">Pr&oacute;ximos (pendentes e confirmados)</option>
+                <option value="pendente">Pendentes</option>
+                <option value="confirmado">Confirmados</option>
+                <option value="concluido">Conclu&iacute;dos</option>
+                <option value="cancelado">Cancelados</option>
+                <option value="todos">Todos</option>
+              </select>
+              <button type="button" class="btn btn-outline" id="agRecarregar">Atualizar</button>
+            </div>
+          </div>
+          <div class="card p-0 overflow-x-auto" id="agTabelaBox">
+            <table class="admin-table">
+              <thead><tr><th>Data</th><th>Hor&aacute;rio</th><th>Paciente</th><th>Modalidade</th><th>Motivo</th><th>Status</th><th>A&ccedil;&otilde;es</th></tr></thead>
+              <tbody id="agTabela"></tbody>
+            </table>
+          </div>
+          <div class="card text-center text-gray-500" id="agVazio" hidden>Nenhum agendamento aqui.</div>
+        </div>
+
+        <!-- CURSOS, MATERIAIS, ATIVIDADES (gerados por admin.js) -->
+        <div data-panel="cursos" hidden></div>
+        <div data-panel="materiais" hidden></div>
+        <div data-panel="atividades" hidden></div>
+
+        <!-- TEXTOS E DADOS -->
+        <div data-panel="site" hidden>
+          <form class="card" id="siteForm" novalidate>
+            <fieldset>
+              <legend>Profissional</legend>
+              <div class="flex items-center gap-4 mb-4">
+                <img id="fotoPreview" class="w-24 h-24 rounded-full object-cover object-top border-4 border-white shadow" alt="Foto da profissional">
+                <div class="space-y-1">
+                  <input type="file" id="fotoArquivo" accept="image/*" hidden>
+                  <button type="button" class="btn btn-outline btn-small" id="fotoTrocar">Trocar foto</button>
+                  <button type="button" class="link-button block" id="fotoRemover">Usar foto padr&atilde;o</button>
+                  <span class="hint">A imagem &eacute; reduzida automaticamente.</span>
+                </div>
+              </div>
+              <div class="grid md:grid-cols-2 gap-4">
+                <div>
+                  <label for="siteProfissional" class="label">Nome *</label>
+                  <input type="text" id="siteProfissional" maxlength="100" required class="input">
+                </div>
+                <div>
+                  <label for="siteProfissao" class="label">Profiss&atilde;o</label>
+                  <input type="text" id="siteProfissao" maxlength="100" class="input" placeholder="Ex.: Enfermeira">
+                </div>
+                <div>
+                  <label for="siteRegistro" class="label">Registro profissional</label>
+                  <input type="text" id="siteRegistro" maxlength="60" class="input" placeholder="Ex.: COREN 123456">
+                  <span class="hint">Aparece abaixo da foto, ao lado da profiss&atilde;o.</span>
+                </div>
+                <div>
+                  <label for="siteWhatsapp" class="label">WhatsApp para agendamentos</label>
+                  <input type="tel" id="siteWhatsapp" maxlength="20" class="input" placeholder="5511987654321">
+                  <span class="hint">Com 55 e DDD. Ex.: 55 11 98765-4321. Sem ele, o agendamento n&atilde;o envia.</span>
+                </div>
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend>P&aacute;gina inicial</legend>
+              <div class="space-y-4">
+                <div>
+                  <label for="siteHeroTitulo" class="label">T&iacute;tulo principal</label>
+                  <input type="text" id="siteHeroTitulo" maxlength="120" class="input">
+                </div>
+                <div>
+                  <label for="siteHeroSubtitulo" class="label">Subt&iacute;tulo</label>
+                  <textarea id="siteHeroSubtitulo" rows="2" maxlength="300" class="input"></textarea>
+                </div>
+                <div>
+                  <label for="siteSobreTexto" class="label">Texto "Sobre a Profissional"</label>
+                  <textarea id="siteSobreTexto" rows="4" maxlength="1200" class="input"></textarea>
+                </div>
+                <div>
+                  <label for="siteCredenciais" class="label">Destaques (quadros ao lado do texto)</label>
+                  <textarea id="siteCredenciais" rows="4" maxlength="400" class="input"></textarea>
+                  <span class="hint">Um por linha, at&eacute; 6.</span>
+                </div>
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend>Agendamento</legend>
+              <label class="flex items-center gap-2 mb-4"><input type="checkbox" id="sitePresencial"> Oferecer atendimento presencial</label>
+              <label class="label">Hor&aacute;rios oferecidos no formul&aacute;rio</label>
+              <span class="hint mb-3">Separe por v&iacute;rgula (ex.: 08:00, 09:00, 14:30). Deixe vazio nos dias sem atendimento.</span>
+              <div class="grid grid-cols-[auto_1fr] gap-x-4 gap-y-2 items-center" id="horariosGrid"></div>
+            </fieldset>
+
+            <p class="form-error mb-4" id="siteErro" role="alert" hidden></p>
+            <button type="submit" class="btn btn-primary">Salvar altera&ccedil;&otilde;es</button>
+          </form>
+
+          <div class="card mt-6" id="importarBox" hidden>
+            <h3 class="font-semibold mb-1">Conte&uacute;do inicial</h3>
+            <p class="text-sm text-gray-600 mb-3">O banco ainda est&aacute; vazio. Importe os textos, cursos, materiais, atividades e planos de exemplo para come&ccedil;ar a editar a partir deles.</p>
+            <button type="button" class="btn btn-outline btn-small" id="importarBtn">Importar conte&uacute;do inicial</button>
+          </div>
+        </div>
+
+        <!-- PLANOS -->
+        <div data-panel="planos" hidden>
+          <form class="card" id="planosForm" novalidate>
+            <p class="text-sm text-gray-600 mb-4">Pre&ccedil;os em reais por m&ecirc;s. No plano anual, informe o valor mensal equivalente. Os links de pagamento s&atilde;o opcionais: sem link, o bot&atilde;o "Assinar" leva ao cadastro do site.</p>
+            <div id="planosLista"></div>
+            <div class="mb-6">
+              <label class="label">Plano em destaque ("Mais Popular")</label>
+              <div class="flex flex-wrap gap-4" id="planoDestaque"></div>
+            </div>
+            <p class="form-error mb-4" id="planosErro" role="alert" hidden></p>
+            <button type="submit" class="btn btn-primary">Salvar altera&ccedil;&otilde;es</button>
+          </form>
+        </div>
+
+      </section>
+    </div>
+  </main>
+
+  <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 px-5 py-3 rounded-xl shadow-lg text-sm font-medium text-white z-50 max-w-[90vw]" role="status" hidden></div>
+
+  <script src="../js/defaults.js"></script>
+  <script type="module" src="admin.js"></script>
+</body>
+</html>

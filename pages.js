@@ -1,6 +1,7 @@
 // Page render functions
 
 function renderHome() {
+  const site = content.site;
   return `
   <!-- Hero Section -->
   <section class="relative bg-gradient-to-br from-teal-700 via-teal-600 to-emerald-500 text-white overflow-hidden">
@@ -10,8 +11,8 @@ function renderHome() {
     </div>
     <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-32">
       <div class="text-center max-w-3xl mx-auto">
-        <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6">${t('hero_title')}</h1>
-        <p class="text-xl md:text-2xl text-teal-100 mb-10">${t('hero_subtitle')}</p>
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6">${esc(site.heroTitulo)}</h1>
+        <p class="text-xl md:text-2xl text-teal-100 mb-10">${esc(site.heroSubtitulo)}</p>
         <div class="flex flex-col sm:flex-row gap-4 justify-center">
           <button onclick="navigate('${app.isLoggedIn ? 'courses' : 'signup'}')" class="bg-white text-teal-700 px-8 py-4 rounded-xl font-bold text-lg hover:bg-teal-50 transition shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
             ${t('hero_cta')}
@@ -51,30 +52,22 @@ function renderHome() {
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
         <div>
           <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-6">${t('about_title')}</h2>
-          <p class="text-lg text-gray-600 mb-8 leading-relaxed">${t('about_text')}</p>
+          <p class="text-lg text-gray-600 mb-8 leading-relaxed">${esc(site.sobreTexto)}</p>
           <div class="grid grid-cols-2 gap-4">
+            ${(site.credenciais || []).filter(Boolean).map(c => `
             <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
-              <div class="text-teal-600 font-semibold text-sm">${t('about_credential1')}</div>
-            </div>
-            <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
-              <div class="text-teal-600 font-semibold text-sm">${t('about_credential2')}</div>
-            </div>
-            <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
-              <div class="text-teal-600 font-semibold text-sm">${t('about_credential3')}</div>
-            </div>
-            <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
-              <div class="text-teal-600 font-semibold text-sm">${t('about_credential4')}</div>
-            </div>
+              <div class="text-teal-600 font-semibold text-sm">${esc(c)}</div>
+            </div>`).join('')}
           </div>
         </div>
         <div class="flex justify-center">
           <div class="w-80 h-96 bg-gradient-to-br from-teal-100 to-emerald-100 rounded-2xl flex items-center justify-center shadow-lg overflow-hidden">
-            <div class="text-center">
+            <div class="text-center px-4">
               <div class="w-48 h-48 rounded-full mx-auto mb-4 overflow-hidden border-4 border-white shadow-lg">
-                <img src="foto.jpg" alt="Claudia Alves de Assis - Enfermeira" class="w-full h-full object-cover object-top">
+                <img src="${esc(fotoProfissional(site))}" alt="${esc(site.profissional)}" class="w-full h-full object-cover object-top">
               </div>
-              <p class="text-teal-700 font-semibold text-lg">Claudia Alves de Assis</p>
-              <p class="text-teal-600 text-sm">Enfermeira &middot; COREN 000000</p>
+              <p class="text-teal-700 font-semibold text-lg">${esc(site.profissional)}</p>
+              <p class="text-teal-600 text-sm">${[site.profissao, site.registro].filter(Boolean).map(esc).join(' &middot; ')}</p>
             </div>
           </div>
         </div>
@@ -98,8 +91,8 @@ function renderHome() {
   <!-- CTA Section -->
   <section class="py-16 bg-gradient-to-r from-teal-600 to-emerald-500 text-white">
     <div class="max-w-4xl mx-auto text-center px-4">
-      <h2 class="text-3xl md:text-4xl font-bold mb-6">${currentLang === 'pt' ? 'Comece sua jornada de transforma\u00e7\u00e3o hoje' : 'Start your transformation journey today'}</h2>
-      <p class="text-xl text-teal-100 mb-8">${currentLang === 'pt' ? 'Assine e tenha acesso a todos os conte\u00fados e ferramentas da plataforma.' : 'Subscribe and get access to all content and tools on the platform.'}</p>
+      <h2 class="text-3xl md:text-4xl font-bold mb-6">Comece sua jornada de transforma\u00e7\u00e3o hoje</h2>
+      <p class="text-xl text-teal-100 mb-8">Assine e tenha acesso a todos os conte\u00fados e ferramentas da plataforma.</p>
       <button onclick="navigate('plans')" class="bg-white text-teal-700 px-10 py-4 rounded-xl font-bold text-lg hover:bg-teal-50 transition shadow-lg">
         ${t('hero_secondary_cta')}
       </button>
@@ -127,18 +120,34 @@ function renderTestimonial(text, author) {
   </div>`;
 }
 
+// Foto salva pelo painel (data URL) ou a foto padrão do site.
+function fotoProfissional(site) {
+  return /^data:image\//.test(site.fotoUrl || '') ? site.fotoUrl : 'foto.jpg';
+}
+
+function tipoBadge(colecao, tipo) {
+  const info = window.SV_TIPOS[colecao][tipo] || { rotulo: tipo, cor: 'bg-gray-100 text-gray-700' };
+  return `<span class="text-xs px-2 py-1 rounded-full ${info.cor} font-medium">${esc(info.rotulo)}</span>`;
+}
+
+// Botão de acesso dos cards: liberado para quem tem conta (abre o link, se houver); senão, bloqueado.
+function accessButton(item, label) {
+  if (!(item.liberado && app.isLoggedIn)) {
+    return `<button class="w-full py-2.5 rounded-xl bg-gray-100 text-gray-500 cursor-not-allowed font-medium text-sm transition">${t('courses_locked')}</button>`;
+  }
+  const cls = 'w-full py-2.5 rounded-xl bg-teal-600 text-white hover:bg-teal-700 font-medium text-sm transition';
+  const url = safeUrl(item.link);
+  return url
+    ? `<a href="${esc(url)}" target="_blank" rel="noopener" class="block text-center ${cls}">${label}</a>`
+    : `<button class="${cls}">${label}</button>`;
+}
+
+function emptyState() {
+  return `<p class="text-center text-gray-500 py-12">${t('courses_empty')}</p>`;
+}
+
 function renderCourses() {
-  const courses = [
-    { title: t('course1_title'), desc: t('course1_desc'), lessons: 12, duration: 180, type: 'course', img: '&#129496;' },
-    { title: t('course2_title'), desc: t('course2_desc'), lessons: 10, duration: 150, type: 'course', img: '&#128170;' },
-    { title: t('course3_title'), desc: t('course3_desc'), lessons: 8, duration: 120, type: 'course', img: '&#10084;&#65039;' },
-    { title: t('course4_title'), desc: t('course4_desc'), lessons: 6, duration: 90, type: 'course', img: '&#129504;' },
-    { title: t('course5_title'), desc: t('course5_desc'), lessons: 10, duration: 140, type: 'course', img: '&#127919;' },
-    { title: t('course6_title'), desc: t('course6_desc'), lessons: 5, duration: 75, type: 'course', img: '&#128564;' },
-    { title: t('video1_title'), desc: t('video1_desc'), duration: 25, type: 'video', img: '&#127968;' },
-    { title: t('video2_title'), desc: t('video2_desc'), duration: 30, type: 'video', img: '&#127758;' },
-    { title: t('video3_title'), desc: t('video3_desc'), duration: 20, type: 'video', img: '&#128172;' },
-  ];
+  const courses = content.cursos;
 
   return `
   <section class="py-16 bg-gray-50">
@@ -152,25 +161,22 @@ function renderCourses() {
         <button class="px-5 py-2 rounded-full bg-white text-gray-600 font-medium text-sm border hover:border-teal-300 transition">${t('courses_filter_courses')}</button>
         <button class="px-5 py-2 rounded-full bg-white text-gray-600 font-medium text-sm border hover:border-teal-300 transition">${t('courses_filter_videos')}</button>
       </div>
+      ${courses.length ? '' : emptyState()}
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        ${courses.map((c, i) => `
+        ${courses.map(c => `
           <div class="bg-white rounded-2xl shadow-sm hover:shadow-lg border border-gray-100 overflow-hidden transition-all hover:-translate-y-1 group">
             <div class="h-40 bg-gradient-to-br from-teal-50 to-emerald-50 flex items-center justify-center">
-              <span class="text-6xl">${c.img}</span>
+              <span class="text-6xl">${esc(c.icone)}</span>
             </div>
             <div class="p-6">
               <div class="flex items-center gap-2 mb-2">
-                <span class="text-xs px-2 py-1 rounded-full ${c.type === 'course' ? 'bg-teal-100 text-teal-700' : 'bg-purple-100 text-purple-700'} font-medium">
-                  ${c.type === 'course' ? t('courses_filter_courses') : t('courses_filter_videos')}
-                </span>
-                ${c.lessons ? `<span class="text-xs text-gray-500">${c.lessons} ${t('courses_lessons')}</span>` : ''}
-                <span class="text-xs text-gray-500">${c.duration} ${t('courses_duration')}</span>
+                ${tipoBadge('cursos', c.tipo)}
+                ${Number(c.aulas) > 0 ? `<span class="text-xs text-gray-500">${Number(c.aulas)} ${t('courses_lessons')}</span>` : ''}
+                ${Number(c.duracao) > 0 ? `<span class="text-xs text-gray-500">${Number(c.duracao)} ${t('courses_duration')}</span>` : ''}
               </div>
-              <h3 class="text-lg font-bold text-gray-800 mb-2 group-hover:text-teal-600 transition">${c.title}</h3>
-              <p class="text-gray-600 text-sm mb-4">${c.desc}</p>
-              <button class="w-full py-2.5 rounded-xl ${i < 3 && app.isLoggedIn ? 'bg-teal-600 text-white hover:bg-teal-700' : 'bg-gray-100 text-gray-500 cursor-not-allowed'} font-medium text-sm transition">
-                ${i < 3 && app.isLoggedIn ? t('courses_start') : t('courses_locked')}
-              </button>
+              <h3 class="text-lg font-bold text-gray-800 mb-2 group-hover:text-teal-600 transition">${esc(c.titulo)}</h3>
+              <p class="text-gray-600 text-sm mb-4">${esc(c.descricao)}</p>
+              ${accessButton(c, t('courses_start'))}
             </div>
           </div>
         `).join('')}
@@ -180,17 +186,7 @@ function renderCourses() {
 }
 
 function renderMaterials() {
-  const materials = [
-    { title: t('material1_title'), desc: t('material1_desc'), type: 'guide', pages: 32, img: '&#128203;' },
-    { title: t('material2_title'), desc: t('material2_desc'), type: 'ebook', pages: 85, img: '&#128216;' },
-    { title: t('material3_title'), desc: t('material3_desc'), type: 'article', pages: 8, img: '&#128240;' },
-    { title: t('material4_title'), desc: t('material4_desc'), type: 'guide', pages: 24, img: '&#129496;' },
-    { title: t('material5_title'), desc: t('material5_desc'), type: 'ebook', pages: 120, img: '&#128215;' },
-    { title: t('material6_title'), desc: t('material6_desc'), type: 'article', pages: 12, img: '&#128196;' },
-  ];
-
-  const typeLabels = { guide: t('materials_filter_guides'), ebook: t('materials_filter_ebooks'), article: t('materials_filter_articles') };
-  const typeColors = { guide: 'bg-amber-100 text-amber-700', ebook: 'bg-blue-100 text-blue-700', article: 'bg-green-100 text-green-700' };
+  const materials = content.materiais;
 
   return `
   <section class="py-16 bg-gray-50">
@@ -205,22 +201,21 @@ function renderMaterials() {
         <button class="px-5 py-2 rounded-full bg-white text-gray-600 font-medium text-sm border hover:border-teal-300 transition">${t('materials_filter_articles')}</button>
         <button class="px-5 py-2 rounded-full bg-white text-gray-600 font-medium text-sm border hover:border-teal-300 transition">${t('materials_filter_guides')}</button>
       </div>
+      ${materials.length ? '' : emptyState()}
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        ${materials.map((m, i) => `
+        ${materials.map(m => `
           <div class="bg-white rounded-2xl shadow-sm hover:shadow-lg border border-gray-100 overflow-hidden transition-all hover:-translate-y-1 group">
             <div class="h-36 bg-gradient-to-br from-amber-50 to-orange-50 flex items-center justify-center">
-              <span class="text-5xl">${m.img}</span>
+              <span class="text-5xl">${esc(m.icone)}</span>
             </div>
             <div class="p-6">
               <div class="flex items-center gap-2 mb-3">
-                <span class="text-xs px-2 py-1 rounded-full ${typeColors[m.type]} font-medium">${typeLabels[m.type]}</span>
-                <span class="text-xs text-gray-500">${m.pages} ${t('materials_pages')}</span>
+                ${tipoBadge('materiais', m.tipo)}
+                ${Number(m.paginas) > 0 ? `<span class="text-xs text-gray-500">${Number(m.paginas)} ${t('materials_pages')}</span>` : ''}
               </div>
-              <h3 class="text-lg font-bold text-gray-800 mb-2 group-hover:text-teal-600 transition">${m.title}</h3>
-              <p class="text-gray-600 text-sm mb-4">${m.desc}</p>
-              <button class="w-full py-2.5 rounded-xl ${i < 2 && app.isLoggedIn ? 'bg-teal-600 text-white hover:bg-teal-700' : 'bg-gray-100 text-gray-500 cursor-not-allowed'} font-medium text-sm transition">
-                ${i < 2 && app.isLoggedIn ? (m.type === 'ebook' ? t('materials_download') : t('materials_read')) : t('courses_locked')}
-              </button>
+              <h3 class="text-lg font-bold text-gray-800 mb-2 group-hover:text-teal-600 transition">${esc(m.titulo)}</h3>
+              <p class="text-gray-600 text-sm mb-4">${esc(m.descricao)}</p>
+              ${accessButton(m, m.tipo === 'ebook' ? t('materials_download') : t('materials_read'))}
             </div>
           </div>
         `).join('')}
@@ -230,17 +225,7 @@ function renderMaterials() {
 }
 
 function renderActivities() {
-  const activities = [
-    { title: t('activity1_title'), desc: t('activity1_desc'), type: 'breathing', duration: 5, img: '&#127788;&#65039;' },
-    { title: t('activity2_title'), desc: t('activity2_desc'), type: 'journal', duration: 10, img: '&#128591;' },
-    { title: t('activity3_title'), desc: t('activity3_desc'), type: 'meditation', duration: 10, img: '&#129496;' },
-    { title: t('activity4_title'), desc: t('activity4_desc'), type: 'exercises', duration: 15, img: '&#128161;' },
-    { title: t('activity5_title'), desc: t('activity5_desc'), type: 'meditation', duration: 15, img: '&#129723;' },
-    { title: t('activity6_title'), desc: t('activity6_desc'), type: 'journal', duration: 20, img: '&#9997;&#65039;' },
-  ];
-
-  const typeLabels = { breathing: t('activities_filter_breathing'), journal: t('activities_filter_journal'), meditation: t('activities_filter_meditation'), exercises: t('activities_filter_exercises') };
-  const typeColors = { breathing: 'bg-sky-100 text-sky-700', journal: 'bg-violet-100 text-violet-700', meditation: 'bg-indigo-100 text-indigo-700', exercises: 'bg-rose-100 text-rose-700' };
+  const activities = content.atividades;
 
   return `
   <section class="py-16 bg-gray-50">
@@ -256,29 +241,34 @@ function renderActivities() {
         <button class="px-5 py-2 rounded-full bg-white text-gray-600 font-medium text-sm border hover:border-teal-300 transition">${t('activities_filter_meditation')}</button>
         <button class="px-5 py-2 rounded-full bg-white text-gray-600 font-medium text-sm border hover:border-teal-300 transition">${t('activities_filter_exercises')}</button>
       </div>
+      ${activities.length ? '' : emptyState()}
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        ${activities.map((a) => `
+        ${activities.map(a => {
+          const url = safeUrl(a.link);
+          const cls = 'px-5 py-2 rounded-xl bg-teal-600 text-white font-medium text-sm hover:bg-teal-700 transition';
+          return `
           <div class="bg-white rounded-2xl shadow-sm hover:shadow-lg border border-gray-100 p-6 transition-all hover:-translate-y-1 group">
             <div class="flex items-start justify-between mb-4">
-              <span class="text-4xl">${a.img}</span>
-              <span class="text-xs px-2 py-1 rounded-full ${typeColors[a.type]} font-medium">${typeLabels[a.type]}</span>
+              <span class="text-4xl">${esc(a.icone)}</span>
+              ${tipoBadge('atividades', a.tipo)}
             </div>
-            <h3 class="text-lg font-bold text-gray-800 mb-2 group-hover:text-teal-600 transition">${a.title}</h3>
-            <p class="text-gray-600 text-sm mb-4">${a.desc}</p>
+            <h3 class="text-lg font-bold text-gray-800 mb-2 group-hover:text-teal-600 transition">${esc(a.titulo)}</h3>
+            <p class="text-gray-600 text-sm mb-4">${esc(a.descricao)}</p>
             <div class="flex items-center justify-between">
-              <span class="text-sm text-gray-500">&#9201; ${a.duration} ${t('activities_duration')}</span>
-              <button class="px-5 py-2 rounded-xl bg-teal-600 text-white font-medium text-sm hover:bg-teal-700 transition">
-                ${t('activities_start')}
-              </button>
+              <span class="text-sm text-gray-500">${Number(a.duracao) > 0 ? `&#9201; ${Number(a.duracao)} ${t('activities_duration')}` : ''}</span>
+              ${url
+                ? `<a href="${esc(url)}" target="_blank" rel="noopener" class="${cls}">${t('activities_start')}</a>`
+                : `<button class="${cls}">${t('activities_start')}</button>`}
             </div>
-          </div>
-        `).join('')}
+          </div>`;
+        }).join('')}
       </div>
     </div>
   </section>`;
 }
 
 function renderSchedule() {
+  const inputCls = 'w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition';
   return `
   <section class="py-16 bg-gray-50">
     <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -287,51 +277,53 @@ function renderSchedule() {
         <p class="text-lg text-gray-600">${t('schedule_subtitle')}</p>
       </div>
       <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
-        <form id="schedule-form" class="space-y-6">
+        <form id="schedule-form" class="space-y-6" novalidate>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label for="sched-nome" class="block text-sm font-semibold text-gray-700 mb-2">${t('schedule_name')}</label>
+              <input type="text" id="sched-nome" name="nome" maxlength="100" required autocomplete="name" class="${inputCls}">
+            </div>
+            <div>
+              <label for="sched-email" class="block text-sm font-semibold text-gray-700 mb-2">${t('schedule_email')}</label>
+              <input type="email" id="sched-email" name="email" maxlength="120" autocomplete="email" class="${inputCls}">
+            </div>
+          </div>
           <div>
             <label class="block text-sm font-semibold text-gray-700 mb-2">${t('schedule_type')}</label>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <label class="flex items-center gap-3 p-4 border-2 border-teal-500 rounded-xl cursor-pointer bg-teal-50">
-                <input type="radio" name="type" value="online" checked class="text-teal-600 focus:ring-teal-500">
+              <label class="flex items-center gap-3 p-4 border-2 border-gray-200 rounded-xl cursor-pointer hover:border-teal-300 transition has-[:checked]:border-teal-500 has-[:checked]:bg-teal-50">
+                <input type="radio" name="modalidade" value="online" checked class="text-teal-600 focus:ring-teal-500">
                 <div class="font-medium text-gray-800">&#128187; ${t('schedule_type_online')}</div>
               </label>
-              <label class="flex items-center gap-3 p-4 border-2 border-gray-200 rounded-xl cursor-pointer hover:border-teal-300 transition">
-                <input type="radio" name="type" value="presencial" class="text-teal-600 focus:ring-teal-500">
+              ${content.site.presencial ? `
+              <label class="flex items-center gap-3 p-4 border-2 border-gray-200 rounded-xl cursor-pointer hover:border-teal-300 transition has-[:checked]:border-teal-500 has-[:checked]:bg-teal-50">
+                <input type="radio" name="modalidade" value="presencial" class="text-teal-600 focus:ring-teal-500">
                 <div class="font-medium text-gray-800">&#127970; ${t('schedule_type_presencial')}</div>
-              </label>
+              </label>` : ''}
+            </div>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label for="sched-data" class="block text-sm font-semibold text-gray-700 mb-2">${t('schedule_date')}</label>
+              <input type="date" id="sched-data" name="data" required class="${inputCls}">
+            </div>
+            <div>
+              <label for="sched-horario" class="block text-sm font-semibold text-gray-700 mb-2">${t('schedule_time')}</label>
+              <select id="sched-horario" name="horario" required disabled class="${inputCls} bg-white disabled:bg-gray-50">
+                <option value="">${t('schedule_time_pick_date')}</option>
+              </select>
             </div>
           </div>
           <div>
-            <label class="block text-sm font-semibold text-gray-700 mb-2">${t('schedule_date')}</label>
-            <input type="date" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition" required>
+            <label for="sched-motivo" class="block text-sm font-semibold text-gray-700 mb-2">${t('schedule_notes')}</label>
+            <textarea id="sched-motivo" name="motivo" maxlength="1000" class="${inputCls} h-28 resize-none" placeholder="${t('schedule_notes_placeholder')}"></textarea>
           </div>
-          <div>
-            <label class="block text-sm font-semibold text-gray-700 mb-2">${t('schedule_time')}</label>
-            <div class="grid grid-cols-3 gap-3 mb-3">
-              <div class="text-center text-xs font-medium text-gray-500 uppercase">${t('schedule_morning')}</div>
-              <div class="text-center text-xs font-medium text-gray-500 uppercase">${t('schedule_afternoon')}</div>
-              <div class="text-center text-xs font-medium text-gray-500 uppercase">${t('schedule_evening')}</div>
-            </div>
-            <div class="grid grid-cols-3 gap-2">
-              <button type="button" onclick="selectTime(this)" class="time-slot py-2 px-3 text-sm border border-gray-200 rounded-lg hover:border-teal-400 hover:bg-teal-50 transition text-center">09:00</button>
-              <button type="button" onclick="selectTime(this)" class="time-slot py-2 px-3 text-sm border border-gray-200 rounded-lg hover:border-teal-400 hover:bg-teal-50 transition text-center">14:00</button>
-              <button type="button" onclick="selectTime(this)" class="time-slot py-2 px-3 text-sm border border-gray-200 rounded-lg hover:border-teal-400 hover:bg-teal-50 transition text-center">18:00</button>
-              <button type="button" onclick="selectTime(this)" class="time-slot py-2 px-3 text-sm border border-gray-200 rounded-lg hover:border-teal-400 hover:bg-teal-50 transition text-center">10:00</button>
-              <button type="button" onclick="selectTime(this)" class="time-slot py-2 px-3 text-sm border border-gray-200 rounded-lg hover:border-teal-400 hover:bg-teal-50 transition text-center">15:00</button>
-              <button type="button" onclick="selectTime(this)" class="time-slot py-2 px-3 text-sm border border-gray-200 rounded-lg hover:border-teal-400 hover:bg-teal-50 transition text-center">19:00</button>
-              <button type="button" onclick="selectTime(this)" class="time-slot py-2 px-3 text-sm border border-gray-200 rounded-lg hover:border-teal-400 hover:bg-teal-50 transition text-center">11:00</button>
-              <button type="button" onclick="selectTime(this)" class="time-slot py-2 px-3 text-sm border border-gray-200 rounded-lg hover:border-teal-400 hover:bg-teal-50 transition text-center">16:00</button>
-              <button type="button" onclick="selectTime(this)" class="time-slot py-2 px-3 text-sm border border-gray-200 rounded-lg hover:border-teal-400 hover:bg-teal-50 transition text-center">20:00</button>
-            </div>
-          </div>
-          <div>
-            <label class="block text-sm font-semibold text-gray-700 mb-2">${t('schedule_notes')}</label>
-            <textarea class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition h-28 resize-none" placeholder="${t('schedule_notes_placeholder')}"></textarea>
-          </div>
-          <button type="submit" class="w-full bg-teal-600 text-white py-4 rounded-xl font-bold text-lg hover:bg-teal-700 transition shadow-md">
+          <p id="sched-erro" role="alert" class="hidden bg-red-50 border border-red-200 text-red-700 p-4 rounded-xl text-sm"></p>
+          <button type="submit" class="w-full bg-teal-600 text-white py-4 rounded-xl font-bold text-lg hover:bg-teal-700 transition shadow-md disabled:opacity-60">
             ${t('schedule_confirm')}
           </button>
-          <div id="schedule-success" class="hidden bg-green-50 border border-green-200 text-green-700 p-4 rounded-xl text-center font-medium">
+          <p class="text-center text-sm text-gray-500">${t('schedule_hint')}</p>
+          <div id="sched-ok" class="hidden bg-green-50 border border-green-200 text-green-700 p-4 rounded-xl text-center font-medium">
             &#9989; ${t('schedule_success')}
           </div>
         </form>
@@ -340,14 +332,41 @@ function renderSchedule() {
   </section>`;
 }
 
-function selectTime(el) {
-  document.querySelectorAll('.time-slot').forEach(s => {
-    s.classList.remove('border-teal-500', 'bg-teal-50', 'text-teal-700', 'font-semibold');
-  });
-  el.classList.add('border-teal-500', 'bg-teal-50', 'text-teal-700', 'font-semibold');
+// Maior desconto do plano anual em relação ao mensal, em %.
+function economiaAnual(planos) {
+  const pagos = planos.filter(p => Number(p.mensal) > 0 && Number(p.anual) > 0);
+  return Math.max(0, ...pagos.map(p => Math.round((1 - p.anual / p.mensal) * 100)));
+}
+
+function renderPlanCard(p) {
+  const anual = app.billingCycle === 'yearly';
+  const preco = Number(anual ? p.anual : p.mensal) || 0;
+  const url = safeUrl(anual ? p.linkAnual : p.linkMensal);
+  const check = '<svg class="w-5 h-5 text-teal-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>';
+  const btnCls = p.destaque
+    ? 'w-full py-3 rounded-xl bg-teal-600 text-white font-semibold hover:bg-teal-700 transition shadow-md'
+    : 'w-full py-3 rounded-xl border-2 border-gray-200 text-gray-700 font-semibold hover:border-teal-300 transition';
+  const botao = url
+    ? `<a href="${esc(url)}" target="_blank" rel="noopener" class="block text-center ${btnCls}">${t('plans_subscribe')}</a>`
+    : `<button onclick="navigate('signup')" class="${btnCls}">${t('plans_subscribe')}</button>`;
+
+  return `
+        <div class="bg-white rounded-2xl p-8 relative ${p.destaque ? 'shadow-lg border-2 border-teal-500 md:scale-105' : 'shadow-sm border border-gray-200 hover:shadow-lg transition'}">
+          ${p.destaque ? `<div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-teal-600 text-white text-xs font-bold px-4 py-1 rounded-full">${t('plans_popular')}</div>` : ''}
+          <h3 class="text-xl font-bold text-gray-800 mb-2">${esc(p.nome)}</h3>
+          <div class="mb-6">
+            <span class="text-4xl font-bold text-gray-800">${t('plans_currency')} ${formatPreco(preco)}</span>
+            ${preco > 0 ? `<span class="text-gray-500">${t('plans_period')}</span>` : ''}
+          </div>
+          <ul class="space-y-3 mb-8">
+            ${(p.recursos || []).filter(Boolean).map(r => `<li class="flex items-center gap-2 text-sm text-gray-600">${check}${esc(r)}</li>`).join('')}
+          </ul>
+          ${botao}
+        </div>`;
 }
 
 function renderPlans() {
+  const economia = economiaAnual(content.planos);
   return `
   <section class="py-16 bg-gray-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -360,55 +379,11 @@ function renderPlans() {
             <div class="absolute top-0.5 ${app.billingCycle === 'yearly' ? 'left-7' : 'left-0.5'} w-6 h-6 bg-white rounded-full shadow transition-all"></div>
           </button>
           <span class="font-medium ${app.billingCycle === 'yearly' ? 'text-teal-700' : 'text-gray-500'}">${t('plans_yearly')}</span>
-          ${app.billingCycle === 'yearly' ? `<span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full font-medium">${t('plans_save')}</span>` : ''}
+          ${app.billingCycle === 'yearly' && economia > 0 ? `<span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full font-medium">${t('plans_save')} ${economia}%</span>` : ''}
         </div>
       </div>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-        <!-- Free -->
-        <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-8 hover:shadow-lg transition">
-          <h3 class="text-xl font-bold text-gray-800 mb-2">${t('plan_free_name')}</h3>
-          <div class="mb-6">
-            <span class="text-4xl font-bold text-gray-800">${t('plans_currency')} ${t('plan_free_price')}</span>
-          </div>
-          <ul class="space-y-3 mb-8">
-            <li class="flex items-center gap-2 text-sm text-gray-600"><svg class="w-5 h-5 text-teal-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>${t('plan_free_f1')}</li>
-            <li class="flex items-center gap-2 text-sm text-gray-600"><svg class="w-5 h-5 text-teal-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>${t('plan_free_f2')}</li>
-            <li class="flex items-center gap-2 text-sm text-gray-600"><svg class="w-5 h-5 text-teal-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>${t('plan_free_f3')}</li>
-          </ul>
-          <button onclick="navigate('signup')" class="w-full py-3 rounded-xl border-2 border-gray-200 text-gray-700 font-semibold hover:border-teal-300 transition">${t('plans_subscribe')}</button>
-        </div>
-        <!-- Essential -->
-        <div class="bg-white rounded-2xl shadow-lg border-2 border-teal-500 p-8 relative md:scale-105">
-          <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-teal-600 text-white text-xs font-bold px-4 py-1 rounded-full">${t('plans_popular')}</div>
-          <h3 class="text-xl font-bold text-gray-800 mb-2">${t('plan_essential_name')}</h3>
-          <div class="mb-6">
-            <span class="text-4xl font-bold text-gray-800">${t('plans_currency')} ${app.billingCycle === 'monthly' ? t('plan_essential_price_monthly') : t('plan_essential_price_yearly')}</span>
-            <span class="text-gray-500">${app.billingCycle === 'monthly' ? t('plans_period_monthly') : t('plans_period_yearly')}</span>
-          </div>
-          <ul class="space-y-3 mb-8">
-            <li class="flex items-center gap-2 text-sm text-gray-600"><svg class="w-5 h-5 text-teal-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>${t('plan_essential_f1')}</li>
-            <li class="flex items-center gap-2 text-sm text-gray-600"><svg class="w-5 h-5 text-teal-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>${t('plan_essential_f2')}</li>
-            <li class="flex items-center gap-2 text-sm text-gray-600"><svg class="w-5 h-5 text-teal-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>${t('plan_essential_f3')}</li>
-            <li class="flex items-center gap-2 text-sm text-gray-600"><svg class="w-5 h-5 text-teal-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>${t('plan_essential_f4')}</li>
-          </ul>
-          <button onclick="navigate('signup')" class="w-full py-3 rounded-xl bg-teal-600 text-white font-semibold hover:bg-teal-700 transition shadow-md">${t('plans_subscribe')}</button>
-        </div>
-        <!-- Premium -->
-        <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-8 hover:shadow-lg transition">
-          <h3 class="text-xl font-bold text-gray-800 mb-2">${t('plan_premium_name')}</h3>
-          <div class="mb-6">
-            <span class="text-4xl font-bold text-gray-800">${t('plans_currency')} ${app.billingCycle === 'monthly' ? t('plan_premium_price_monthly') : t('plan_premium_price_yearly')}</span>
-            <span class="text-gray-500">${app.billingCycle === 'monthly' ? t('plans_period_monthly') : t('plans_period_yearly')}</span>
-          </div>
-          <ul class="space-y-3 mb-8">
-            <li class="flex items-center gap-2 text-sm text-gray-600"><svg class="w-5 h-5 text-teal-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>${t('plan_premium_f1')}</li>
-            <li class="flex items-center gap-2 text-sm text-gray-600"><svg class="w-5 h-5 text-teal-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>${t('plan_premium_f2')}</li>
-            <li class="flex items-center gap-2 text-sm text-gray-600"><svg class="w-5 h-5 text-teal-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>${t('plan_premium_f3')}</li>
-            <li class="flex items-center gap-2 text-sm text-gray-600"><svg class="w-5 h-5 text-teal-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>${t('plan_premium_f4')}</li>
-            <li class="flex items-center gap-2 text-sm text-gray-600"><svg class="w-5 h-5 text-teal-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>${t('plan_premium_f5')}</li>
-          </ul>
-          <button onclick="navigate('signup')" class="w-full py-3 rounded-xl border-2 border-teal-500 text-teal-700 font-semibold hover:bg-teal-50 transition">${t('plans_subscribe')}</button>
-        </div>
+        ${content.planos.map(renderPlanCard).join('')}
       </div>
     </div>
   </section>`;
