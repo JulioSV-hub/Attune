@@ -35,8 +35,8 @@ const translations = {
 
     // About
     about_title: "Sobre a Profissional",
-    about_text: "Enfermeira com pós-graduação em psiquiatria, atuando no Brasil com foco em comunicação e análise comportamental. Une a prática clínica a cursos e materiais que ajudam você a entender seus padrões de comportamento e a se comunicar melhor nas relações pessoais e profissionais.",
-    about_credential1: "COREN Ativo - Brasil",
+    about_text: "Enfermeira com pós-graduação em psiquiatria, com foco em comunicação e análise comportamental. Une a prática clínica a cursos e materiais que ajudam você a entender seus padrões de comportamento e a se comunicar melhor nas relações pessoais e profissionais.",
+    about_credential1: "COREN Ativo",
     about_credential2: "Pós-graduada em Psiquiatria",
     about_credential3: "Análise Comportamental",
     about_credential4: "Comunicação Interpessoal",
@@ -131,7 +131,7 @@ const translations = {
     schedule_subtitle: "Escolha o melhor horário para sua consulta",
     schedule_type: "Tipo de Atendimento",
     schedule_type_online: "Online (Videochamada)",
-    schedule_type_presencial: "Presencial (Brasil)",
+    schedule_type_presencial: "Presencial",
     schedule_date: "Data",
     schedule_time: "Horário",
     schedule_notes: "Observações (opcional)",
@@ -197,7 +197,7 @@ const translations = {
     footer_privacy: "Privacidade",
     footer_terms: "Termos de Uso",
     footer_contact: "Contato",
-    footer_location: "Brasil",
+    footer_location: "Comunicação e análise comportamental",
   },
 
   en: {
@@ -214,7 +214,7 @@ const translations = {
 
     // Hero section
     hero_title: "Understand how you communicate, feel and behave",
-    hero_subtitle: "Courses and materials on communication and behavioral analysis with a Brazilian mental health nurse, plus online appointments",
+    hero_subtitle: "Courses and materials on communication and behavioral analysis with a mental health nurse, plus online appointments",
     hero_cta: "Get Started",
     hero_secondary_cta: "View Plans",
 
@@ -235,8 +235,8 @@ const translations = {
 
     // About
     about_title: "About the Professional",
-    about_text: "Nurse with a postgraduate degree in psychiatry, based in Brazil and focused on communication and behavioral analysis. She combines clinical practice with courses and materials that help you understand your behavior patterns and communicate better in personal and professional relationships.",
-    about_credential1: "Active COREN - Brazil",
+    about_text: "Nurse with a postgraduate degree in psychiatry, focused on communication and behavioral analysis. She combines clinical practice with courses and materials that help you understand your behavior patterns and communicate better in personal and professional relationships.",
+    about_credential1: "Active COREN",
     about_credential2: "Postgraduate in Psychiatry",
     about_credential3: "Behavioral Analysis",
     about_credential4: "Interpersonal Communication",
@@ -331,7 +331,7 @@ const translations = {
     schedule_subtitle: "Choose the best time for your appointment",
     schedule_type: "Appointment Type",
     schedule_type_online: "Online (Video call)",
-    schedule_type_presencial: "In-person (Brazil)",
+    schedule_type_presencial: "In-person",
     schedule_date: "Date",
     schedule_time: "Time",
     schedule_notes: "Notes (optional)",
@@ -397,7 +397,7 @@ const translations = {
     footer_privacy: "Privacy",
     footer_terms: "Terms of Use",
     footer_contact: "Contact",
-    footer_location: "Brazil",
+    footer_location: "Communication and behavioral analysis",
   }
 };
 
