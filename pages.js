@@ -71,10 +71,10 @@ function renderHome() {
           <div class="w-80 h-96 bg-gradient-to-br from-teal-100 to-emerald-100 rounded-2xl flex items-center justify-center shadow-lg overflow-hidden">
             <div class="text-center">
               <div class="w-48 h-48 rounded-full mx-auto mb-4 overflow-hidden border-4 border-white shadow-lg">
-                <img src="igor.jpg" alt="Dr. Igor - Psic&oacute;logo" class="w-full h-full object-cover">
+                <img src="foto.jpg" alt="Dra. Nome - Psiquiatra" class="w-full h-full object-cover object-top">
               </div>
-              <p class="text-teal-700 font-semibold text-lg">Dr. Igor</p>
-              <p class="text-teal-600 text-sm">CRP 00/00000</p>
+              <p class="text-teal-700 font-semibold text-lg">Dra. Nome</p>
+              <p class="text-teal-600 text-sm">CRM 00000 &middot; RQE 00000</p>
             </div>
           </div>
         </div>

@@ -19,20 +19,20 @@ function navigate(page) {
 function mockLogin(email) {
   app.isLoggedIn = true;
   app.user = { name: email.split('@')[0], email: email };
-  localStorage.setItem('attune_user', JSON.stringify(app.user));
+  localStorage.setItem('sobrevoce_user', JSON.stringify(app.user));
   navigate('home');
 }
 
 function mockLogout() {
   app.isLoggedIn = false;
   app.user = null;
-  localStorage.removeItem('attune_user');
+  localStorage.removeItem('sobrevoce_user');
   navigate('home');
 }
 
 // Check if user was logged in
 function checkAuth() {
-  const saved = localStorage.getItem('attune_user');
+  const saved = localStorage.getItem('sobrevoce_user');
   if (saved) {
     app.user = JSON.parse(saved);
     app.isLoggedIn = true;
@@ -67,7 +67,7 @@ function renderNav() {
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
             </svg>
           </div>
-          <span class="font-bold text-xl tracking-tight">Attune</span>
+          <span class="font-bold text-xl tracking-tight">Sobre você</span>
         </div>
 
         <!-- Desktop Nav -->
@@ -135,7 +135,7 @@ function renderFooter() {
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
               </svg>
             </div>
-            <span class="font-bold text-xl text-white">Attune</span>
+            <span class="font-bold text-xl text-white">Sobre você</span>
           </div>
           <p class="text-sm text-gray-400">${t('footer_location')}</p>
         </div>
@@ -157,7 +157,7 @@ function renderFooter() {
         </div>
       </div>
       <div class="border-t border-gray-700 mt-8 pt-8 text-center text-sm text-gray-500">
-        &copy; 2024 Attune. ${t('footer_rights')}
+        &copy; 2026 Sobre você. ${t('footer_rights')}
       </div>
     </div>
   </footer>`;

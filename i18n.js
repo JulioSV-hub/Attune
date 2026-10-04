@@ -13,42 +13,42 @@ const translations = {
     nav_logout: "Sair",
 
     // Hero section
-    hero_title: "Transforme sua vida com acompanhamento psicológico de qualidade",
-    hero_subtitle: "Psicólogo brasileiro em Dubai oferecendo terapia online e presencial em português",
+    hero_title: "Entenda como você se comunica, sente e se comporta",
+    hero_subtitle: "Cursos e materiais sobre comunicação e análise comportamental com uma psiquiatra brasileira, além de atendimento online",
     hero_cta: "Comece Agora",
     hero_secondary_cta: "Conhecer Planos",
 
     // Features
     features_title: "O que oferecemos",
     feature_courses_title: "Cursos Online",
-    feature_courses_desc: "Cursos completos sobre autoconhecimento, gestão emocional, relacionamentos e mais.",
+    feature_courses_desc: "Cursos completos sobre comunicação, análise comportamental, relacionamentos e mais.",
     feature_videos_title: "Vídeos Exclusivos",
-    feature_videos_desc: "Conteúdos em vídeo sobre temas relevantes para seu bem-estar psicológico.",
+    feature_videos_desc: "Conteúdos em vídeo sobre comportamento, emoções e saúde mental.",
     feature_materials_title: "Materiais de Leitura",
     feature_materials_desc: "E-books, artigos e guias práticos para aprofundar seu desenvolvimento pessoal.",
     feature_activities_title: "Atividades Terapêuticas",
     feature_activities_desc: "Exercícios e dinâmicas para praticar no dia a dia e fortalecer sua saúde mental.",
     feature_schedule_title: "Atendimento Online",
-    feature_schedule_desc: "Agende sessões individuais de terapia online ou presencial com facilidade.",
+    feature_schedule_desc: "Agende consultas individuais online ou presenciais com facilidade.",
     feature_community_title: "Comunidade",
     feature_community_desc: "Conecte-se com outras pessoas em sua jornada de autoconhecimento e crescimento.",
 
     // About
-    about_title: "Sobre o Profissional",
-    about_text: "Psicólogo clínico com mais de 10 anos de experiência, especializado em terapia cognitivo-comportamental. Atendo a comunidade lusófona em Dubai, oferecendo suporte em português para brasileiros e portugueses que vivem nos Emirados Árabes.",
-    about_credential1: "CRP Ativo - Brasil",
-    about_credential2: "DHA Licensed - Dubai",
-    about_credential3: "+10 anos de experiência",
-    about_credential4: "Especialista em TCC",
+    about_title: "Sobre a Profissional",
+    about_text: "Médica psiquiatra no Brasil, com foco em comunicação e análise comportamental. Une a prática clínica a cursos e materiais que ajudam você a entender seus padrões de comportamento e a se comunicar melhor nas relações pessoais e profissionais.",
+    about_credential1: "CRM Ativo - Brasil",
+    about_credential2: "Médica Psiquiatra",
+    about_credential3: "Análise Comportamental",
+    about_credential4: "Comunicação Interpessoal",
 
     // Testimonials
     testimonials_title: "O que dizem nossos assinantes",
     testimonial1_text: "\"A plataforma mudou minha vida. Os cursos são incríveis e o atendimento é acolhedor e profissional.\"",
-    testimonial1_author: "Maria S. - Dubai",
-    testimonial2_text: "\"Finalmente encontrei um psicólogo que fala português em Dubai. Os materiais da plataforma complementam muito as sessões.\"",
-    testimonial2_author: "Carlos R. - Abu Dhabi",
-    testimonial3_text: "\"As atividades terapêuticas me ajudam diariamente. Recomendo a todos os brasileiros nos Emirados.\"",
-    testimonial3_author: "Ana P. - Dubai",
+    testimonial1_author: "Maria S. - São Paulo",
+    testimonial2_text: "\"Os cursos de comunicação mudaram a forma como me relaciono no trabalho e em casa. Os materiais complementam muito as consultas.\"",
+    testimonial2_author: "Carlos R. - Belo Horizonte",
+    testimonial3_text: "\"As atividades me ajudam a perceber meus padrões de comportamento no dia a dia. Recomendo!\"",
+    testimonial3_author: "Ana P. - Rio de Janeiro",
 
     // Courses page
     courses_title: "Cursos & Vídeos",
@@ -128,10 +128,10 @@ const translations = {
 
     // Schedule page
     schedule_title: "Agendar Atendimento",
-    schedule_subtitle: "Escolha o melhor horário para sua sessão de terapia",
+    schedule_subtitle: "Escolha o melhor horário para sua consulta",
     schedule_type: "Tipo de Atendimento",
     schedule_type_online: "Online (Videochamada)",
-    schedule_type_presencial: "Presencial (Dubai)",
+    schedule_type_presencial: "Presencial (Brasil)",
     schedule_date: "Data",
     schedule_time: "Horário",
     schedule_notes: "Observações (opcional)",
@@ -171,7 +171,7 @@ const translations = {
     plan_premium_f3: "Acesso prioritário",
     plan_premium_f4: "Grupo exclusivo WhatsApp",
     plan_premium_f5: "Suporte por mensagem",
-    plans_currency: "AED",
+    plans_currency: "R$",
     plans_period_monthly: "/mês",
     plans_period_yearly: "/mês",
 
@@ -197,7 +197,7 @@ const translations = {
     footer_privacy: "Privacidade",
     footer_terms: "Termos de Uso",
     footer_contact: "Contato",
-    footer_location: "Dubai, Emirados Árabes Unidos",
+    footer_location: "Brasil",
   },
 
   en: {
@@ -213,42 +213,42 @@ const translations = {
     nav_logout: "Logout",
 
     // Hero section
-    hero_title: "Transform your life with quality psychological support",
-    hero_subtitle: "Brazilian psychologist in Dubai offering online and in-person therapy in Portuguese",
+    hero_title: "Understand how you communicate, feel and behave",
+    hero_subtitle: "Courses and materials on communication and behavioral analysis with a Brazilian psychiatrist, plus online appointments",
     hero_cta: "Get Started",
     hero_secondary_cta: "View Plans",
 
     // Features
     features_title: "What We Offer",
     feature_courses_title: "Online Courses",
-    feature_courses_desc: "Complete courses on self-awareness, emotional management, relationships and more.",
+    feature_courses_desc: "Complete courses on communication, behavioral analysis, relationships and more.",
     feature_videos_title: "Exclusive Videos",
-    feature_videos_desc: "Video content on relevant topics for your psychological well-being.",
+    feature_videos_desc: "Video content on behavior, emotions and mental health.",
     feature_materials_title: "Reading Materials",
     feature_materials_desc: "E-books, articles and practical guides to deepen your personal development.",
     feature_activities_title: "Therapeutic Activities",
     feature_activities_desc: "Exercises and dynamics to practice daily and strengthen your mental health.",
     feature_schedule_title: "Online Appointments",
-    feature_schedule_desc: "Schedule individual online or in-person therapy sessions with ease.",
+    feature_schedule_desc: "Schedule individual online or in-person appointments with ease.",
     feature_community_title: "Community",
     feature_community_desc: "Connect with others on their journey of self-knowledge and growth.",
 
     // About
     about_title: "About the Professional",
-    about_text: "Clinical psychologist with over 10 years of experience, specialized in cognitive-behavioral therapy. Serving the Portuguese-speaking community in Dubai, offering support in Portuguese for Brazilians and Portuguese living in the UAE.",
-    about_credential1: "Active CRP - Brazil",
-    about_credential2: "DHA Licensed - Dubai",
-    about_credential3: "+10 years of experience",
-    about_credential4: "CBT Specialist",
+    about_text: "Psychiatrist based in Brazil, focused on communication and behavioral analysis. She combines clinical practice with courses and materials that help you understand your behavior patterns and communicate better in personal and professional relationships.",
+    about_credential1: "Active CRM - Brazil",
+    about_credential2: "Psychiatrist",
+    about_credential3: "Behavioral Analysis",
+    about_credential4: "Interpersonal Communication",
 
     // Testimonials
     testimonials_title: "What Our Subscribers Say",
     testimonial1_text: "\"The platform changed my life. The courses are amazing and the care is welcoming and professional.\"",
-    testimonial1_author: "Maria S. - Dubai",
-    testimonial2_text: "\"I finally found a psychologist who speaks Portuguese in Dubai. The platform materials greatly complement the sessions.\"",
-    testimonial2_author: "Carlos R. - Abu Dhabi",
-    testimonial3_text: "\"The therapeutic activities help me daily. I recommend it to all Brazilians in the Emirates.\"",
-    testimonial3_author: "Ana P. - Dubai",
+    testimonial1_author: "Maria S. - São Paulo",
+    testimonial2_text: "\"The communication courses changed how I relate to people at work and at home. The materials greatly complement the appointments.\"",
+    testimonial2_author: "Carlos R. - Belo Horizonte",
+    testimonial3_text: "\"The activities help me notice my behavior patterns every day. Highly recommended!\"",
+    testimonial3_author: "Ana P. - Rio de Janeiro",
 
     // Courses page
     courses_title: "Courses & Videos",
@@ -328,10 +328,10 @@ const translations = {
 
     // Schedule page
     schedule_title: "Schedule Appointment",
-    schedule_subtitle: "Choose the best time for your therapy session",
+    schedule_subtitle: "Choose the best time for your appointment",
     schedule_type: "Appointment Type",
     schedule_type_online: "Online (Video call)",
-    schedule_type_presencial: "In-person (Dubai)",
+    schedule_type_presencial: "In-person (Brazil)",
     schedule_date: "Date",
     schedule_time: "Time",
     schedule_notes: "Notes (optional)",
@@ -371,7 +371,7 @@ const translations = {
     plan_premium_f3: "Priority access",
     plan_premium_f4: "Exclusive WhatsApp group",
     plan_premium_f5: "Message support",
-    plans_currency: "AED",
+    plans_currency: "R$",
     plans_period_monthly: "/month",
     plans_period_yearly: "/month",
 
@@ -397,11 +397,11 @@ const translations = {
     footer_privacy: "Privacy",
     footer_terms: "Terms of Use",
     footer_contact: "Contact",
-    footer_location: "Dubai, United Arab Emirates",
+    footer_location: "Brazil",
   }
 };
 
-let currentLang = localStorage.getItem('attune_lang') || 'pt';
+let currentLang = localStorage.getItem('sobrevoce_lang') || 'pt';
 
 function t(key) {
   return translations[currentLang][key] || key;
@@ -409,7 +409,7 @@ function t(key) {
 
 function setLanguage(lang) {
   currentLang = lang;
-  localStorage.setItem('attune_lang', lang);
+  localStorage.setItem('sobrevoce_lang', lang);
   document.documentElement.lang = lang;
   // Dispatch event so pages can re-render
   window.dispatchEvent(new CustomEvent('languageChanged', { detail: { lang } }));
