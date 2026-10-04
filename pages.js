@@ -71,9 +71,9 @@ function renderHome() {
           <div class="w-80 h-96 bg-gradient-to-br from-teal-100 to-emerald-100 rounded-2xl flex items-center justify-center shadow-lg overflow-hidden">
             <div class="text-center">
               <div class="w-48 h-48 rounded-full mx-auto mb-4 overflow-hidden border-4 border-white shadow-lg">
-                <img src="foto.jpg" alt="Dra. Nome - Psiquiatra" class="w-full h-full object-cover object-top">
+                <img src="foto.jpg" alt="Dra. Claudia Alves de Assis - Psiquiatra" class="w-full h-full object-cover object-top">
               </div>
-              <p class="text-teal-700 font-semibold text-lg">Dra. Nome</p>
+              <p class="text-teal-700 font-semibold text-lg">Dra. Claudia Alves de Assis</p>
               <p class="text-teal-600 text-sm">CRM 00000 &middot; RQE 00000</p>
             </div>
           </div>
@@ -422,7 +422,7 @@ function renderLogin() {
         <div class="text-center mb-8">
           <div class="w-16 h-16 bg-gradient-to-br from-teal-500 to-emerald-500 rounded-2xl mx-auto mb-4 flex items-center justify-center">
             <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
             </svg>
           </div>
           <h1 class="text-2xl font-bold text-gray-800">${t('login_title')}</h1>
@@ -457,7 +457,7 @@ function renderSignup() {
         <div class="text-center mb-8">
           <div class="w-16 h-16 bg-gradient-to-br from-teal-500 to-emerald-500 rounded-2xl mx-auto mb-4 flex items-center justify-center">
             <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
             </svg>
           </div>
           <h1 class="text-2xl font-bold text-gray-800">${t('signup_title')}</h1>
