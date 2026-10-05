@@ -66,6 +66,7 @@
         </div>
         <div class="opcoes print:hidden">
           ${temCiclos ? `<label>Ciclos: <select data-ciclos>${cfg.ciclos.opcoes.map(n => `<option value="${n}"${n === cfg.ciclos.padrao ? ' selected' : ''}>${n}</option>`).join('')}</select></label>` : ''}
+          <label data-voz-opcao hidden><input type="checkbox" data-voz checked> Voz guia</label>
           <label><input type="checkbox" data-som checked> Som ao trocar de etapa</label>
         </div>
         <p class="concluido" data-fim hidden></p>
@@ -85,7 +86,13 @@
     let seq = sequencia();
     const total = () => seq.reduce((s, e) => s + e.segundos, 0);
 
+    // Voz guia (js/leitor.js): lê cada etapa quando ela começa. Na respiração, só o comando curto.
+    const voz = window.SVVoz;
+    const vozLigada = () => Boolean(voz?.disponivel && !$('voz-opcao').hidden && $('voz').checked);
+    voz?.pronto.then(() => { if (voz.disponivel) $('voz-opcao').hidden = false; });
+
     function mostrarEtapa(e) {
+      if (vozLigada()) voz.falar(e.fase ? e.titulo : `${e.titulo}. ${e.texto || ''}`);
       $('titulo').textContent = e.titulo;
       $('texto').textContent = e.texto || '';
       $('contador').textContent = temCiclos
@@ -121,6 +128,7 @@
       $('play').textContent = 'Fazer de novo';
       $('titulo').textContent = 'Concluído';
       $('texto').textContent = cfg.fim || 'Volte devagar, no seu ritmo. Observe como você se sente agora.';
+      if (vozLigada()) voz.falar($('texto').textContent);
       $('contador').textContent = '';
       $('circulo')?.classList.remove('cheio');
       if ($('rotulo')) $('rotulo').textContent = 'Muito bem';
@@ -128,6 +136,7 @@
     }
 
     function zerar() {
+      voz?.parar();
       relogio.zerar();
       etapaAtual = -1;
       seq = sequencia();
@@ -144,6 +153,7 @@
     $('play').addEventListener('click', () => {
       if (relogio.rodando) {
         relogio.pausar();
+        voz?.parar();
         $('play').textContent = 'Continuar';
         return;
       }
@@ -153,6 +163,7 @@
       $('play').textContent = 'Pausar';
     });
     $('zerar').addEventListener('click', zerar);
+    $('voz').addEventListener('change', e => { if (!e.target.checked) voz?.parar(); });
     $('ciclos')?.addEventListener('change', e => { ciclos = Number(e.target.value); zerar(); });
     zerar();
   }

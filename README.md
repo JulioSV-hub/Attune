@@ -47,6 +47,7 @@ js/
   firebase-config.js      chaves do projeto Firebase (preencher)
   firebase.js             inicialização do Firebase
   store.js                carrega o conteúdo e envia agendamentos
+  leitor.js               leitura em voz alta (e-books e voz guia das atividades)
   defaults.js             conteúdo inicial (textos, cursos, materiais, atividades, planos)
 firestore.rules           regras de acesso ao banco (colar no Console do Firebase)
 firebase.json             configuração do emulador local
@@ -68,6 +69,8 @@ Classes montadas por concatenação (ex.: `'bg-' + cor`) não são encontradas: 
 Cada e-book é uma página em `ebooks/` (ex.: `ebooks/comunicacao-assertiva.html`), com leitura no site e um botão para baixar o PDF. Para aparecer no painel, o e-book precisa estar listado em [`ebooks/index.json`](ebooks/index.json) (título, descrição e ícone do card). No painel, aba **Materiais**, o quadro **Materiais prontos no site** tem o botão **Publicar no site**: se já existe um card com o mesmo título, ele recebe o link; senão, um card novo é criado em primeiro lugar.
 
 As atividades interativas ficam em `atividades/` e funcionam do mesmo jeito, listadas em [`atividades/index.json`](atividades/index.json) e publicadas pela aba **Atividades** do painel. Cada página define a atividade em `window.ATIVIDADE` (etapas com tempo, ou campos de diário) e usa o mecanismo comum [`atividades/atividade.js`](atividades/atividade.js). O que a pessoa escreve nos diários fica só no navegador dela.
+
+**Ouvir em vez de ler:** e-books e atividades guiadas carregam [`js/leitor.js`](js/leitor.js), que usa a voz em português do próprio aparelho (Web Speech API, sem custo). Nos e-books aparece o botão **Ouvir** e uma barra com pausa, capítulos e velocidade; nas atividades guiadas, a opção **Voz guia**. Se o aparelho não tiver voz em português, nada aparece. Para usar gravações da profissional no futuro, é só trocar a leitura por arquivos de áudio no mesmo player.
 
 Depois de editar o texto de um e-book, gere o PDF de novo (precisa do Edge ou do Chrome instalado):
 

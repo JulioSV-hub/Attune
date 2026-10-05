@@ -157,3 +157,20 @@
   .atv .como-fazer { break-inside: avoid; }
   .diario textarea { border: 1px solid #d1d5db; }
 }
+
+/* Leitura em voz alta (js/leitor.js). */
+@layer components {
+  .ebook .lendo { @apply bg-amber-100 rounded-md transition-colors duration-300; box-shadow: 0 0 0 4px rgb(254 243 199); }
+  .ouvir-convite { @apply w-full flex items-center justify-center gap-2 bg-teal-50 hover:bg-teal-100 text-teal-800 border border-teal-200 rounded-xl px-4 py-3 text-sm transition; }
+  .leitor { @apply fixed bottom-0 inset-x-0 z-50 bg-white border-t border-gray-200 shadow-[0_-8px_24px_rgba(0,0,0,0.08)]; }
+  .leitor-progresso { @apply h-1 bg-gray-100; }
+  .leitor-progresso > div { @apply h-full bg-teal-500 transition-[width] duration-300; }
+  .leitor-conteudo { @apply max-w-4xl mx-auto px-3 sm:px-4 py-2.5 flex items-center gap-1.5 sm:gap-3; }
+  .leitor-play { @apply w-12 h-12 flex-shrink-0 rounded-full bg-teal-600 hover:bg-teal-700 text-white flex items-center justify-center shadow-md; }
+  .leitor-botao { @apply w-10 h-10 flex-shrink-0 rounded-full text-gray-600 hover:bg-gray-100 flex items-center justify-center; }
+  .leitor-info { @apply flex-1 min-w-0 flex flex-col leading-tight; }
+  .leitor-rotulo { @apply text-[11px] uppercase tracking-wide font-semibold text-teal-700; }
+  .leitor-capitulo { @apply text-sm font-medium text-gray-800 truncate; }
+  .leitor-velocidade select { @apply border border-gray-300 rounded-lg px-1.5 py-1.5 text-sm bg-white; }
+  body.com-leitor { @apply pb-20; }
+}
