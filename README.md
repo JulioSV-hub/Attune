@@ -19,7 +19,7 @@ Site da enfermeira Claudia Alves de Assis, pós-graduada em psiquiatria, com cur
 
 As alterações aparecem no site na hora.
 
-A seção **Novidades** da página inicial é automática: mostra os 3 conteúdos com link publicados mais recentemente (cursos, materiais e atividades), com selo "Novo" nos primeiros 30 dias. A data vem do campo `publicadoEm`, gravado quando o conteúdo ganha um link.
+A seção **Novidades**, logo abaixo do topo da página inicial, é automática: mostra os 3 conteúdos com link publicados mais recentemente (cursos, materiais e atividades), com selo "Novo" nos primeiros 30 dias. A data vem do campo `publicadoEm`, gravado quando o conteúdo ganha um link.
 
 ## Colocar no ar
 

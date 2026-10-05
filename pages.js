@@ -30,6 +30,8 @@ function renderHome() {
     </div>
   </section>
 
+  ${renderNovidades()}
+
   ${outubroRosa() ? renderOutubroRosaSecao() : ''}
 
   <!-- Features Section -->
@@ -76,8 +78,6 @@ function renderHome() {
       </div>
     </div>
   </section>
-
-  ${renderNovidades()}
 
   ${renderFaq()}
 
@@ -161,7 +161,7 @@ function renderNovidades() {
   if (!itens.length) return '';
   const quando = seg => new Date(seg * 1000).toLocaleDateString('pt-BR', { day: 'numeric', month: 'long' });
   return `
-  <section class="py-20 bg-gray-50">
+  <section class="pt-12 pb-16 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-800 mb-4">${t('novidades_title')}</h2>
       <p class="text-center text-gray-600 mb-12">${t('novidades_subtitle')}</p>
@@ -173,7 +173,7 @@ function renderNovidades() {
             : Number(item.aulas) > 0 ? `${Number(item.aulas)} ${t('courses_lessons')}`
             : Number(item.duracao) > 0 ? `${Number(item.duracao)} ${t('activities_duration')}` : '';
           return `
-        <a href="${esc(url)}"${novaAba} class="block bg-white rounded-2xl shadow-sm hover:shadow-lg border border-gray-100 p-6 transition-all hover:-translate-y-1 group">
+        <a href="${esc(url)}"${novaAba} class="block bg-gray-50 rounded-2xl shadow-sm hover:shadow-lg border border-gray-100 p-6 transition-all hover:-translate-y-1 group">
           <div class="flex items-start justify-between mb-3 gap-2">
             <span class="text-4xl">${esc(item.icone)}</span>
             <div class="flex flex-col items-end gap-1.5">
