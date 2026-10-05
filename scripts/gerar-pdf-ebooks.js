@@ -31,6 +31,9 @@ function servir() {
   const browser = await puppeteer.launch({ executablePath: NAVEGADOR, headless: 'new' });
   try {
     const ebooks = fs.readdirSync(path.join(RAIZ, 'ebooks')).filter(f => f.endsWith('.html'));
+    // Lista usada pelo painel (botão "Publicar no site"); o número de páginas é atualizado aqui.
+    const indicePath = path.join(RAIZ, 'ebooks', 'index.json');
+    const indice = fs.existsSync(indicePath) ? JSON.parse(fs.readFileSync(indicePath, 'utf8')) : [];
     for (const nome of ebooks) {
       const page = await browser.newPage();
       await page.goto(`${base}/ebooks/${nome}`, { waitUntil: 'networkidle0' });
@@ -55,8 +58,12 @@ function servir() {
       const destino = path.join(RAIZ, 'ebooks', nome.replace(/\.html$/, '.pdf'));
       fs.writeFileSync(destino, await pdf.save());
       console.log(`${path.relative(RAIZ, destino)}: ${pdf.getPageCount()} páginas, ${Math.round(fs.statSync(destino).size / 1024)} KB`);
+      const item = indice.find(e => e.arquivo === nome);
+      if (item) item.paginas = pdf.getPageCount();
+      else console.log(`  Aviso: ${nome} não está em ebooks/index.json, então não aparece no painel para publicar.`);
       await page.close();
     }
+    fs.writeFileSync(indicePath, `${JSON.stringify(indice, null, 2)}\n`);
   } finally {
     await browser.close();
     server.close();

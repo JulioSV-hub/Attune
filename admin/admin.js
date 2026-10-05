@@ -329,7 +329,7 @@ function discardAll() {
 }
 
 async function loadAll() {
-  await Promise.all([loadAgendamentos(), loadSite(), loadPlanos(), ...Object.values(editores).map(ed => ed.carregar())]);
+  await Promise.all([loadAgendamentos(), loadSite(), loadPlanos(), carregarEbooks(), ...Object.values(editores).map(ed => ed.carregar())]);
   updateImportBox();
 }
 
@@ -514,6 +514,7 @@ function criarEditor(colecao) {
         </td>
       </tr>`;
     }).join('');
+    painel.dispatchEvent(new Event('renderizado'));
   }
 
   function abrir(item) {
@@ -617,10 +618,75 @@ function criarEditor(colecao) {
     });
   });
 
-  return { carregar, fechar, total: () => itens.length };
+  return { carregar, fechar, itens: () => itens };
 }
 
 const editores = Object.fromEntries(Object.keys(COLECOES).map(c => [c, criarEditor(c)]));
+
+// ---------------------------------------------------------------------------
+// E-books prontos no site (ebooks/index.json): publicar como material com um clique.
+
+const painelMateriais = document.querySelector('[data-panel="materiais"]');
+painelMateriais.querySelector('form').insertAdjacentHTML('beforebegin', `
+  <div class="card mb-6" id="ebooksBox" hidden>
+    <h3 class="font-semibold text-lg mb-1">E-books prontos no site</h3>
+    <p class="text-sm text-gray-600 mb-4">Estes e-books já estão no site. Publique para aparecerem em Materiais; depois é possível editar ou excluir o card normalmente.</p>
+    <div id="ebooksLista" class="space-y-3"></div>
+  </div>`);
+
+let ebooksDisponiveis = [];
+
+async function carregarEbooks() {
+  try {
+    const resp = await fetch('../ebooks/index.json', { cache: 'no-store' });
+    ebooksDisponiveis = resp.ok ? (await resp.json()).filter(e => LINK_INTERNO.test(`ebooks/${e.arquivo}`)) : [];
+  } catch (err) {
+    console.warn('Não foi possível carregar a lista de e-books.', err);
+    ebooksDisponiveis = [];
+  }
+  renderEbooks();
+}
+
+function renderEbooks() {
+  const materiais = editores.materiais.itens();
+  $('ebooksBox').hidden = ebooksDisponiveis.length === 0;
+  $('ebooksLista').innerHTML = ebooksDisponiveis.map(e => {
+    const link = `ebooks/${e.arquivo}`;
+    const publicado = materiais.some(m => m.link === link);
+    return `
+    <div class="flex flex-wrap items-center gap-3 border border-gray-200 rounded-xl p-3">
+      <span class="text-2xl">${escapeHtml(e.icone)}</span>
+      <div class="flex-1 min-w-[12rem]">
+        <div class="font-medium">${escapeHtml(e.titulo)}</div>
+        <div class="muted">${Number(e.paginas) || 0} páginas · <a class="text-teal-700 hover:underline" href="../${escapeHtml(link)}" target="_blank" rel="noopener">ver como fica</a></div>
+      </div>
+      ${publicado
+        ? '<span class="status-badge status-confirmado">Publicado no site</span>'
+        : `<button type="button" class="btn btn-primary btn-small" data-publicar="${escapeHtml(e.arquivo)}">Publicar no site</button>`}
+    </div>`;
+  }).join('');
+}
+
+painelMateriais.addEventListener('renderizado', renderEbooks);
+
+$('ebooksLista').addEventListener('click', e => {
+  const btn = e.target.closest('[data-publicar]');
+  if (!btn) return;
+  const ebook = ebooksDisponiveis.find(x => x.arquivo === btn.dataset.publicar);
+  if (!ebook) return;
+  withBusy(btn, async () => {
+    try {
+      // Entra em primeiro lugar na lista de materiais.
+      const ordem = Math.min(1, ...editores.materiais.itens().map(x => Number(x.ordem) || 0)) - 1;
+      await fb.setDoc(fb.doc(fb.collection(fb.db, 'materiais')), {
+        tipo: 'ebook', icone: ebook.icone, titulo: ebook.titulo, descricao: ebook.descricao,
+        paginas: Number(ebook.paginas) || 0, link: `ebooks/${ebook.arquivo}`, ordem, criadoEm: fb.serverTimestamp(),
+      });
+      await editores.materiais.carregar();
+      showNotification('E-book publicado! Já aparece em Materiais no site.');
+    } catch (err) { fail(err); }
+  });
+});
 
 // ---------------------------------------------------------------------------
 // Textos e dados do site

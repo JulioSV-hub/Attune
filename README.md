@@ -39,7 +39,7 @@ pages.js                  páginas do site
 textos.js                 textos fixos da interface
 foto.jpg                  foto padrão da profissional
 ebooks/                   e-books: página para ler no site (.html) e PDF para baixar (.pdf)
-scripts/gerar-pdf-ebooks.js  gera os PDFs a partir das páginas dos e-books
+scripts/gerar-pdf-ebooks.js  gera os PDFs e atualiza ebooks/index.json
 admin/index.html          painel admin
 admin/admin.js            lógica do painel
 js/
@@ -64,7 +64,7 @@ Classes montadas por concatenação (ex.: `'bg-' + cor`) não são encontradas: 
 
 ## E-books
 
-Cada e-book é uma página em `ebooks/` (ex.: `ebooks/comunicacao-assertiva.html`), com leitura no site e um botão para baixar o PDF. Para mostrar no site, crie um material do tipo E-book no painel e coloque no link o caminho da página, ex.: `ebooks/comunicacao-assertiva.html`.
+Cada e-book é uma página em `ebooks/` (ex.: `ebooks/comunicacao-assertiva.html`), com leitura no site e um botão para baixar o PDF. Para aparecer no painel, o e-book precisa estar listado em [`ebooks/index.json`](ebooks/index.json) (título, descrição e ícone do card). No painel, aba **Materiais**, o quadro **E-books prontos no site** tem o botão **Publicar no site**, que cria o card já preenchido.
 
 Depois de editar o texto de um e-book, gere o PDF de novo (precisa do Edge ou do Chrome instalado):
 
