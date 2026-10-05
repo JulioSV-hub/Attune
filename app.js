@@ -14,8 +14,12 @@ function esc(value) {
   return String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 }
 
-// Aceita apenas links https; qualquer outra coisa vira vazio.
+// Página interna do site (ex.: e-books), aberta na mesma aba.
+const LINK_INTERNO = /^ebooks\/[a-z0-9-]+\.html$/;
+
+// Aceita apenas links https ou páginas internas; qualquer outra coisa vira vazio.
 function safeUrl(value) {
+  if (LINK_INTERNO.test(String(value || '').trim())) return String(value).trim();
   try {
     const url = new URL(String(value || '').trim());
     return url.protocol === 'https:' ? url.href : '';

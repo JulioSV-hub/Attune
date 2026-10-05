@@ -164,8 +164,9 @@ function tipoBadge(colecao, tipo) {
 // Botão de acesso dos cards: abre o link do conteúdo; sem link, mostra "Em breve".
 function accessButton(item, label, cls) {
   const url = safeUrl(item.link);
+  const novaAba = LINK_INTERNO.test(url) ? '' : ' target="_blank" rel="noopener"';
   return url
-    ? `<a href="${esc(url)}" target="_blank" rel="noopener" class="block text-center ${cls} bg-teal-600 text-white hover:bg-teal-700">${label}</a>`
+    ? `<a href="${esc(url)}"${novaAba} class="block text-center ${cls} bg-teal-600 text-white hover:bg-teal-700">${label}</a>`
     : `<span class="block text-center ${cls} bg-gray-100 text-gray-500 cursor-default">${t('content_soon')}</span>`;
 }
 

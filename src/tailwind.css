@@ -31,3 +31,65 @@
     fieldset { @apply border border-gray-200 rounded-xl p-5 mb-6; }
     legend { @apply px-2 font-semibold text-gray-800; }
 }
+
+/* E-books (ebooks/*.html): leitura no site e versão em PDF (impressão). */
+@layer components {
+  .ebook h2 { @apply text-2xl md:text-3xl font-extrabold text-teal-800 mb-5 mt-2; }
+  .ebook h3 { @apply text-lg md:text-xl font-bold text-gray-800 mt-8 mb-3; }
+  .ebook .capitulo { @apply mb-14 scroll-mt-20; }
+  .ebook .capitulo p, .ebook .capitulo li { @apply text-gray-700 leading-relaxed; }
+  .ebook .capitulo > p { @apply mb-4; }
+  .ebook .capitulo ul { @apply list-disc pl-6 space-y-2 mb-4; }
+  .ebook .capitulo ol.passos { @apply list-decimal pl-6 space-y-2 mb-4; }
+  .ebook .sumario h2 { @apply text-xl mb-4; }
+  .ebook .sumario ol { @apply space-y-2; }
+  .ebook .sumario a { @apply text-teal-700 hover:underline; }
+  .ebook .destaque { @apply bg-teal-50 border-l-4 border-teal-500 rounded-r-xl p-5 my-6; }
+  .ebook .alerta { @apply bg-rose-50 border-l-4 border-rose-500 rounded-r-xl p-5 my-6; }
+  .ebook .exemplo { @apply bg-white border border-gray-200 rounded-xl p-5 my-4 italic; }
+  .ebook .comparacao { @apply grid sm:grid-cols-2 gap-3 my-4; }
+  .ebook .nao { @apply bg-red-50 text-red-800 rounded-xl px-4 py-3 mb-2; }
+  .ebook .sim { @apply bg-emerald-50 text-emerald-800 rounded-xl px-4 py-3 mb-2; }
+  .ebook .comparacao .nao::before { content: '✗ '; @apply font-bold; }
+  .ebook .comparacao .sim::before { content: '✓ '; @apply font-bold; }
+  .ebook .situacao { @apply bg-white border border-gray-100 rounded-2xl p-5 md:p-6 my-5 shadow-sm; }
+  .ebook .situacao h3 { @apply mt-0 text-teal-800; }
+  .ebook .situacao .contexto { @apply text-gray-600 mb-4; }
+  .ebook .tabela { @apply overflow-x-auto my-6; }
+  .ebook table { @apply w-full text-sm border-collapse; }
+  .ebook th { @apply bg-teal-700 text-white text-left font-semibold px-3 py-2; }
+  .ebook td { @apply border border-gray-200 px-3 py-3 align-top text-gray-700 bg-white; }
+  .ebook .preencher { @apply bg-white border border-dashed border-teal-300 rounded-xl p-5 my-4 space-y-3 font-medium text-gray-700; }
+  .ebook .autoavaliacao { @apply bg-white border border-gray-100 rounded-2xl p-5 md:p-6 my-6 shadow-sm; }
+  .ebook .autoavaliacao .legenda { @apply text-sm text-gray-500 mb-4; }
+  .ebook .autoavaliacao ol { @apply list-decimal pl-6 space-y-4; }
+  .ebook .autoavaliacao li { @apply flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2; }
+  .ebook .autoavaliacao fieldset { @apply flex gap-2 border-0 p-0 m-0 flex-shrink-0; }
+  .ebook .autoavaliacao label { @apply cursor-pointer; }
+  .ebook .autoavaliacao input { @apply sr-only; }
+  .ebook .autoavaliacao label span { @apply w-10 h-10 inline-flex items-center justify-center rounded-full border-2 border-gray-300 font-semibold text-gray-600 transition; }
+  .ebook .autoavaliacao input:checked + span { @apply bg-teal-600 border-teal-600 text-white; }
+  .ebook .autoavaliacao input:focus-visible + span { @apply ring-2 ring-teal-400 ring-offset-2; }
+  .ebook .resultado { @apply mt-6 bg-teal-50 text-teal-900 rounded-xl p-4; }
+  .ebook .faixas { @apply space-y-2 my-4; }
+  .ebook .faixas p { @apply text-gray-700; }
+  .ebook .nota { @apply text-sm text-gray-500 italic; }
+  .ebook .cta { @apply flex flex-wrap gap-3 my-8; }
+  .ebook .assinatura { @apply mt-8 mb-6 text-gray-600; }
+}
+
+/* Versão em PDF: cada capítulo começa numa página, capa ocupa a primeira página inteira. */
+@page { size: A4; margin: 18mm 16mm 20mm; }
+@page :first { margin: 0; }
+
+@media print {
+  .ebook .capa { height: 100vh; break-after: page; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .ebook .capitulo { break-before: page; margin-bottom: 0; }
+  .ebook .situacao, .ebook .exemplo, .ebook .destaque, .ebook .alerta, .ebook table, .ebook .autoavaliacao li, .ebook .preencher { break-inside: avoid; }
+  .ebook h2, .ebook h3 { break-after: avoid; }
+  .ebook .situacao, .ebook .autoavaliacao { box-shadow: none; }
+  .ebook th, .ebook .destaque, .ebook .alerta, .ebook .nao, .ebook .sim { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .ebook td { height: 2.75rem; }
+  .ebook .tabela { overflow: visible; }
+  .ebook .sumario a { color: inherit; text-decoration: none; }
+}

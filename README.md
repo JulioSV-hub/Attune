@@ -38,6 +38,8 @@ app.js                    roteador, menu, rodapé e agendamento
 pages.js                  páginas do site
 textos.js                 textos fixos da interface
 foto.jpg                  foto padrão da profissional
+ebooks/                   e-books: página para ler no site (.html) e PDF para baixar (.pdf)
+scripts/gerar-pdf-ebooks.js  gera os PDFs a partir das páginas dos e-books
 admin/index.html          painel admin
 admin/admin.js            lógica do painel
 js/
@@ -59,6 +61,17 @@ npm run build:css    # ou npm run watch:css enquanto edita
 ```
 
 Classes montadas por concatenação (ex.: `'bg-' + cor`) não são encontradas: escreva sempre o nome completo da classe.
+
+## E-books
+
+Cada e-book é uma página em `ebooks/` (ex.: `ebooks/comunicacao-assertiva.html`), com leitura no site e um botão para baixar o PDF. Para mostrar no site, crie um material do tipo E-book no painel e coloque no link o caminho da página, ex.: `ebooks/comunicacao-assertiva.html`.
+
+Depois de editar o texto de um e-book, gere o PDF de novo (precisa do Edge ou do Chrome instalado):
+
+```bash
+npm run build:css      # se usou classes novas
+npm run pdf:ebooks
+```
 
 ## Testar localmente
 

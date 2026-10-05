@@ -26,10 +26,14 @@ function formatDate(iso) {
   return `${d}/${m}/${a}`;
 }
 
-// Aceita links https (com ou sem "https://" digitado); retorna '' se inválido.
+// Página interna do site (ex.: ebooks/comunicacao-assertiva.html).
+const LINK_INTERNO = /^ebooks\/[a-z0-9-]+\.html$/;
+
+// Aceita links https (com ou sem "https://" digitado) ou páginas internas; retorna '' se inválido.
 function linkSeguro(value) {
   const texto = String(value || '').trim();
   if (!texto) return '';
+  if (LINK_INTERNO.test(texto)) return texto;
   try {
     const url = new URL(/^[a-z]+:/i.test(texto) ? texto : `https://${texto}`);
     return url.protocol === 'https:' ? url.href : '';
@@ -422,7 +426,7 @@ const CAMPOS = {
   aulas: { rotulo: 'Número de aulas', tipo: 'number', max: 500, dica: 'Deixe 0 para vídeos avulsos.' },
   duracao: { rotulo: 'Duração (minutos)', tipo: 'number', max: 10000 },
   paginas: { rotulo: 'Número de páginas', tipo: 'number', max: 5000 },
-  link: { rotulo: 'Link do conteúdo', tipo: 'url', dica: 'Ex.: link do YouTube, Google Drive ou da plataforma do curso. Sem link, o site mostra "Em breve".' },
+  link: { rotulo: 'Link do conteúdo', tipo: 'url', dica: 'Ex.: link do YouTube, Google Drive ou da plataforma do curso, ou um e-book do site (ebooks/comunicacao-assertiva.html). Sem link, o site mostra "Em breve".' },
 };
 
 const COLECOES = {
@@ -505,7 +509,7 @@ function criarEditor(colecao) {
           <button type="button" class="icon-btn" data-mover="-1" data-id="${it.id}" title="Subir" aria-label="Subir" ${i === 0 ? 'disabled' : ''}>↑</button>
           <button type="button" class="icon-btn" data-mover="1" data-id="${it.id}" title="Descer" aria-label="Descer" ${i === itens.length - 1 ? 'disabled' : ''}>↓</button>
           <button type="button" class="icon-btn" data-editar="${it.id}" title="Editar" aria-label="Editar">✎</button>
-          ${link ? `<a class="icon-btn" href="${escapeHtml(link)}" target="_blank" rel="noopener" title="Abrir link">↗</a>` : ''}
+          ${link ? `<a class="icon-btn" href="${escapeHtml(LINK_INTERNO.test(link) ? `../${link}` : link)}" target="_blank" rel="noopener" title="Abrir link">↗</a>` : ''}
           <button type="button" class="icon-btn danger" data-excluir="${it.id}" title="Excluir" aria-label="Excluir">🗑️</button>
         </td>
       </tr>`;
