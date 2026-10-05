@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Body Scan - Atividade | Sobre você</title>
+  <meta name="description" content="Um escaneamento guiado do corpo, parte por parte, para perceber tensões, relaxar e voltar a atenção para o presente.">
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <meta name="theme-color" content="#0f766e">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:site_name" content="Sobre você">
+  <meta property="og:title" content="Atividade: Body Scan">
+  <meta property="og:description" content="Um escaneamento guiado do corpo, parte por parte, para perceber tensões, relaxar e voltar a atenção para o presente.">
+  <meta property="og:image" content="https://juliosv-hub.github.io/Sobre-voce/og-image.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/site.css">
+</head>
+<body class="bg-gray-50 text-gray-800 antialiased print:bg-white">
+
+  <header class="bg-gradient-to-r from-teal-700 to-teal-600 text-white shadow-lg sticky top-0 z-50 print:hidden">
+    <div class="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between gap-3">
+      <a href="../#activities" class="flex items-center gap-2 font-bold text-lg">
+        <img src="../favicon.svg" alt="" class="w-8 h-8">
+        <span>Sobre você</span>
+      </a>
+      <a href="../#activities" class="text-sm bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-full">Voltar às atividades</a>
+    </div>
+  </header>
+
+  <main class="atv max-w-3xl mx-auto px-4 sm:px-6 py-10 md:py-14">
+    <div class="topo">
+      <span class="icone" aria-hidden="true">🪻</span>
+      <div>
+        <p class="tipo">Meditação · 15 min</p>
+        <h1>Body Scan</h1>
+      </div>
+    </div>
+    <p class="resumo">Um escaneamento guiado do corpo, parte por parte, para perceber tensões, relaxar e voltar a atenção para o presente.</p>
+
+    <details class="como-fazer" open>
+      <summary>Como fazer</summary>
+      <div><ul><li>Deite-se de barriga para cima ou sente-se com conforto. Use uma manta se sentir frio.</li><li>Clique em Iniciar. A atenção vai percorrer o corpo dos pés até a cabeça; um som suave avisa a troca de etapa.</li><li>Em cada parte, apenas perceba: calor, frio, peso, formigamento, tensão ou nenhuma sensação. Não é preciso mudar nada.</li><li>Se pegar no sono, tudo bem. Se a mente vagar, volte para a parte do corpo da etapa atual.</li></ul></div>
+    </details>
+
+    <div id="atividade" class="painel"></div>
+
+
+    <div class="cuidado"><p><strong>Cuidados:</strong> se perceber dor, não force nenhuma posição. Se prestar atenção numa região do corpo trouxer desconforto emocional, passe para a próxima etapa ou abra os olhos e observe o ambiente.</p></div>
+
+    <p class="rodape-atv">Atividade de caráter educativo, que não substitui avaliação ou acompanhamento profissional. Em sofrimento intenso, ligue <strong>188</strong> (CVV, 24 horas) ou <strong>192</strong> (SAMU). Criada por Claudia Alves de Assis, enfermeira, pós-graduada em psiquiatria.</p>
+    <div class="text-center mt-8 print:hidden">
+      <a href="../#schedule" class="inline-block bg-teal-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-teal-700 transition shadow-md">Agendar uma conversa</a>
+    </div>
+  </main>
+
+  <script>
+    window.ATIVIDADE = {
+      "tipo": "guiada",
+      "inicio": "Deite-se ou sente-se com conforto e clique em Iniciar. Você pode fechar os olhos.",
+      "fim": "Mexa os dedos, espreguice-se se tiver vontade e, quando estiver pronta(o), abra os olhos devagar.",
+      "etapas": [
+        {
+          "titulo": "Chegada",
+          "segundos": 60,
+          "texto": "Acomode o corpo e deixe o peso afundar no apoio. Feche os olhos se for confortável."
+        },
+        {
+          "titulo": "Respiração",
+          "segundos": 60,
+          "texto": "Faça algumas respirações um pouco mais longas e depois deixe a respiração seguir o próprio ritmo."
+        },
+        {
+          "titulo": "Pés",
+          "segundos": 90,
+          "texto": "Leve a atenção para os pés: dedos, sola, calcanhar, peito do pé. Perceba as sensações, sem julgar."
+        },
+        {
+          "titulo": "Pernas",
+          "segundos": 90,
+          "texto": "Suba para tornozelos, panturrilhas, joelhos e coxas. Perceba onde há peso, apoio ou tensão."
+        },
+        {
+          "titulo": "Quadril e abdômen",
+          "segundos": 90,
+          "texto": "Observe o quadril e a barriga, que sobe e desce com a respiração."
+        },
+        {
+          "titulo": "Costas",
+          "segundos": 90,
+          "texto": "Percorra as costas, da lombar até entre as escápulas. Se houver tensão, deixe que ela simplesmente esteja lá."
+        },
+        {
+          "titulo": "Peito",
+          "segundos": 60,
+          "texto": "Perceba o peito se movendo com a respiração e, se notar, as batidas do coração."
+        },
+        {
+          "titulo": "Mãos e braços",
+          "segundos": 90,
+          "texto": "Leve a atenção às mãos, aos dedos, aos punhos, antebraços, cotovelos e braços."
+        },
+        {
+          "titulo": "Ombros e pescoço",
+          "segundos": 90,
+          "texto": "Observe os ombros e o pescoço, lugares onde costumamos guardar tensão. A cada expiração, permita que eles se soltem um pouco."
+        },
+        {
+          "titulo": "Rosto e cabeça",
+          "segundos": 90,
+          "texto": "Solte a mandíbula, a língua, os olhos e a testa. Perceba o couro cabeludo e o topo da cabeça."
+        },
+        {
+          "titulo": "Corpo inteiro",
+          "segundos": 60,
+          "texto": "Agora perceba o corpo como um todo, respirando, inteiro, presente."
+        },
+        {
+          "titulo": "Retorno",
+          "segundos": 30,
+          "texto": "Aprofunde a respiração e comece a mexer devagar os dedos das mãos e dos pés."
+        }
+      ]
+    };
+  </script>
+  <script src="atividade.js"></script>
+</body>
+</html>

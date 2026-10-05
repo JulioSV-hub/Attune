@@ -14,8 +14,8 @@ function esc(value) {
   return String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 }
 
-// Página interna do site (ex.: e-books), aberta na mesma aba.
-const LINK_INTERNO = /^ebooks\/[a-z0-9-]+\.html$/;
+// Página interna do site (e-books e atividades), aberta na mesma aba.
+const LINK_INTERNO = /^(ebooks|atividades)\/[a-z0-9-]+\.html$/;
 
 // Aceita apenas links https ou páginas internas; qualquer outra coisa vira vazio.
 function safeUrl(value) {

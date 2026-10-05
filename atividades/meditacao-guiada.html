@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meditação Guiada - Atividade | Sobre você</title>
+  <meta name="description" content="10 minutos de atenção plena, com orientações passo a passo, para clarear a mente e voltar ao momento presente.">
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <meta name="theme-color" content="#0f766e">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:site_name" content="Sobre você">
+  <meta property="og:title" content="Atividade: Meditação Guiada">
+  <meta property="og:description" content="10 minutos de atenção plena, com orientações passo a passo, para clarear a mente e voltar ao momento presente.">
+  <meta property="og:image" content="https://juliosv-hub.github.io/Sobre-voce/og-image.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/site.css">
+</head>
+<body class="bg-gray-50 text-gray-800 antialiased print:bg-white">
+
+  <header class="bg-gradient-to-r from-teal-700 to-teal-600 text-white shadow-lg sticky top-0 z-50 print:hidden">
+    <div class="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between gap-3">
+      <a href="../#activities" class="flex items-center gap-2 font-bold text-lg">
+        <img src="../favicon.svg" alt="" class="w-8 h-8">
+        <span>Sobre você</span>
+      </a>
+      <a href="../#activities" class="text-sm bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-full">Voltar às atividades</a>
+    </div>
+  </header>
+
+  <main class="atv max-w-3xl mx-auto px-4 sm:px-6 py-10 md:py-14">
+    <div class="topo">
+      <span class="icone" aria-hidden="true">🧘</span>
+      <div>
+        <p class="tipo">Meditação · 10 min</p>
+        <h1>Meditação Guiada</h1>
+      </div>
+    </div>
+    <p class="resumo">10 minutos de atenção plena, com orientações passo a passo, para clarear a mente e voltar ao momento presente.</p>
+
+    <details class="como-fazer" open>
+      <summary>Como fazer</summary>
+      <div><ul><li>Escolha um lugar onde não seja interrompida(o) por 10 minutos e silencie as notificações.</li><li>Sente-se com a coluna ereta, mas sem rigidez. Pode ser numa cadeira, com os pés no chão.</li><li>Clique em Iniciar e siga as orientações de cada etapa. Um som suave avisa quando a etapa muda, então você pode ficar de olhos fechados.</li><li>Se a mente se distrair, e ela vai se distrair, apenas perceba e volte com gentileza. Isso é a prática.</li></ul></div>
+    </details>
+
+    <div id="atividade" class="painel"></div>
+
+
+    <div class="cuidado"><p><strong>Cuidados:</strong> se a prática trouxer desconforto intenso, lembranças difíceis ou sensação de pânico, pare, abra os olhos e preste atenção nos objetos e sons ao seu redor. Tudo bem interromper. Se isso acontecer com frequência, procure orientação profissional.</p></div>
+
+    <p class="rodape-atv">Atividade de caráter educativo, que não substitui avaliação ou acompanhamento profissional. Em sofrimento intenso, ligue <strong>188</strong> (CVV, 24 horas) ou <strong>192</strong> (SAMU). Criada por Claudia Alves de Assis, enfermeira, pós-graduada em psiquiatria.</p>
+    <div class="text-center mt-8 print:hidden">
+      <a href="../#schedule" class="inline-block bg-teal-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-teal-700 transition shadow-md">Agendar uma conversa</a>
+    </div>
+  </main>
+
+  <script>
+    window.ATIVIDADE = {
+      "tipo": "guiada",
+      "inicio": "Sente-se com conforto e clique em Iniciar. Você pode fechar os olhos; um som avisa a troca de etapa.",
+      "fim": "Mexa devagar os dedos das mãos e dos pés, respire um pouco mais fundo e abra os olhos quando quiser.",
+      "etapas": [
+        {
+          "titulo": "Chegada",
+          "segundos": 60,
+          "texto": "Acomode o corpo. Feche os olhos ou deixe o olhar baixo, sem foco. Perceba que, por estes minutos, não há nada a resolver."
+        },
+        {
+          "titulo": "Respiração",
+          "segundos": 120,
+          "texto": "Observe o ar entrando e saindo pelo nariz. Não precisa mudar o ritmo. Apenas acompanhe cada respiração, do começo ao fim."
+        },
+        {
+          "titulo": "O corpo",
+          "segundos": 120,
+          "texto": "Perceba os pontos de apoio: os pés no chão, o corpo na cadeira. Solte os ombros, a mandíbula e a testa."
+        },
+        {
+          "titulo": "Os pensamentos",
+          "segundos": 120,
+          "texto": "Quando um pensamento surgir, perceba que você está pensando e, com gentileza, volte para a respiração. Quantas vezes forem necessárias."
+        },
+        {
+          "titulo": "Os sons",
+          "segundos": 60,
+          "texto": "Abra a atenção para os sons ao redor: perto, longe, contínuos, passageiros. Apenas escute, sem dar nome nem julgar."
+        },
+        {
+          "titulo": "Uma intenção",
+          "segundos": 60,
+          "texto": "Escolha uma intenção simples para o resto do dia. Por exemplo: ir com mais calma, ou ser gentil consigo."
+        },
+        {
+          "titulo": "Retorno",
+          "segundos": 60,
+          "texto": "Respire um pouco mais fundo. Perceba o ambiente ao redor e prepare-se para voltar devagar."
+        }
+      ]
+    };
+  </script>
+  <script src="atividade.js"></script>
+</body>
+</html>

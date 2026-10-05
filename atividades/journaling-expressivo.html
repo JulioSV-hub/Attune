@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Journaling Expressivo - Atividade | Sobre você</title>
+  <meta name="description" content="Escreva livremente sobre o que está sentindo e pensando. Colocar em palavras ajuda a organizar a mente e aliviar o peso.">
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <meta name="theme-color" content="#0f766e">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:site_name" content="Sobre você">
+  <meta property="og:title" content="Atividade: Journaling Expressivo">
+  <meta property="og:description" content="Escreva livremente sobre o que está sentindo e pensando. Colocar em palavras ajuda a organizar a mente e aliviar o peso.">
+  <meta property="og:image" content="https://juliosv-hub.github.io/Sobre-voce/og-image.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/site.css">
+</head>
+<body class="bg-gray-50 text-gray-800 antialiased print:bg-white">
+
+  <header class="bg-gradient-to-r from-teal-700 to-teal-600 text-white shadow-lg sticky top-0 z-50 print:hidden">
+    <div class="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between gap-3">
+      <a href="../#activities" class="flex items-center gap-2 font-bold text-lg">
+        <img src="../favicon.svg" alt="" class="w-8 h-8">
+        <span>Sobre você</span>
+      </a>
+      <a href="../#activities" class="text-sm bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-full">Voltar às atividades</a>
+    </div>
+  </header>
+
+  <main class="atv max-w-3xl mx-auto px-4 sm:px-6 py-10 md:py-14">
+    <div class="topo">
+      <span class="icone" aria-hidden="true">✍️</span>
+      <div>
+        <p class="tipo">Diário · 20 min</p>
+        <h1>Journaling Expressivo</h1>
+      </div>
+    </div>
+    <p class="resumo">Escreva livremente sobre o que está sentindo e pensando. Colocar em palavras ajuda a organizar a mente e aliviar o peso.</p>
+
+    <details class="como-fazer" open>
+      <summary>Como fazer</summary>
+      <div><ul><li>Escolha o tempo (10, 15 ou 20 minutos) e clique em Iniciar tempo.</li><li>Escreva sem parar e sem se censurar. Ortografia, pontuação e coerência não importam aqui.</li><li>Se não souber por onde começar, use uma destas perguntas: <em>O que está ocupando a minha cabeça hoje? O que eu gostaria de ter dito e não disse? Do que eu preciso agora?</em></li><li>No fim, você decide: salvar neste aparelho, imprimir ou simplesmente apagar. Às vezes, escrever e descartar já basta.</li></ul></div>
+    </details>
+
+    <div id="atividade" class="painel"></div>
+
+
+    <div class="cuidado"><p><strong>Cuidados:</strong> escrever sobre temas difíceis pode trazer emoções fortes. Se isso acontecer, faça uma pausa, respire devagar e retome só se se sentir bem. Você não precisa escrever sobre o que não quer.</p></div>
+
+    <p class="rodape-atv">Atividade de caráter educativo, que não substitui avaliação ou acompanhamento profissional. Em sofrimento intenso, ligue <strong>188</strong> (CVV, 24 horas) ou <strong>192</strong> (SAMU). Criada por Claudia Alves de Assis, enfermeira, pós-graduada em psiquiatria.</p>
+    <div class="text-center mt-8 print:hidden">
+      <a href="../#schedule" class="inline-block bg-teal-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-teal-700 transition shadow-md">Agendar uma conversa</a>
+    </div>
+  </main>
+
+  <script>
+    window.ATIVIDADE = {
+      "tipo": "diario",
+      "chave": "journaling",
+      "timer": {
+        "opcoes": [
+          10,
+          15,
+          20
+        ],
+        "padrao": 20
+      },
+      "campos": [
+        {
+          "id": "tema",
+          "rotulo": "Sobre o que você quer escrever hoje? (opcional)",
+          "tipo": "linha",
+          "placeholder": ""
+        },
+        {
+          "id": "texto",
+          "rotulo": "Escreva livremente",
+          "tipo": "texto",
+          "linhas": 14,
+          "placeholder": "Comece por onde quiser…"
+        }
+      ]
+    };
+  </script>
+  <script src="atividade.js"></script>
+</body>
+</html>

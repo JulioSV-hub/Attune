@@ -1,0 +1,62 @@
+[
+  {
+    "arquivo": "respiracao-4-7-8.html",
+    "card": {
+      "tipo": "respiracao",
+      "icone": "🌬️",
+      "titulo": "Respiração 4-7-8",
+      "descricao": "Uma técnica simples de respiração lenta que ajuda a desacelerar o corpo e a mente em poucos minutos.",
+      "duracao": 5
+    }
+  },
+  {
+    "arquivo": "diario-gratidao.html",
+    "card": {
+      "tipo": "diario",
+      "icone": "🙏",
+      "titulo": "Diário de Gratidão",
+      "descricao": "Anotar o que foi bom no dia ajuda a treinar a atenção para o que funciona, sem negar o que é difícil.",
+      "duracao": 10
+    }
+  },
+  {
+    "arquivo": "meditacao-guiada.html",
+    "card": {
+      "tipo": "meditacao",
+      "icone": "🧘",
+      "titulo": "Meditação Guiada",
+      "descricao": "10 minutos de atenção plena, com orientações passo a passo, para clarear a mente e voltar ao momento presente.",
+      "duracao": 10
+    }
+  },
+  {
+    "arquivo": "reestruturacao-cognitiva.html",
+    "card": {
+      "tipo": "exercicios",
+      "icone": "💡",
+      "titulo": "Reestruturação Cognitiva",
+      "descricao": "Um registro guiado para identificar pensamentos automáticos negativos e encontrar formas mais equilibradas de enxergar a situação.",
+      "duracao": 15
+    }
+  },
+  {
+    "arquivo": "body-scan.html",
+    "card": {
+      "tipo": "meditacao",
+      "icone": "🪻",
+      "titulo": "Body Scan",
+      "descricao": "Um escaneamento guiado do corpo, parte por parte, para perceber tensões, relaxar e voltar a atenção para o presente.",
+      "duracao": 15
+    }
+  },
+  {
+    "arquivo": "journaling-expressivo.html",
+    "card": {
+      "tipo": "diario",
+      "icone": "✍️",
+      "titulo": "Journaling Expressivo",
+      "descricao": "Escreva livremente sobre o que está sentindo e pensando. Colocar em palavras ajuda a organizar a mente e aliviar o peso.",
+      "duracao": 20
+    }
+  }
+]

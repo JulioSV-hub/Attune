@@ -1,9 +1,52 @@
 [
   {
     "arquivo": "comunicacao-assertiva.html",
-    "icone": "💬",
-    "titulo": "E-book: Comunicação Assertiva no Dia a Dia",
-    "descricao": "Guia prático para dizer o que você pensa e sente, com clareza e respeito. Com exemplos e exercícios.",
-    "paginas": 17
+    "card": {
+      "tipo": "ebook",
+      "icone": "💬",
+      "titulo": "E-book: Comunicação Assertiva no Dia a Dia",
+      "descricao": "Guia prático para dizer o que você pensa e sente, com clareza e respeito. Com exemplos e exercícios.",
+      "paginas": 17
+    }
+  },
+  {
+    "arquivo": "controle-ansiedade.html",
+    "card": {
+      "tipo": "guia",
+      "icone": "🌿",
+      "titulo": "Guia Prático: Controle da Ansiedade",
+      "descricao": "Entenda a ansiedade e aprenda técnicas práticas para lidar com ela no dia a dia, com exercícios e plano pessoal.",
+      "paginas": 22
+    }
+  },
+  {
+    "arquivo": "autoconhecimento.html",
+    "card": {
+      "tipo": "ebook",
+      "icone": "📘",
+      "titulo": "E-book: Autoconhecimento",
+      "descricao": "Ferramentas práticas para entender suas emoções, padrões, valores e limites, com exercícios para se conhecer melhor.",
+      "paginas": 20
+    }
+  },
+  {
+    "arquivo": "resiliencia-emocional.html",
+    "card": {
+      "tipo": "artigo",
+      "icone": "🌱",
+      "titulo": "Artigo: Resiliência Emocional",
+      "descricao": "Entenda o que é resiliência emocional e conheça estratégias práticas para atravessar momentos difíceis com mais cuidado.",
+      "paginas": 9
+    }
+  },
+  {
+    "arquivo": "meditacao-iniciantes.html",
+    "card": {
+      "tipo": "guia",
+      "icone": "🧘",
+      "titulo": "Guia: Meditação para Iniciantes",
+      "descricao": "Passo a passo para começar a meditar hoje, sem complicação: práticas curtas, dificuldades comuns e um plano de 4 semanas.",
+      "paginas": 20
+    }
   }
 ]

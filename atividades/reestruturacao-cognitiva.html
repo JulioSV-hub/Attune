@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reestruturação Cognitiva - Atividade | Sobre você</title>
+  <meta name="description" content="Um registro guiado para identificar pensamentos automáticos negativos e encontrar formas mais equilibradas de enxergar a situação.">
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <meta name="theme-color" content="#0f766e">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:site_name" content="Sobre você">
+  <meta property="og:title" content="Atividade: Reestruturação Cognitiva">
+  <meta property="og:description" content="Um registro guiado para identificar pensamentos automáticos negativos e encontrar formas mais equilibradas de enxergar a situação.">
+  <meta property="og:image" content="https://juliosv-hub.github.io/Sobre-voce/og-image.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/site.css">
+</head>
+<body class="bg-gray-50 text-gray-800 antialiased print:bg-white">
+
+  <header class="bg-gradient-to-r from-teal-700 to-teal-600 text-white shadow-lg sticky top-0 z-50 print:hidden">
+    <div class="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between gap-3">
+      <a href="../#activities" class="flex items-center gap-2 font-bold text-lg">
+        <img src="../favicon.svg" alt="" class="w-8 h-8">
+        <span>Sobre você</span>
+      </a>
+      <a href="../#activities" class="text-sm bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-full">Voltar às atividades</a>
+    </div>
+  </header>
+
+  <main class="atv max-w-3xl mx-auto px-4 sm:px-6 py-10 md:py-14">
+    <div class="topo">
+      <span class="icone" aria-hidden="true">💡</span>
+      <div>
+        <p class="tipo">Exercícios · 15 min</p>
+        <h1>Reestruturação Cognitiva</h1>
+      </div>
+    </div>
+    <p class="resumo">Um registro guiado para identificar pensamentos automáticos negativos e encontrar formas mais equilibradas de enxergar a situação.</p>
+
+    <details class="como-fazer" open>
+      <summary>Como fazer</summary>
+      <div><ul><li>Pense numa situação recente que trouxe uma emoção forte: tristeza, raiva, ansiedade, culpa.</li><li>Preencha os campos na ordem. O objetivo não é "pensar positivo", e sim olhar para a situação de forma mais completa e realista.</li><li>Na hora das evidências, separe <strong>fatos</strong> (o que aconteceu) de <strong>interpretações</strong> (o que você concluiu).</li><li>No fim, compare a intensidade da emoção antes e depois.</li></ul></div>
+    </details>
+
+    <div id="atividade" class="painel"></div>
+
+    <section class="apoio">
+      <h2>Armadilhas comuns do pensamento</h2>
+      <p>Ao preencher, veja se o seu pensamento automático se parece com alguma destas:</p>
+      <ul>
+        <li><strong>Catastrofizar:</strong> imaginar sempre o pior cenário. "Se eu errar, vou ser demitida."</li>
+        <li><strong>Leitura mental:</strong> ter certeza do que o outro pensa. "Ela me acha incompetente."</li>
+        <li><strong>Tudo ou nada:</strong> ver só os extremos. "Se não ficou perfeito, foi um fracasso."</li>
+        <li><strong>Generalizar:</strong> tirar uma regra de um só fato. "Nada dá certo para mim."</li>
+        <li><strong>Rotular:</strong> definir-se por um erro. "Sou um desastre."</li>
+        <li><strong>"Deveria":</strong> regras rígidas sobre si e os outros. "Eu deveria dar conta de tudo."</li>
+      </ul>
+      <h2>Perguntas que ajudam</h2>
+      <ul>
+        <li>Que conselho eu daria a uma amiga que estivesse pensando isso?</li>
+        <li>Qual seria a pior, a melhor e a mais provável consequência?</li>
+        <li>Daqui a um ano, isso ainda vai ter o mesmo peso?</li>
+        <li>Existe outra explicação possível para o que aconteceu?</li>
+      </ul>
+    </section>
+
+    <div class="cuidado"><p><strong>Lembre-se:</strong> este exercício ajuda a organizar os pensamentos, mas não substitui acompanhamento. Se os pensamentos negativos forem frequentes, intensos ou envolverem vontade de se machucar, procure ajuda profissional. Em crise, ligue 188 (CVV).</p></div>
+
+    <p class="rodape-atv">Atividade de caráter educativo, que não substitui avaliação ou acompanhamento profissional. Em sofrimento intenso, ligue <strong>188</strong> (CVV, 24 horas) ou <strong>192</strong> (SAMU). Criada por Claudia Alves de Assis, enfermeira, pós-graduada em psiquiatria.</p>
+    <div class="text-center mt-8 print:hidden">
+      <a href="../#schedule" class="inline-block bg-teal-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-teal-700 transition shadow-md">Agendar uma conversa</a>
+    </div>
+  </main>
+
+  <script>
+    window.ATIVIDADE = {
+      "tipo": "diario",
+      "chave": "pensamentos",
+      "campos": [
+        {
+          "id": "situacao",
+          "rotulo": "1. Situação: o que aconteceu, onde e com quem?",
+          "tipo": "texto",
+          "linhas": 2,
+          "placeholder": ""
+        },
+        {
+          "id": "pensamento",
+          "rotulo": "2. Pensamento automático: o que passou pela sua cabeça?",
+          "tipo": "texto",
+          "linhas": 2,
+          "placeholder": "Ex.: \"Eu sempre estrago tudo.\""
+        },
+        {
+          "id": "emocao",
+          "rotulo": "3. Emoção: o que você sentiu?",
+          "tipo": "linha",
+          "placeholder": "Ex.: tristeza, raiva, ansiedade"
+        },
+        {
+          "id": "antes",
+          "rotulo": "Intensidade da emoção (0 a 100):",
+          "tipo": "escala"
+        },
+        {
+          "id": "favor",
+          "rotulo": "4. Evidências a favor do pensamento (só fatos)",
+          "tipo": "texto",
+          "linhas": 3,
+          "placeholder": ""
+        },
+        {
+          "id": "contra",
+          "rotulo": "5. Evidências contra o pensamento",
+          "tipo": "texto",
+          "linhas": 3,
+          "placeholder": ""
+        },
+        {
+          "id": "alternativo",
+          "rotulo": "6. Pensamento alternativo, mais equilibrado",
+          "tipo": "texto",
+          "linhas": 3,
+          "placeholder": "Ex.: \"Errei nesta tarefa, mas acerto em muitas outras.\""
+        },
+        {
+          "id": "depois",
+          "rotulo": "Intensidade da emoção agora (0 a 100):",
+          "tipo": "escala"
+        }
+      ]
+    };
+  </script>
+  <script src="atividade.js"></script>
+</body>
+</html>

@@ -59,7 +59,7 @@ function servir() {
       fs.writeFileSync(destino, await pdf.save());
       console.log(`${path.relative(RAIZ, destino)}: ${pdf.getPageCount()} páginas, ${Math.round(fs.statSync(destino).size / 1024)} KB`);
       const item = indice.find(e => e.arquivo === nome);
-      if (item) item.paginas = pdf.getPageCount();
+      if (item) item.card.paginas = pdf.getPageCount();
       else console.log(`  Aviso: ${nome} não está em ebooks/index.json, então não aparece no painel para publicar.`);
       await page.close();
     }

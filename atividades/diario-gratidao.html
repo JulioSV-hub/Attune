@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diário de Gratidão - Atividade | Sobre você</title>
+  <meta name="description" content="Anotar o que foi bom no dia ajuda a treinar a atenção para o que funciona, sem negar o que é difícil.">
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <meta name="theme-color" content="#0f766e">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:site_name" content="Sobre você">
+  <meta property="og:title" content="Atividade: Diário de Gratidão">
+  <meta property="og:description" content="Anotar o que foi bom no dia ajuda a treinar a atenção para o que funciona, sem negar o que é difícil.">
+  <meta property="og:image" content="https://juliosv-hub.github.io/Sobre-voce/og-image.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/site.css">
+</head>
+<body class="bg-gray-50 text-gray-800 antialiased print:bg-white">
+
+  <header class="bg-gradient-to-r from-teal-700 to-teal-600 text-white shadow-lg sticky top-0 z-50 print:hidden">
+    <div class="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between gap-3">
+      <a href="../#activities" class="flex items-center gap-2 font-bold text-lg">
+        <img src="../favicon.svg" alt="" class="w-8 h-8">
+        <span>Sobre você</span>
+      </a>
+      <a href="../#activities" class="text-sm bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-full">Voltar às atividades</a>
+    </div>
+  </header>
+
+  <main class="atv max-w-3xl mx-auto px-4 sm:px-6 py-10 md:py-14">
+    <div class="topo">
+      <span class="icone" aria-hidden="true">🙏</span>
+      <div>
+        <p class="tipo">Diário · 10 min</p>
+        <h1>Diário de Gratidão</h1>
+      </div>
+    </div>
+    <p class="resumo">Anotar o que foi bom no dia ajuda a treinar a atenção para o que funciona, sem negar o que é difícil.</p>
+
+    <details class="como-fazer" open>
+      <summary>Como fazer</summary>
+      <div><ul><li>Escolha um momento tranquilo, de preferência no fim do dia.</li><li>Escreva <strong>três coisas</strong> pelas quais você é grata(o) hoje. Coisas pequenas contam: um café quente, uma mensagem, um momento de calma.</li><li>Seja específica(o): "a conversa com minha irmã no almoço" funciona melhor do que "minha família".</li><li>Se o dia foi difícil, tudo bem escrever algo bem simples. A prática vale pela constância, não pela perfeição.</li></ul></div>
+    </details>
+
+    <div id="atividade" class="painel"></div>
+
+
+    <div class="cuidado"><p><strong>Lembre-se:</strong> gratidão não significa fingir que está tudo bem. Se o dia foi pesado, reconheça isso também. Os dois sentimentos podem existir juntos.</p></div>
+
+    <p class="rodape-atv">Atividade de caráter educativo, que não substitui avaliação ou acompanhamento profissional. Em sofrimento intenso, ligue <strong>188</strong> (CVV, 24 horas) ou <strong>192</strong> (SAMU). Criada por Claudia Alves de Assis, enfermeira, pós-graduada em psiquiatria.</p>
+    <div class="text-center mt-8 print:hidden">
+      <a href="../#schedule" class="inline-block bg-teal-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-teal-700 transition shadow-md">Agendar uma conversa</a>
+    </div>
+  </main>
+
+  <script>
+    window.ATIVIDADE = {
+      "tipo": "diario",
+      "chave": "gratidao",
+      "campos": [
+        {
+          "id": "g1",
+          "rotulo": "1. Hoje sou grata(o) por…",
+          "tipo": "linha",
+          "placeholder": "Ex.: a caminhada no fim da tarde"
+        },
+        {
+          "id": "g2",
+          "rotulo": "2. Hoje sou grata(o) por…",
+          "tipo": "linha",
+          "placeholder": ""
+        },
+        {
+          "id": "g3",
+          "rotulo": "3. Hoje sou grata(o) por…",
+          "tipo": "linha",
+          "placeholder": ""
+        },
+        {
+          "id": "porque",
+          "rotulo": "Por que alguma dessas coisas foi importante para você? (opcional)",
+          "tipo": "texto",
+          "linhas": 3,
+          "placeholder": ""
+        },
+        {
+          "id": "gentileza",
+          "rotulo": "Algo bom que você fez hoje, por si ou por alguém (opcional)",
+          "tipo": "texto",
+          "linhas": 2,
+          "placeholder": ""
+        }
+      ]
+    };
+  </script>
+  <script src="atividade.js"></script>
+</body>
+</html>

@@ -38,7 +38,8 @@ app.js                    roteador, menu, rodapé e agendamento
 pages.js                  páginas do site
 textos.js                 textos fixos da interface
 foto.jpg                  foto padrão da profissional
-ebooks/                   e-books: página para ler no site (.html) e PDF para baixar (.pdf)
+ebooks/                   e-books, guias e artigos: página para ler no site (.html) e PDF para baixar (.pdf)
+atividades/               atividades interativas (atividade.js é o mecanismo comum)
 scripts/gerar-pdf-ebooks.js  gera os PDFs e atualiza ebooks/index.json
 admin/index.html          painel admin
 admin/admin.js            lógica do painel
@@ -62,9 +63,11 @@ npm run build:css    # ou npm run watch:css enquanto edita
 
 Classes montadas por concatenação (ex.: `'bg-' + cor`) não são encontradas: escreva sempre o nome completo da classe.
 
-## E-books
+## E-books e atividades
 
-Cada e-book é uma página em `ebooks/` (ex.: `ebooks/comunicacao-assertiva.html`), com leitura no site e um botão para baixar o PDF. Para aparecer no painel, o e-book precisa estar listado em [`ebooks/index.json`](ebooks/index.json) (título, descrição e ícone do card). No painel, aba **Materiais**, o quadro **E-books prontos no site** tem o botão **Publicar no site**, que cria o card já preenchido.
+Cada e-book é uma página em `ebooks/` (ex.: `ebooks/comunicacao-assertiva.html`), com leitura no site e um botão para baixar o PDF. Para aparecer no painel, o e-book precisa estar listado em [`ebooks/index.json`](ebooks/index.json) (título, descrição e ícone do card). No painel, aba **Materiais**, o quadro **Materiais prontos no site** tem o botão **Publicar no site**: se já existe um card com o mesmo título, ele recebe o link; senão, um card novo é criado em primeiro lugar.
+
+As atividades interativas ficam em `atividades/` e funcionam do mesmo jeito, listadas em [`atividades/index.json`](atividades/index.json) e publicadas pela aba **Atividades** do painel. Cada página define a atividade em `window.ATIVIDADE` (etapas com tempo, ou campos de diário) e usa o mecanismo comum [`atividades/atividade.js`](atividades/atividade.js). O que a pessoa escreve nos diários fica só no navegador dela.
 
 Depois de editar o texto de um e-book, gere o PDF de novo (precisa do Edge ou do Chrome instalado):
 

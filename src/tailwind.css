@@ -93,3 +93,67 @@
   .ebook .tabela { overflow: visible; }
   .ebook .sumario a { color: inherit; text-decoration: none; }
 }
+
+/* Atividades interativas (atividades/*.html, mecanismo em atividades/atividade.js). */
+@layer components {
+  .atv .topo { @apply flex items-center gap-4 mb-4; }
+  .atv .topo .icone { @apply text-5xl; }
+  .atv .tipo { @apply text-sm font-semibold text-teal-700 uppercase tracking-wide; }
+  .atv h1 { @apply text-3xl md:text-4xl font-extrabold text-gray-800; }
+  .atv .resumo { @apply text-lg text-gray-600 mb-6 leading-relaxed; }
+  .atv .como-fazer { @apply bg-white border border-gray-100 rounded-2xl shadow-sm mb-6; }
+  .atv .como-fazer summary { @apply cursor-pointer font-bold text-gray-800 px-5 py-4; }
+  .atv .como-fazer > div { @apply px-5 pb-5 text-gray-700 leading-relaxed; }
+  .atv .como-fazer ol { @apply list-decimal pl-6 space-y-1.5; }
+  .atv .como-fazer ul { @apply list-disc pl-6 space-y-1.5; }
+  .atv .painel { @apply bg-white border border-gray-100 rounded-2xl shadow-sm p-6 md:p-8 mb-6; }
+  .atv .apoio { @apply bg-white border border-gray-100 rounded-2xl shadow-sm p-6 mb-6 text-gray-700; }
+  .atv .apoio h2 { @apply text-lg font-bold text-teal-800 mb-2 mt-4 first:mt-0; }
+  .atv .apoio ul { @apply list-disc pl-6 space-y-1.5 mb-2; }
+  .atv .cuidado { @apply bg-amber-50 border-l-4 border-amber-400 rounded-r-xl p-5 mb-6 text-gray-700; }
+  .atv .rodape-atv { @apply text-sm text-gray-500 italic; }
+
+  /* Guiada */
+  .guiada { @apply text-center; }
+  .guiada .circulo-area { @apply relative w-56 h-56 md:w-64 md:h-64 mx-auto mb-6 flex items-center justify-center; }
+  .guiada .circulo { @apply absolute inset-0 rounded-full bg-gradient-to-br from-teal-300 to-emerald-400 opacity-80 scale-50; transition-property: transform; transition-timing-function: ease-in-out; }
+  .guiada .circulo.cheio { @apply scale-100; }
+  .guiada .circulo-rotulo { @apply relative text-white font-bold text-lg px-6 drop-shadow; }
+  .guiada .etapa-contador { @apply text-sm font-semibold text-teal-700 uppercase tracking-wide min-h-[1.25rem]; }
+  .guiada .etapa-titulo { @apply text-2xl font-bold text-gray-800 mt-1; }
+  .guiada .etapa-texto { @apply text-gray-600 leading-relaxed mt-2 max-w-xl mx-auto min-h-[3.5rem]; }
+  .guiada .etapa-tempo { @apply text-5xl font-extrabold text-teal-700 tabular-nums my-4; }
+  .guiada .barra { @apply h-2 bg-gray-100 rounded-full overflow-hidden mb-6; }
+  .guiada .barra > div { @apply h-full bg-teal-500 w-0 transition-[width] duration-200; }
+  .guiada .opcoes { @apply flex flex-wrap justify-center gap-6 mt-4 text-sm text-gray-600; }
+  .guiada .opcoes select { @apply ml-1 border border-gray-300 rounded-lg px-2 py-1; }
+  .atv .controles { @apply flex flex-wrap justify-center gap-3; }
+  .atv .botao-principal { @apply bg-teal-600 text-white px-8 py-3 rounded-xl font-bold hover:bg-teal-700 transition shadow-md; }
+  .atv .botao-secundario { @apply border-2 border-gray-200 text-gray-700 px-6 py-3 rounded-xl font-semibold hover:border-teal-400 transition; }
+
+  /* Diário */
+  .diario .data { @apply text-sm font-semibold text-teal-700 mb-4; }
+  .diario .campo { @apply mb-5; }
+  .diario .campo label { @apply block font-semibold text-gray-800 mb-2; }
+  .diario .campo input[type=text], .diario .campo textarea { @apply w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white; }
+  .diario .campo input[type=range] { @apply w-full accent-teal-600; }
+  .diario .campo output { @apply inline-block ml-2 px-2 py-0.5 rounded-full bg-teal-100 text-teal-800 text-sm tabular-nums; }
+  .diario .dica { @apply block text-sm text-gray-500 mt-1; }
+  .diario .timer { @apply flex flex-wrap items-center gap-3 bg-teal-50 rounded-xl p-4 mb-6; }
+  .diario .timer-tempo { @apply text-3xl font-extrabold text-teal-700 tabular-nums mr-auto; }
+  .diario .timer select { @apply border border-gray-300 rounded-lg px-2 py-2 bg-white; }
+  .diario .controles { @apply justify-start; }
+  .diario .aviso-privacidade { @apply text-sm text-gray-500 mt-4; }
+  .diario .mensagem { @apply mt-4 bg-teal-50 text-teal-900 rounded-xl p-3 text-sm; }
+  .atv .historico { @apply mt-8 border-t border-gray-100 pt-6; }
+  .atv .historico h3 { @apply font-bold text-gray-800 mb-3; }
+  .atv .registro { @apply border border-gray-200 rounded-xl mb-2 bg-gray-50; }
+  .atv .registro summary { @apply cursor-pointer px-4 py-3 font-medium text-gray-700; }
+  .atv .registro p { @apply px-4 pb-3 text-gray-700 text-sm; }
+  .atv .link-apagar { @apply text-sm text-red-600 hover:underline px-4 pb-3; }
+}
+
+@media print {
+  .atv .como-fazer { break-inside: avoid; }
+  .diario textarea { border: 1px solid #d1d5db; }
+}

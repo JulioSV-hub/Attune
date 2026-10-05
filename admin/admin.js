@@ -26,8 +26,8 @@ function formatDate(iso) {
   return `${d}/${m}/${a}`;
 }
 
-// Página interna do site (ex.: ebooks/comunicacao-assertiva.html).
-const LINK_INTERNO = /^ebooks\/[a-z0-9-]+\.html$/;
+// Página interna do site (ex.: ebooks/comunicacao-assertiva.html, atividades/respiracao-4-7-8.html).
+const LINK_INTERNO = /^(ebooks|atividades)\/[a-z0-9-]+\.html$/;
 
 // Aceita links https (com ou sem "https://" digitado) ou páginas internas; retorna '' se inválido.
 function linkSeguro(value) {
@@ -329,7 +329,8 @@ function discardAll() {
 }
 
 async function loadAll() {
-  await Promise.all([loadAgendamentos(), loadSite(), loadPlanos(), carregarEbooks(), ...Object.values(editores).map(ed => ed.carregar())]);
+  await Promise.all([loadAgendamentos(), loadSite(), loadPlanos(), ...Object.values(editores).map(ed => ed.carregar())]);
+  await Promise.all(Object.values(prontos).map(p => p.carregar()));
   updateImportBox();
 }
 
@@ -426,7 +427,7 @@ const CAMPOS = {
   aulas: { rotulo: 'Número de aulas', tipo: 'number', max: 500, dica: 'Deixe 0 para vídeos avulsos.' },
   duracao: { rotulo: 'Duração (minutos)', tipo: 'number', max: 10000 },
   paginas: { rotulo: 'Número de páginas', tipo: 'number', max: 5000 },
-  link: { rotulo: 'Link do conteúdo', tipo: 'url', dica: 'Ex.: link do YouTube, Google Drive ou da plataforma do curso, ou um e-book do site (ebooks/comunicacao-assertiva.html). Sem link, o site mostra "Em breve".' },
+  link: { rotulo: 'Link do conteúdo', tipo: 'url', dica: 'Ex.: link do YouTube, Google Drive ou da plataforma do curso, ou uma página do site (ex.: ebooks/comunicacao-assertiva.html). Sem link, o site mostra "Em breve".' },
 };
 
 const COLECOES = {
@@ -624,69 +625,95 @@ function criarEditor(colecao) {
 const editores = Object.fromEntries(Object.keys(COLECOES).map(c => [c, criarEditor(c)]));
 
 // ---------------------------------------------------------------------------
-// E-books prontos no site (ebooks/index.json): publicar como material com um clique.
+// Conteúdos prontos no site (ebooks/index.json e atividades/index.json): publicar com um clique.
+// Se já existe um card com o mesmo título, o link é colocado nele; senão, um card novo é criado em primeiro.
 
-const painelMateriais = document.querySelector('[data-panel="materiais"]');
-painelMateriais.querySelector('form').insertAdjacentHTML('beforebegin', `
-  <div class="card mb-6" id="ebooksBox" hidden>
-    <h3 class="font-semibold text-lg mb-1">E-books prontos no site</h3>
-    <p class="text-sm text-gray-600 mb-4">Estes e-books já estão no site. Publique para aparecerem em Materiais; depois é possível editar ou excluir o card normalmente.</p>
-    <div id="ebooksLista" class="space-y-3"></div>
-  </div>`);
+const PRONTOS = {
+  materiais: { pasta: 'ebooks', titulo: 'Materiais prontos no site', texto: 'Estes e-books, guias e artigos já estão no site. Publique para aparecerem em Materiais; depois é possível editar ou excluir o card normalmente.' },
+  atividades: { pasta: 'atividades', titulo: 'Atividades prontas no site', texto: 'Estas atividades interativas já estão no site. Publique para o botão "Iniciar" do card abrir a atividade.' },
+};
 
-let ebooksDisponiveis = [];
+const normalizar = t => String(t || '').normalize('NFKD').replace(/\p{M}/gu, '').toLowerCase().trim();
 
-async function carregarEbooks() {
-  try {
-    const resp = await fetch('../ebooks/index.json', { cache: 'no-store' });
-    ebooksDisponiveis = resp.ok ? (await resp.json()).filter(e => LINK_INTERNO.test(`ebooks/${e.arquivo}`)) : [];
-  } catch (err) {
-    console.warn('Não foi possível carregar a lista de e-books.', err);
-    ebooksDisponiveis = [];
-  }
-  renderEbooks();
-}
+function criarProntos(colecao) {
+  const cfg = PRONTOS[colecao];
+  const painel = document.querySelector(`[data-panel="${colecao}"]`);
+  painel.querySelector('form').insertAdjacentHTML('beforebegin', `
+    <div class="card mb-6" data-prontos hidden>
+      <h3 class="font-semibold text-lg mb-1">${cfg.titulo}</h3>
+      <p class="text-sm text-gray-600 mb-4">${cfg.texto}</p>
+      <div data-prontos-lista class="space-y-3"></div>
+    </div>`);
+  const box = painel.querySelector('[data-prontos]');
+  const lista = painel.querySelector('[data-prontos-lista]');
+  let disponiveis = [];
 
-function renderEbooks() {
-  const materiais = editores.materiais.itens();
-  $('ebooksBox').hidden = ebooksDisponiveis.length === 0;
-  $('ebooksLista').innerHTML = ebooksDisponiveis.map(e => {
-    const link = `ebooks/${e.arquivo}`;
-    const publicado = materiais.some(m => m.link === link);
-    return `
-    <div class="flex flex-wrap items-center gap-3 border border-gray-200 rounded-xl p-3">
-      <span class="text-2xl">${escapeHtml(e.icone)}</span>
-      <div class="flex-1 min-w-[12rem]">
-        <div class="font-medium">${escapeHtml(e.titulo)}</div>
-        <div class="muted">${Number(e.paginas) || 0} páginas · <a class="text-teal-700 hover:underline" href="../${escapeHtml(link)}" target="_blank" rel="noopener">ver como fica</a></div>
-      </div>
-      ${publicado
-        ? '<span class="status-badge status-confirmado">Publicado no site</span>'
-        : `<button type="button" class="btn btn-primary btn-small" data-publicar="${escapeHtml(e.arquivo)}">Publicar no site</button>`}
-    </div>`;
-  }).join('');
-}
-
-painelMateriais.addEventListener('renderizado', renderEbooks);
-
-$('ebooksLista').addEventListener('click', e => {
-  const btn = e.target.closest('[data-publicar]');
-  if (!btn) return;
-  const ebook = ebooksDisponiveis.find(x => x.arquivo === btn.dataset.publicar);
-  if (!ebook) return;
-  withBusy(btn, async () => {
+  async function carregar() {
     try {
-      // Entra em primeiro lugar na lista de materiais.
-      const ordem = Math.min(1, ...editores.materiais.itens().map(x => Number(x.ordem) || 0)) - 1;
-      await fb.setDoc(fb.doc(fb.collection(fb.db, 'materiais')), {
-        tipo: 'ebook', icone: ebook.icone, titulo: ebook.titulo, descricao: ebook.descricao,
-        paginas: Number(ebook.paginas) || 0, link: `ebooks/${ebook.arquivo}`, ordem, criadoEm: fb.serverTimestamp(),
-      });
-      await editores.materiais.carregar();
-      showNotification('E-book publicado! Já aparece em Materiais no site.');
-    } catch (err) { fail(err); }
+      const resp = await fetch(`../${cfg.pasta}/index.json`, { cache: 'no-store' });
+      disponiveis = resp.ok ? (await resp.json()).filter(p => LINK_INTERNO.test(`${cfg.pasta}/${p.arquivo}`) && p.card?.titulo) : [];
+    } catch (err) {
+      console.warn(`Não foi possível carregar ${cfg.pasta}/index.json.`, err);
+      disponiveis = [];
+    }
+    render();
+  }
+
+  function render() {
+    const itens = editores[colecao].itens();
+    box.hidden = disponiveis.length === 0;
+    lista.innerHTML = disponiveis.map(p => {
+      const link = `${cfg.pasta}/${p.arquivo}`;
+      const publicado = itens.some(m => m.link === link);
+      const existente = !publicado && itens.find(m => normalizar(m.titulo) === normalizar(p.card.titulo));
+      const detalhe = p.card.paginas ? `${Number(p.card.paginas)} páginas` : p.card.duracao ? `${Number(p.card.duracao)} min` : '';
+      return `
+      <div class="flex flex-wrap items-center gap-3 border border-gray-200 rounded-xl p-3">
+        <span class="text-2xl">${escapeHtml(p.card.icone)}</span>
+        <div class="flex-1 min-w-[12rem]">
+          <div class="font-medium">${escapeHtml(p.card.titulo)}</div>
+          <div class="muted">${detalhe ? `${detalhe} · ` : ''}<a class="text-teal-700 hover:underline" href="../${escapeHtml(link)}" target="_blank" rel="noopener">ver como fica</a></div>
+        </div>
+        ${publicado
+          ? '<span class="status-badge status-confirmado">Publicado no site</span>'
+          : `<button type="button" class="btn btn-primary btn-small" data-publicar="${escapeHtml(p.arquivo)}" title="${existente ? 'Coloca o link no card que já existe com este título' : 'Cria um card novo, em primeiro lugar'}">Publicar no site</button>`}
+      </div>`;
+    }).join('');
+  }
+
+  painel.addEventListener('renderizado', render);
+
+  lista.addEventListener('click', e => {
+    const btn = e.target.closest('[data-publicar]');
+    if (!btn) return;
+    const pronto = disponiveis.find(x => x.arquivo === btn.dataset.publicar);
+    if (!pronto) return;
+    const link = `${cfg.pasta}/${pronto.arquivo}`;
+    const campos = Object.fromEntries(Object.entries(pronto.card).filter(([k]) => COLECOES[colecao].campos.includes(k)));
+    withBusy(btn, async () => {
+      try {
+        const itens = editores[colecao].itens();
+        const existente = itens.find(m => normalizar(m.titulo) === normalizar(pronto.card.titulo));
+        if (existente) {
+          // Mantém o que a profissional já editou no card; completa só o link e o tamanho.
+          const extra = {};
+          if (campos.paginas) extra.paginas = Number(campos.paginas);
+          if (campos.duracao) extra.duracao = Number(campos.duracao);
+          await fb.updateDoc(fb.doc(fb.db, colecao, existente.id), { link, ...extra, atualizadoEm: fb.serverTimestamp() });
+        } else {
+          const ordem = Math.min(1, ...itens.map(x => Number(x.ordem) || 0)) - 1;
+          await fb.setDoc(fb.doc(fb.collection(fb.db, colecao)), { ...campos, link, ordem, criadoEm: fb.serverTimestamp() });
+        }
+        await editores[colecao].carregar();
+        showNotification(existente ? 'Publicado! O card que já existia agora abre o conteúdo.' : 'Publicado! Já aparece no site, em primeiro lugar.');
+      } catch (err) { fail(err); }
+    });
   });
-});
+
+  return { carregar };
+}
+
+const prontos = Object.fromEntries(Object.keys(PRONTOS).map(c => [c, criarProntos(c)]));
 
 // ---------------------------------------------------------------------------
 // Textos e dados do site
