@@ -14,12 +14,12 @@ function renderHome() {
         <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6">${esc(site.heroTitulo)}</h1>
         <p class="text-xl md:text-2xl text-teal-100 mb-10">${esc(site.heroSubtitulo)}</p>
         <div class="flex flex-col sm:flex-row gap-4 justify-center">
-          <button onclick="navigate('${app.isLoggedIn ? 'courses' : 'signup'}')" class="bg-white text-teal-700 px-8 py-4 rounded-xl font-bold text-lg hover:bg-teal-50 transition shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+          <a href="#schedule" onclick="navigate('schedule'); return false;" class="bg-white text-teal-700 px-8 py-4 rounded-xl font-bold text-lg hover:bg-teal-50 transition shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
             ${t('hero_cta')}
-          </button>
-          <button onclick="navigate('plans')" class="border-2 border-white/40 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-white/10 transition">
+          </a>
+          <a href="#courses" onclick="navigate('courses'); return false;" class="border-2 border-white/40 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-white/10 transition">
             ${t('hero_secondary_cta')}
-          </button>
+          </a>
         </div>
       </div>
     </div>
@@ -43,7 +43,7 @@ function renderHome() {
         ${renderFeatureCard('&#128214;', t('feature_materials_title'), t('feature_materials_desc'), 'materials')}
         ${renderFeatureCard('&#129504;', t('feature_activities_title'), t('feature_activities_desc'), 'activities')}
         ${renderFeatureCard('&#128197;', t('feature_schedule_title'), t('feature_schedule_desc'), 'schedule')}
-        ${renderFeatureCard('&#128101;', t('feature_community_title'), t('feature_community_desc'), 'plans')}
+        ${renderFeatureCard('&#128274;', t('feature_sigilo_title'), t('feature_sigilo_desc'), 'privacidade')}
       </div>
     </div>
   </section>
@@ -54,7 +54,7 @@ function renderHome() {
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
         <div>
           <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-6">${t('about_title')}</h2>
-          <p class="text-lg text-gray-600 mb-8 leading-relaxed">${esc(site.sobreTexto)}</p>
+          <p class="text-lg text-gray-600 mb-8 leading-relaxed whitespace-pre-line">${esc(site.sobreTexto)}</p>
           <div class="grid grid-cols-2 gap-4">
             ${(site.credenciais || []).filter(Boolean).map(c => `
             <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
@@ -77,27 +77,18 @@ function renderHome() {
     </div>
   </section>
 
-  <!-- Testimonials Section -->
-  <section class="py-20 bg-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-800 mb-4">${t('testimonials_title')}</h2>
-      <div class="w-20 h-1 bg-teal-500 mx-auto mb-16 rounded-full"></div>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        ${renderTestimonial(t('testimonial1_text'), t('testimonial1_author'))}
-        ${renderTestimonial(t('testimonial2_text'), t('testimonial2_author'))}
-        ${renderTestimonial(t('testimonial3_text'), t('testimonial3_author'))}
-      </div>
-    </div>
-  </section>
+  ${renderFaq()}
 
   <!-- CTA Section -->
   <section class="py-16 bg-gradient-to-r from-teal-600 to-emerald-500 text-white">
     <div class="max-w-4xl mx-auto text-center px-4">
-      <h2 class="text-3xl md:text-4xl font-bold mb-6">Comece sua jornada de transforma\u00e7\u00e3o hoje</h2>
-      <p class="text-xl text-teal-100 mb-8">Assine e tenha acesso a todos os conte\u00fados e ferramentas da plataforma.</p>
-      <button onclick="navigate('plans')" class="bg-white text-teal-700 px-10 py-4 rounded-xl font-bold text-lg hover:bg-teal-50 transition shadow-lg">
-        ${t('hero_secondary_cta')}
-      </button>
+      ${content.planosAtiva ? `
+      <h2 class="text-3xl md:text-4xl font-bold mb-6">Comece sua jornada de transformação hoje</h2>
+      <p class="text-xl text-teal-100 mb-8">Assine e tenha acesso a todos os conteúdos e ferramentas da plataforma.</p>
+      <a href="#plans" onclick="navigate('plans'); return false;" class="inline-block bg-white text-teal-700 px-10 py-4 rounded-xl font-bold text-lg hover:bg-teal-50 transition shadow-lg">${t('plans_cta')}</a>` : `
+      <h2 class="text-3xl md:text-4xl font-bold mb-6">Dê o primeiro passo</h2>
+      <p class="text-xl text-teal-100 mb-8">Agende uma conversa e descubra como entender melhor a forma como você se comunica e se relaciona.</p>
+      <a href="#schedule" onclick="navigate('schedule'); return false;" class="inline-block bg-white text-teal-700 px-10 py-4 rounded-xl font-bold text-lg hover:bg-teal-50 transition shadow-lg">${t('hero_cta')}</a>`}
     </div>
   </section>`;
 }
@@ -123,7 +114,7 @@ function renderOutubroRosaSecao() {
         ${card('&#128151;', 'Cuide das emoções', 'O diagnóstico e o tratamento mexem com a saúde emocional de quem passa por eles e de quem está por perto. Pedir ajuda faz parte do cuidado.')}
       </div>
       <div class="text-center mt-10">
-        <button onclick="navigate('schedule')" class="bg-pink-600 text-white px-8 py-3 rounded-xl font-bold hover:bg-pink-700 transition shadow-md">Agende uma conversa</button>
+        <a href="#schedule" onclick="navigate('schedule'); return false;" class="inline-block bg-pink-600 text-white px-8 py-3 rounded-xl font-bold hover:bg-pink-700 transition shadow-md">Agende uma conversa</a>
       </div>
     </div>
   </section>`;
@@ -131,22 +122,33 @@ function renderOutubroRosaSecao() {
 
 function renderFeatureCard(emoji, title, desc, link) {
   return `
-  <div onclick="navigate('${link}')" class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-lg border border-gray-100 cursor-pointer transition-all hover:-translate-y-1 group">
+  <a href="#${link}" onclick="navigate('${link}'); return false;" class="block bg-white p-8 rounded-2xl shadow-sm hover:shadow-lg border border-gray-100 transition-all hover:-translate-y-1 group">
     <div class="text-4xl mb-4">${emoji}</div>
     <h3 class="text-xl font-bold text-gray-800 mb-3 group-hover:text-teal-600 transition">${title}</h3>
     <p class="text-gray-600 leading-relaxed">${desc}</p>
-  </div>`;
+  </a>`;
 }
 
-function renderTestimonial(text, author) {
+function renderFaq() {
+  const faq = (content.site.faq || []).filter(f => f && f.pergunta && f.resposta);
+  if (!faq.length) return '';
   return `
-  <div class="bg-gray-50 p-8 rounded-2xl border border-gray-100">
-    <div class="text-teal-500 mb-4">
-      <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983z"/></svg>
+  <section class="py-20 bg-white">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-800 mb-4">${t('faq_title')}</h2>
+      <div class="w-20 h-1 bg-teal-500 mx-auto mb-12 rounded-full"></div>
+      <div class="space-y-3">
+        ${faq.map(f => `
+        <details class="group bg-gray-50 border border-gray-100 rounded-xl">
+          <summary class="flex items-center justify-between gap-4 cursor-pointer list-none p-5 font-semibold text-gray-800">
+            ${esc(f.pergunta)}
+            <span class="text-teal-600 text-xl transition group-open:rotate-45" aria-hidden="true">+</span>
+          </summary>
+          <p class="px-5 pb-5 text-gray-600 leading-relaxed whitespace-pre-line">${esc(f.resposta)}</p>
+        </details>`).join('')}
+      </div>
     </div>
-    <p class="text-gray-700 italic mb-4 leading-relaxed">${text}</p>
-    <p class="text-teal-700 font-semibold">${author}</p>
-  </div>`;
+  </section>`;
 }
 
 // Foto salva pelo painel (data URL) ou a foto padrão do site.
@@ -159,53 +161,74 @@ function tipoBadge(colecao, tipo) {
   return `<span class="text-xs px-2 py-1 rounded-full ${info.cor} font-medium">${esc(info.rotulo)}</span>`;
 }
 
-// Botão de acesso dos cards: liberado para quem tem conta (abre o link, se houver); senão, bloqueado.
-function accessButton(item, label) {
-  if (!(item.liberado && app.isLoggedIn)) {
-    return `<button class="w-full py-2.5 rounded-xl bg-gray-100 text-gray-500 cursor-not-allowed font-medium text-sm transition">${t('courses_locked')}</button>`;
-  }
-  const cls = 'w-full py-2.5 rounded-xl bg-teal-600 text-white hover:bg-teal-700 font-medium text-sm transition';
+// Botão de acesso dos cards: abre o link do conteúdo; sem link, mostra "Em breve".
+function accessButton(item, label, cls) {
   const url = safeUrl(item.link);
   return url
-    ? `<a href="${esc(url)}" target="_blank" rel="noopener" class="block text-center ${cls}">${label}</a>`
-    : `<button class="${cls}">${label}</button>`;
+    ? `<a href="${esc(url)}" target="_blank" rel="noopener" class="block text-center ${cls} bg-teal-600 text-white hover:bg-teal-700">${label}</a>`
+    : `<span class="block text-center ${cls} bg-gray-100 text-gray-500 cursor-default">${t('content_soon')}</span>`;
+}
+
+// Rótulos dos filtros (no plural) por tipo.
+const FILTROS = {
+  cursos: { curso: 'Cursos', video: 'Vídeos' },
+  materiais: { ebook: 'E-books', artigo: 'Artigos', guia: 'Guias' },
+  atividades: { respiracao: 'Respiração', diario: 'Diário', meditacao: 'Meditação', exercicios: 'Exercícios' },
+};
+
+// Filtros só com os tipos que existem na lista; some se houver um tipo só.
+function filterBar(colecao, itens) {
+  const tipos = Object.keys(FILTROS[colecao]).filter(tp => itens.some(i => i.tipo === tp));
+  if (tipos.length < 2) return '';
+  const botao = (valor, rotulo) => `
+        <button onclick="setFiltro('${valor}')" aria-pressed="${app.filtro === valor}" class="px-5 py-2 rounded-full font-medium text-sm transition ${app.filtro === valor ? 'bg-teal-600 text-white' : 'bg-white text-gray-600 border hover:border-teal-300'}">${rotulo}</button>`;
+  return `
+      <div class="flex justify-center gap-3 mb-10 flex-wrap">
+        ${botao('todos', t('filter_all'))}
+        ${tipos.map(tp => botao(tp, FILTROS[colecao][tp])).join('')}
+      </div>`;
+}
+
+function filtrar(itens) {
+  return app.filtro === 'todos' ? itens : itens.filter(i => i.tipo === app.filtro);
+}
+
+function pageHeader(titulo, subtitulo) {
+  return `
+      <div class="text-center mb-12">
+        <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">${titulo}</h1>
+        <p class="text-lg text-gray-600">${subtitulo}</p>
+      </div>`;
 }
 
 function emptyState() {
-  return `<p class="text-center text-gray-500 py-12">${t('courses_empty')}</p>`;
+  return `<p class="text-center text-gray-500 py-12">${t('content_empty')}</p>`;
 }
 
 function renderCourses() {
-  const courses = content.cursos;
+  const lista = filtrar(content.cursos);
 
   return `
   <section class="py-16 bg-gray-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center mb-12">
-        <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">${t('courses_title')}</h1>
-        <p class="text-lg text-gray-600">${t('courses_subtitle')}</p>
-      </div>
-      <div class="flex justify-center gap-3 mb-10 flex-wrap">
-        <button class="px-5 py-2 rounded-full bg-teal-600 text-white font-medium text-sm">${t('courses_filter_all')}</button>
-        <button class="px-5 py-2 rounded-full bg-white text-gray-600 font-medium text-sm border hover:border-teal-300 transition">${t('courses_filter_courses')}</button>
-        <button class="px-5 py-2 rounded-full bg-white text-gray-600 font-medium text-sm border hover:border-teal-300 transition">${t('courses_filter_videos')}</button>
-      </div>
-      ${courses.length ? '' : emptyState()}
+      ${pageHeader(t('courses_title'), t('courses_subtitle'))}
+      ${filterBar('cursos', content.cursos)}
+      ${lista.length ? '' : emptyState()}
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        ${courses.map(c => `
-          <div class="bg-white rounded-2xl shadow-sm hover:shadow-lg border border-gray-100 overflow-hidden transition-all hover:-translate-y-1 group">
+        ${lista.map(c => `
+          <div class="bg-white rounded-2xl shadow-sm hover:shadow-lg border border-gray-100 overflow-hidden transition-all hover:-translate-y-1 group flex flex-col">
             <div class="h-40 bg-gradient-to-br from-teal-50 to-emerald-50 flex items-center justify-center">
               <span class="text-6xl">${esc(c.icone)}</span>
             </div>
-            <div class="p-6">
+            <div class="p-6 flex flex-col flex-1">
               <div class="flex items-center gap-2 mb-2">
                 ${tipoBadge('cursos', c.tipo)}
                 ${Number(c.aulas) > 0 ? `<span class="text-xs text-gray-500">${Number(c.aulas)} ${t('courses_lessons')}</span>` : ''}
                 ${Number(c.duracao) > 0 ? `<span class="text-xs text-gray-500">${Number(c.duracao)} ${t('courses_duration')}</span>` : ''}
               </div>
               <h3 class="text-lg font-bold text-gray-800 mb-2 group-hover:text-teal-600 transition">${esc(c.titulo)}</h3>
-              <p class="text-gray-600 text-sm mb-4">${esc(c.descricao)}</p>
-              ${accessButton(c, t('courses_start'))}
+              <p class="text-gray-600 text-sm mb-4 flex-1">${esc(c.descricao)}</p>
+              ${accessButton(c, c.tipo === 'video' ? t('courses_watch') : t('courses_start'), 'w-full py-2.5 rounded-xl font-medium text-sm transition')}
             </div>
           </div>
         `).join('')}
@@ -215,36 +238,28 @@ function renderCourses() {
 }
 
 function renderMaterials() {
-  const materials = content.materiais;
+  const lista = filtrar(content.materiais);
 
   return `
   <section class="py-16 bg-gray-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center mb-12">
-        <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">${t('materials_title')}</h1>
-        <p class="text-lg text-gray-600">${t('materials_subtitle')}</p>
-      </div>
-      <div class="flex justify-center gap-3 mb-10 flex-wrap">
-        <button class="px-5 py-2 rounded-full bg-teal-600 text-white font-medium text-sm">${t('materials_filter_all')}</button>
-        <button class="px-5 py-2 rounded-full bg-white text-gray-600 font-medium text-sm border hover:border-teal-300 transition">${t('materials_filter_ebooks')}</button>
-        <button class="px-5 py-2 rounded-full bg-white text-gray-600 font-medium text-sm border hover:border-teal-300 transition">${t('materials_filter_articles')}</button>
-        <button class="px-5 py-2 rounded-full bg-white text-gray-600 font-medium text-sm border hover:border-teal-300 transition">${t('materials_filter_guides')}</button>
-      </div>
-      ${materials.length ? '' : emptyState()}
+      ${pageHeader(t('materials_title'), t('materials_subtitle'))}
+      ${filterBar('materiais', content.materiais)}
+      ${lista.length ? '' : emptyState()}
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        ${materials.map(m => `
-          <div class="bg-white rounded-2xl shadow-sm hover:shadow-lg border border-gray-100 overflow-hidden transition-all hover:-translate-y-1 group">
+        ${lista.map(m => `
+          <div class="bg-white rounded-2xl shadow-sm hover:shadow-lg border border-gray-100 overflow-hidden transition-all hover:-translate-y-1 group flex flex-col">
             <div class="h-36 bg-gradient-to-br from-amber-50 to-orange-50 flex items-center justify-center">
               <span class="text-5xl">${esc(m.icone)}</span>
             </div>
-            <div class="p-6">
+            <div class="p-6 flex flex-col flex-1">
               <div class="flex items-center gap-2 mb-3">
                 ${tipoBadge('materiais', m.tipo)}
                 ${Number(m.paginas) > 0 ? `<span class="text-xs text-gray-500">${Number(m.paginas)} ${t('materials_pages')}</span>` : ''}
               </div>
               <h3 class="text-lg font-bold text-gray-800 mb-2 group-hover:text-teal-600 transition">${esc(m.titulo)}</h3>
-              <p class="text-gray-600 text-sm mb-4">${esc(m.descricao)}</p>
-              ${accessButton(m, m.tipo === 'ebook' ? t('materials_download') : t('materials_read'))}
+              <p class="text-gray-600 text-sm mb-4 flex-1">${esc(m.descricao)}</p>
+              ${accessButton(m, m.tipo === 'ebook' ? t('materials_download') : t('materials_read'), 'w-full py-2.5 rounded-xl font-medium text-sm transition')}
             </div>
           </div>
         `).join('')}
@@ -254,43 +269,29 @@ function renderMaterials() {
 }
 
 function renderActivities() {
-  const activities = content.atividades;
+  const lista = filtrar(content.atividades);
 
   return `
   <section class="py-16 bg-gray-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center mb-12">
-        <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">${t('activities_title')}</h1>
-        <p class="text-lg text-gray-600">${t('activities_subtitle')}</p>
-      </div>
-      <div class="flex justify-center gap-3 mb-10 flex-wrap">
-        <button class="px-5 py-2 rounded-full bg-teal-600 text-white font-medium text-sm">${t('activities_filter_all')}</button>
-        <button class="px-5 py-2 rounded-full bg-white text-gray-600 font-medium text-sm border hover:border-teal-300 transition">${t('activities_filter_breathing')}</button>
-        <button class="px-5 py-2 rounded-full bg-white text-gray-600 font-medium text-sm border hover:border-teal-300 transition">${t('activities_filter_journal')}</button>
-        <button class="px-5 py-2 rounded-full bg-white text-gray-600 font-medium text-sm border hover:border-teal-300 transition">${t('activities_filter_meditation')}</button>
-        <button class="px-5 py-2 rounded-full bg-white text-gray-600 font-medium text-sm border hover:border-teal-300 transition">${t('activities_filter_exercises')}</button>
-      </div>
-      ${activities.length ? '' : emptyState()}
+      ${pageHeader(t('activities_title'), t('activities_subtitle'))}
+      ${filterBar('atividades', content.atividades)}
+      ${lista.length ? '' : emptyState()}
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        ${activities.map(a => {
-          const url = safeUrl(a.link);
-          const cls = 'px-5 py-2 rounded-xl bg-teal-600 text-white font-medium text-sm hover:bg-teal-700 transition';
-          return `
-          <div class="bg-white rounded-2xl shadow-sm hover:shadow-lg border border-gray-100 p-6 transition-all hover:-translate-y-1 group">
+        ${lista.map(a => `
+          <div class="bg-white rounded-2xl shadow-sm hover:shadow-lg border border-gray-100 p-6 transition-all hover:-translate-y-1 group flex flex-col">
             <div class="flex items-start justify-between mb-4">
               <span class="text-4xl">${esc(a.icone)}</span>
               ${tipoBadge('atividades', a.tipo)}
             </div>
             <h3 class="text-lg font-bold text-gray-800 mb-2 group-hover:text-teal-600 transition">${esc(a.titulo)}</h3>
-            <p class="text-gray-600 text-sm mb-4">${esc(a.descricao)}</p>
-            <div class="flex items-center justify-between">
+            <p class="text-gray-600 text-sm mb-4 flex-1">${esc(a.descricao)}</p>
+            <div class="flex items-center justify-between gap-3">
               <span class="text-sm text-gray-500">${Number(a.duracao) > 0 ? `&#9201; ${Number(a.duracao)} ${t('activities_duration')}` : ''}</span>
-              ${url
-                ? `<a href="${esc(url)}" target="_blank" rel="noopener" class="${cls}">${t('activities_start')}</a>`
-                : `<button class="${cls}">${t('activities_start')}</button>`}
+              ${accessButton(a, t('activities_start'), 'px-5 py-2 rounded-xl font-medium text-sm transition')}
             </div>
-          </div>`;
-        }).join('')}
+          </div>
+        `).join('')}
       </div>
     </div>
   </section>`;
@@ -301,10 +302,7 @@ function renderSchedule() {
   return `
   <section class="py-16 bg-gray-50">
     <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center mb-12">
-        <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">${t('schedule_title')}</h1>
-        <p class="text-lg text-gray-600">${t('schedule_subtitle')}</p>
-      </div>
+      ${pageHeader(t('schedule_title'), t('schedule_subtitle'))}
       <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
         <form id="schedule-form" class="space-y-6" novalidate>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -346,7 +344,12 @@ function renderSchedule() {
           <div>
             <label for="sched-motivo" class="block text-sm font-semibold text-gray-700 mb-2">${t('schedule_notes')}</label>
             <textarea id="sched-motivo" name="motivo" maxlength="1000" class="${inputCls} h-28 resize-none" placeholder="${t('schedule_notes_placeholder')}"></textarea>
+            <p class="text-xs text-gray-500 mt-1">${t('schedule_notes_hint')}</p>
           </div>
+          <label class="flex items-start gap-3 text-sm text-gray-700">
+            <input type="checkbox" name="consentimento" class="mt-0.5 text-teal-600 focus:ring-teal-500">
+            <span>Li e concordo com a <a href="#privacidade" target="_blank" rel="noopener" class="text-teal-700 font-semibold underline">Política de Privacidade</a> e autorizo o uso dos meus dados para o agendamento.</span>
+          </label>
           <p id="sched-erro" role="alert" class="hidden bg-red-50 border border-red-200 text-red-700 p-4 rounded-xl text-sm"></p>
           <button type="submit" class="w-full bg-teal-600 text-white py-4 rounded-xl font-bold text-lg hover:bg-teal-700 transition shadow-md disabled:opacity-60">
             ${t('schedule_confirm')}
@@ -375,19 +378,23 @@ function renderPlanCard(p) {
   const btnCls = p.destaque
     ? 'w-full py-3 rounded-xl bg-teal-600 text-white font-semibold hover:bg-teal-700 transition shadow-md'
     : 'w-full py-3 rounded-xl border-2 border-gray-200 text-gray-700 font-semibold hover:border-teal-300 transition';
+  // Sem link de pagamento, o botão leva ao WhatsApp (ou ao agendamento, se o WhatsApp não estiver configurado).
+  const wa = whatsappLink(`Olá, ${content.site.profissional}! Tenho interesse no plano ${p.nome}.`);
   const botao = url
     ? `<a href="${esc(url)}" target="_blank" rel="noopener" class="block text-center ${btnCls}">${t('plans_subscribe')}</a>`
-    : `<button onclick="navigate('signup')" class="${btnCls}">${t('plans_subscribe')}</button>`;
+    : wa
+      ? `<a href="${esc(wa)}" target="_blank" rel="noopener" class="block text-center ${btnCls}">${t('plans_contact')}</a>`
+      : `<a href="#schedule" onclick="navigate('schedule'); return false;" class="block text-center ${btnCls}">${t('plans_contact')}</a>`;
 
   return `
-        <div class="bg-white rounded-2xl p-8 relative ${p.destaque ? 'shadow-lg border-2 border-teal-500 md:scale-105' : 'shadow-sm border border-gray-200 hover:shadow-lg transition'}">
+        <div class="bg-white rounded-2xl p-8 relative flex flex-col ${p.destaque ? 'shadow-lg border-2 border-teal-500 md:scale-105' : 'shadow-sm border border-gray-200 hover:shadow-lg transition'}">
           ${p.destaque ? `<div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-teal-600 text-white text-xs font-bold px-4 py-1 rounded-full">${t('plans_popular')}</div>` : ''}
           <h3 class="text-xl font-bold text-gray-800 mb-2">${esc(p.nome)}</h3>
           <div class="mb-6">
             <span class="text-4xl font-bold text-gray-800">${t('plans_currency')} ${formatPreco(preco)}</span>
             ${preco > 0 ? `<span class="text-gray-500">${t('plans_period')}</span>` : ''}
           </div>
-          <ul class="space-y-3 mb-8">
+          <ul class="space-y-3 mb-8 flex-1">
             ${(p.recursos || []).filter(Boolean).map(r => `<li class="flex items-center gap-2 text-sm text-gray-600">${check}${esc(r)}</li>`).join('')}
           </ul>
           ${botao}
@@ -404,7 +411,7 @@ function renderPlans() {
         <p class="text-lg text-gray-600">${t('plans_subtitle')}</p>
         <div class="flex items-center justify-center gap-4 mt-8">
           <span class="font-medium ${app.billingCycle === 'monthly' ? 'text-teal-700' : 'text-gray-500'}">${t('plans_monthly')}</span>
-          <button onclick="app.billingCycle = app.billingCycle === 'monthly' ? 'yearly' : 'monthly'; render();" class="relative w-14 h-7 rounded-full transition ${app.billingCycle === 'yearly' ? 'bg-teal-600' : 'bg-gray-300'}">
+          <button onclick="app.billingCycle = app.billingCycle === 'monthly' ? 'yearly' : 'monthly'; render();" aria-label="Alternar entre mensal e anual" class="relative w-14 h-7 rounded-full transition ${app.billingCycle === 'yearly' ? 'bg-teal-600' : 'bg-gray-300'}">
             <div class="absolute top-0.5 ${app.billingCycle === 'yearly' ? 'left-7' : 'left-0.5'} w-6 h-6 bg-white rounded-full shadow transition-all"></div>
           </button>
           <span class="font-medium ${app.billingCycle === 'yearly' ? 'text-teal-700' : 'text-gray-500'}">${t('plans_yearly')}</span>
@@ -418,76 +425,51 @@ function renderPlans() {
   </section>`;
 }
 
-function renderLogin() {
-  return `
-  <section class="py-16 bg-gray-50 min-h-screen flex items-center">
-    <div class="max-w-md mx-auto px-4 w-full">
-      <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
-        <div class="text-center mb-8">
-          <div class="w-16 h-16 bg-gradient-to-br from-teal-500 to-emerald-500 rounded-2xl mx-auto mb-4 flex items-center justify-center">
-            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
-            </svg>
-          </div>
-          <h1 class="text-2xl font-bold text-gray-800">${t('login_title')}</h1>
-        </div>
-        <form id="login-form" class="space-y-5">
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">${t('login_email')}</label>
-            <input type="email" id="login-email" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition" placeholder="seu@email.com">
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">${t('login_password')}</label>
-            <input type="password" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition" placeholder="********">
-          </div>
-          <div class="flex justify-end">
-            <a class="text-sm text-teal-600 hover:text-teal-700 cursor-pointer">${t('login_forgot')}</a>
-          </div>
-          <button type="submit" class="w-full bg-teal-600 text-white py-3 rounded-xl font-semibold hover:bg-teal-700 transition shadow-md">${t('login_submit')}</button>
-        </form>
-        <div class="mt-6 text-center text-sm text-gray-600">
-          ${t('login_no_account')} <a onclick="navigate('signup')" class="text-teal-600 font-semibold hover:text-teal-700 cursor-pointer">${t('login_signup_link')}</a>
-        </div>
-      </div>
-    </div>
-  </section>`;
-}
+// Texto-base da Política de Privacidade (LGPD). Deve ser revisado pela profissional.
+function renderPrivacidade() {
+  const site = content.site;
+  const responsavel = [site.profissional, site.profissao, site.registro].filter(Boolean).map(esc).join(', ');
+  const wa = whatsappLink();
+  const email = emailValido();
+  const contatos = [
+    email ? `pelo e-mail <a href="mailto:${esc(email)}" class="text-teal-700 underline">${esc(email)}</a>` : '',
+    wa ? `pelo <a href="${esc(wa)}" target="_blank" rel="noopener" class="text-teal-700 underline">WhatsApp</a>` : '',
+  ].filter(Boolean);
+  const contato = contatos.length ? contatos.join(' ou ') : 'pelos canais de contato informados no site';
+  const secao = (titulo, corpo) => `
+        <h2 class="text-xl font-bold text-gray-800 mt-8 mb-3">${titulo}</h2>
+        ${corpo}`;
+  const p = texto => `<p class="text-gray-600 leading-relaxed mb-3">${texto}</p>`;
+  const ul = itens => `<ul class="list-disc pl-6 text-gray-600 leading-relaxed mb-3 space-y-1">${itens.map(i => `<li>${i}</li>`).join('')}</ul>`;
 
-function renderSignup() {
   return `
-  <section class="py-16 bg-gray-50 min-h-screen flex items-center">
-    <div class="max-w-md mx-auto px-4 w-full">
-      <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
-        <div class="text-center mb-8">
-          <div class="w-16 h-16 bg-gradient-to-br from-teal-500 to-emerald-500 rounded-2xl mx-auto mb-4 flex items-center justify-center">
-            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
-            </svg>
-          </div>
-          <h1 class="text-2xl font-bold text-gray-800">${t('signup_title')}</h1>
-        </div>
-        <form id="signup-form" class="space-y-5">
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">${t('signup_name')}</label>
-            <input type="text" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition" placeholder="Joao Silva">
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">${t('signup_email')}</label>
-            <input type="email" id="signup-email" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition" placeholder="seu@email.com">
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">${t('signup_password')}</label>
-            <input type="password" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition" placeholder="********">
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">${t('signup_confirm')}</label>
-            <input type="password" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition" placeholder="********">
-          </div>
-          <button type="submit" class="w-full bg-teal-600 text-white py-3 rounded-xl font-semibold hover:bg-teal-700 transition shadow-md">${t('signup_submit')}</button>
-        </form>
-        <div class="mt-6 text-center text-sm text-gray-600">
-          ${t('signup_has_account')} <a onclick="navigate('login')" class="text-teal-600 font-semibold hover:text-teal-700 cursor-pointer">${t('signup_login_link')}</a>
-        </div>
+  <section class="py-16 bg-gray-50">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 md:p-10">
+        <h1 class="text-3xl font-bold text-gray-800 mb-2">Política de Privacidade</h1>
+        <p class="text-sm text-gray-500 mb-6">Última atualização: outubro de 2026</p>
+        ${p('Esta política explica quais dados pessoais este site coleta, para que eles são usados e quais são os seus direitos, de acordo com a Lei Geral de Proteção de Dados (Lei nº 13.709/2018, LGPD).')}
+        ${secao('1. Quem é responsável pelos seus dados', p(`O site Sobre você é mantido por ${responsavel}, responsável pelo tratamento dos dados pessoais coletados aqui.`))}
+        ${secao('2. Quais dados coletamos', `
+          ${p('Coletamos apenas os dados que você informa no formulário de agendamento:')}
+          ${ul(['nome;', 'e-mail (opcional);', 'data, horário e modalidade de atendimento desejados;', 'observações sobre o motivo da consulta (opcional).'])}
+          ${p('As observações podem conter informações sobre a sua saúde, que a LGPD considera dados sensíveis. Escreva apenas o necessário para o agendamento. Os detalhes podem ser conversados durante o atendimento.')}
+          ${p('O site não usa cookies de rastreamento nem ferramentas de análise de visitantes.')}`)}
+        ${secao('3. Para que usamos os dados', p('Os dados são usados exclusivamente para responder ao seu pedido, organizar o agendamento e realizar o atendimento. O tratamento acontece com base no seu consentimento, dado ao marcar a caixa de concordância no formulário.'))}
+        ${secao('4. Onde os dados ficam', `
+          ${ul([
+            'O registro do pedido é armazenado no Google Firebase, um serviço de banco de dados do Google, com acesso restrito à profissional.',
+            'A mensagem de agendamento é enviada pelo WhatsApp, a partir do seu próprio aplicativo, e segue também a política de privacidade do WhatsApp.',
+            'Para funcionar, o site carrega fontes e componentes técnicos de serviços do Google, que podem registrar dados técnicos de acesso, como o endereço IP.',
+          ])}`)}
+        ${secao('5. Compartilhamento', p('Seus dados não são vendidos nem compartilhados com terceiros, exceto quando houver obrigação legal ou ordem judicial.'))}
+        ${secao('6. Por quanto tempo guardamos', p('Os dados são guardados pelo tempo necessário ao atendimento e pelos prazos exigidos pela legislação e pelas normas éticas e profissionais da enfermagem.'))}
+        ${secao('7. Sigilo profissional', p('Todas as informações compartilhadas no atendimento são protegidas pelo sigilo profissional previsto no Código de Ética dos Profissionais de Enfermagem.'))}
+        ${secao('8. Seus direitos', `
+          ${p('Você pode, a qualquer momento:')}
+          ${ul(['confirmar se tratamos seus dados e pedir acesso a eles;', 'corrigir dados incompletos ou desatualizados;', 'pedir a exclusão dos seus dados;', 'revogar o consentimento.'])}
+          ${p(`Para exercer esses direitos ou tirar dúvidas, entre em contato ${contato}.`)}`)}
+        ${secao('9. Alterações', p('Esta política pode ser atualizada. A data da última atualização fica sempre no topo desta página.'))}
       </div>
     </div>
   </section>`;

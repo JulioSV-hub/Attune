@@ -422,13 +422,12 @@ const CAMPOS = {
   aulas: { rotulo: 'Número de aulas', tipo: 'number', max: 500, dica: 'Deixe 0 para vídeos avulsos.' },
   duracao: { rotulo: 'Duração (minutos)', tipo: 'number', max: 10000 },
   paginas: { rotulo: 'Número de páginas', tipo: 'number', max: 5000 },
-  link: { rotulo: 'Link do conteúdo', tipo: 'url', dica: 'Opcional. Ex.: link do YouTube, Google Drive ou da plataforma do curso.' },
-  liberado: { rotulo: 'Liberado para quem tem conta no site (sem assinatura)', tipo: 'checkbox' },
+  link: { rotulo: 'Link do conteúdo', tipo: 'url', dica: 'Ex.: link do YouTube, Google Drive ou da plataforma do curso. Sem link, o site mostra "Em breve".' },
 };
 
 const COLECOES = {
-  cursos: { titulo: 'Cursos e vídeos', singular: 'conteúdo', campos: ['tipo', 'icone', 'titulo', 'descricao', 'aulas', 'duracao', 'link', 'liberado'] },
-  materiais: { titulo: 'Materiais de leitura', singular: 'material', campos: ['tipo', 'icone', 'titulo', 'descricao', 'paginas', 'link', 'liberado'] },
+  cursos: { titulo: 'Cursos e vídeos', singular: 'conteúdo', campos: ['tipo', 'icone', 'titulo', 'descricao', 'aulas', 'duracao', 'link'] },
+  materiais: { titulo: 'Materiais de leitura', singular: 'material', campos: ['tipo', 'icone', 'titulo', 'descricao', 'paginas', 'link'] },
   atividades: { titulo: 'Atividades terapêuticas', singular: 'atividade', campos: ['tipo', 'icone', 'titulo', 'descricao', 'duracao', 'link'] },
 };
 
@@ -470,7 +469,7 @@ function criarEditor(colecao) {
     </form>
     <div class="card p-0 overflow-x-auto" data-tabela-box>
       <table class="admin-table">
-        <thead><tr><th></th><th>Título</th><th>Tipo</th>${cfg.campos.includes('liberado') ? '<th>Acesso</th>' : ''}<th>Ações</th></tr></thead>
+        <thead><tr><th></th><th>Título</th><th>Tipo</th><th>No site</th><th>Ações</th></tr></thead>
         <tbody data-tabela></tbody>
       </table>
     </div>
@@ -501,7 +500,7 @@ function criarEditor(colecao) {
         <td class="text-2xl">${escapeHtml(it.icone)}</td>
         <td>${escapeHtml(it.titulo)}<div class="muted">${escapeHtml(String(it.descricao || '').slice(0, 90))}</div></td>
         <td><span class="status-badge ${tipo?.cor || 'bg-gray-100'}">${escapeHtml(tipo?.rotulo || it.tipo)}</span></td>
-        ${cfg.campos.includes('liberado') ? `<td class="whitespace-nowrap text-xs">${it.liberado ? 'Liberado' : 'Assinantes'}</td>` : ''}
+        <td class="whitespace-nowrap text-xs">${link ? 'Com link' : '<span class="text-gray-400">Em breve</span>'}</td>
         <td class="whitespace-nowrap space-x-1">
           <button type="button" class="icon-btn" data-mover="-1" data-id="${it.id}" title="Subir" aria-label="Subir" ${i === 0 ? 'disabled' : ''}>↑</button>
           <button type="button" class="icon-btn" data-mover="1" data-id="${it.id}" title="Descer" aria-label="Descer" ${i === itens.length - 1 ? 'disabled' : ''}>↓</button>
@@ -630,8 +629,54 @@ trackDirty(siteForm);
 
 const SITE_CAMPOS = {
   siteProfissional: 'profissional', siteProfissao: 'profissao', siteRegistro: 'registro', siteWhatsapp: 'whatsapp',
+  siteEmail: 'email', siteInstagram: 'instagram',
   siteHeroTitulo: 'heroTitulo', siteHeroSubtitulo: 'heroSubtitulo', siteSobreTexto: 'sobreTexto',
 };
+
+// Aceita "@perfil", "perfil" ou o link do perfil; retorna só o nome (ou null se inválido).
+function perfilInstagram(texto) {
+  const t = String(texto || '').trim();
+  if (!t) return '';
+  const m = t.match(/^(?:https?:\/\/)?(?:www\.)?instagram\.com\/([A-Za-z0-9._]{1,30})\/?(?:\?.*)?$/i) || t.match(/^@?([A-Za-z0-9._]{1,30})$/);
+  return m ? m[1] : null;
+}
+
+function faqItemHtml(item = { pergunta: '', resposta: '' }) {
+  return `
+    <div class="flex gap-3 items-start border border-gray-200 rounded-lg p-3" data-faq>
+      <div class="flex-1 space-y-2">
+        <input type="text" data-campo="pergunta" maxlength="150" class="input" placeholder="Pergunta" aria-label="Pergunta" value="${escapeHtml(item.pergunta)}">
+        <textarea data-campo="resposta" rows="3" maxlength="1000" class="input" placeholder="Resposta" aria-label="Resposta">${escapeHtml(item.resposta)}</textarea>
+      </div>
+      <div class="flex flex-col gap-1">
+        <button type="button" class="icon-btn" data-mover="-1" title="Subir" aria-label="Subir">↑</button>
+        <button type="button" class="icon-btn" data-mover="1" title="Descer" aria-label="Descer">↓</button>
+        <button type="button" class="icon-btn danger" data-remover title="Remover" aria-label="Remover">🗑️</button>
+      </div>
+    </div>`;
+}
+
+$('faqAdicionar').addEventListener('click', () => {
+  $('faqLista').insertAdjacentHTML('beforeend', faqItemHtml());
+  $('faqLista').lastElementChild.querySelector('input').focus();
+  dirtyForms.add('siteForm');
+});
+
+$('faqLista').addEventListener('click', e => {
+  const item = e.target.closest('[data-faq]');
+  if (!item) return;
+  if (e.target.closest('[data-remover]')) {
+    item.remove();
+  } else if (e.target.closest('[data-mover]')) {
+    const dir = Number(e.target.closest('[data-mover]').dataset.mover);
+    const alvo = dir < 0 ? item.previousElementSibling : item.nextElementSibling;
+    if (!alvo) return;
+    if (dir < 0) alvo.before(item); else alvo.after(item);
+  } else {
+    return;
+  }
+  dirtyForms.add('siteForm');
+});
 
 $('horariosGrid').innerHTML = DIAS.map((dia, i) =>
   `<label for="horarios${i}" class="text-sm">${dia}</label><input type="text" id="horarios${i}" class="input" placeholder="Sem atendimento">`).join('');
@@ -647,6 +692,7 @@ function renderSiteForm() {
   for (const [id, campo] of Object.entries(SITE_CAMPOS)) $(id).value = siteData[campo] || '';
   $('siteCredenciais').value = (siteData.credenciais || []).join('\n');
   $('sitePresencial').checked = Boolean(siteData.presencial);
+  $('faqLista').innerHTML = (siteData.faq || []).map(faqItemHtml).join('');
   DIAS.forEach((_, i) => { $(`horarios${i}`).value = (siteData.horarios?.[i] || []).join(', '); });
   fotoAtual = siteData.fotoUrl || '';
   $('fotoPreview').src = fotoAtual || FOTO_PADRAO;
@@ -701,6 +747,15 @@ siteForm.addEventListener('submit', e => {
     return setError(erro, 'WhatsApp inválido. Use 55 + DDD + número, ex.: 5511987654321.');
   }
   dados.whatsapp = digitos;
+  if (dados.email && !$('siteEmail').checkValidity()) return setError(erro, 'E-mail de contato inválido.');
+  const perfil = perfilInstagram(dados.instagram);
+  if (perfil === null) return setError(erro, 'Instagram inválido. Use o nome do perfil, ex.: @seuperfil.');
+  dados.instagram = perfil;
+  dados.faq = [...$('faqLista').querySelectorAll('[data-faq]')].map(el => ({
+    pergunta: el.querySelector('[data-campo=pergunta]').value.trim(),
+    resposta: el.querySelector('[data-campo=resposta]').value.trim(),
+  })).filter(f => f.pergunta || f.resposta);
+  if (dados.faq.some(f => !f.pergunta || !f.resposta)) return setError(erro, 'Cada pergunta frequente precisa de pergunta e resposta.');
   dados.credenciais = linhas($('siteCredenciais').value);
   if (dados.credenciais.length > 6) return setError(erro, 'Use no máximo 6 destaques.');
   dados.presencial = $('sitePresencial').checked;
@@ -729,6 +784,7 @@ siteForm.addEventListener('submit', e => {
 // Planos
 
 let planosData = mergePlanos();
+let planosAtiva = false;
 const planosForm = $('planosForm');
 trackDirty(planosForm);
 
@@ -748,10 +804,12 @@ function precoParaCampo(n) {
 async function loadPlanos() {
   const snap = await fb.getDoc(fb.doc(fb.db, 'config', 'planos'));
   planosData = mergePlanos(snap.exists() ? snap.data().planos : []);
+  planosAtiva = snap.exists() && snap.data().ativa === true;
   renderPlanosForm();
 }
 
 function renderPlanosForm() {
+  $('planosAtiva').checked = planosAtiva;
   $('planosLista').innerHTML = planosData.map(p => `
     <fieldset data-plano="${p.id}">
       <legend>${escapeHtml(p.nome)}</legend>
@@ -820,10 +878,12 @@ planosForm.addEventListener('submit', e => {
 
   withBusy(planosForm.querySelector('button[type=submit]'), async () => {
     try {
-      await fb.setDoc(fb.doc(fb.db, 'config', 'planos'), { planos, atualizadoEm: fb.serverTimestamp() });
+      const ativa = $('planosAtiva').checked;
+      await fb.setDoc(fb.doc(fb.db, 'config', 'planos'), { planos, ativa, atualizadoEm: fb.serverTimestamp() });
       planosData = mergePlanos(planos);
+      planosAtiva = ativa;
       renderPlanosForm();
-      showNotification('Planos salvos.');
+      showNotification(ativa ? 'Planos salvos. A página está no site.' : 'Planos salvos (página escondida no site).');
     } catch (err) { fail(err); }
   });
 });
@@ -840,7 +900,7 @@ async function importarConteudoInicial() {
   const batch = fb.writeBatch(fb.db);
   const agora = fb.serverTimestamp();
   batch.set(fb.doc(fb.db, 'config', 'site'), { ...structuredClone(D.site), atualizadoEm: agora });
-  batch.set(fb.doc(fb.db, 'config', 'planos'), { planos: structuredClone(D.planos), atualizadoEm: agora });
+  batch.set(fb.doc(fb.db, 'config', 'planos'), { planos: structuredClone(D.planos), ativa: D.planosAtiva, atualizadoEm: agora });
   for (const colecao of Object.keys(COLECOES)) {
     D[colecao].forEach(({ id, ...item }) => batch.set(fb.doc(fb.db, colecao, id), { ...item, criadoEm: agora }));
   }

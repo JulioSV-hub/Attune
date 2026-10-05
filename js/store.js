@@ -16,7 +16,7 @@ export function mergeSite(data = {}) {
 
 // Os planos são mesclados pelo id; planos desconhecidos são ignorados.
 export function mergePlanos(lista = []) {
-  return structuredClone(D.planos).map(p => ({ ...p, ...lista.find(x => x.id === p.id) }));
+  return structuredClone(D.planos).map(p => ({ ...p, ...(lista || []).find(x => x.id === p.id) }));
 }
 
 async function carregarDoBanco() {
@@ -30,9 +30,11 @@ async function carregarDoBanco() {
   const [planosSnap, cursos, materiais, atividades] = await Promise.all([
     getDoc(doc(db, 'config', 'planos')), listar('cursos'), listar('materiais'), listar('atividades'),
   ]);
+  const planosDoc = planosSnap.exists() ? planosSnap.data() : {};
   return {
     site: mergeSite(siteSnap.data()),
-    planos: mergePlanos(planosSnap.exists() ? planosSnap.data().planos : []),
+    planos: mergePlanos(planosDoc.planos),
+    planosAtiva: planosDoc.ativa === true,
     cursos, materiais, atividades,
   };
 }

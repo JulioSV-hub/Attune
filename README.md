@@ -2,7 +2,7 @@
 
 Site da enfermeira Claudia Alves de Assis, pós-graduada em psiquiatria, com cursos, vídeos, materiais e atividades sobre comunicação e análise comportamental, planos de assinatura, pedidos de agendamento pelo WhatsApp e um **painel admin com login** para ela editar tudo.
 
-- **Site:** HTML, Tailwind (CDN) e JavaScript puros, na raiz do repositório. Hospedado no GitHub Pages, sem etapa de build.
+- **Site:** HTML e JavaScript puros, na raiz do repositório, hospedado no GitHub Pages. A única etapa de build é o CSS do Tailwind (veja abaixo).
 - **Login e dados:** Firebase (Authentication e Firestore), no plano gratuito.
 - **Painel admin:** <https://juliosv-hub.github.io/Sobre-voce/admin/> (link "Área da profissional" no rodapé).
 
@@ -11,18 +11,18 @@ Site da enfermeira Claudia Alves de Assis, pós-graduada em psiquiatria, com cur
 | Aba | Conteúdo |
 |---|---|
 | Agendamentos | Ver pedidos, confirmar, cancelar, marcar como concluído e excluir |
-| Cursos e vídeos | Criar, editar, reordenar e excluir; tipo, ícone, aulas, duração, link e se fica liberado sem assinatura |
+| Cursos e vídeos | Criar, editar, reordenar e excluir; tipo, ícone, aulas, duração e link (sem link, o card mostra "Em breve") |
 | Materiais | Idem, com número de páginas |
 | Atividades | Idem, com duração |
-| Textos e dados | Nome, profissão, registro, WhatsApp, foto, título e subtítulo da página inicial, texto "Sobre a Profissional", destaques, atendimento presencial, horários por dia da semana |
-| Planos | Nome, preço mensal e anual, itens incluídos, links de pagamento e plano em destaque |
+| Textos e dados | Nome, profissão, registro, WhatsApp, e-mail, Instagram, foto, título e subtítulo da página inicial, texto "Sobre a Profissional", destaques, perguntas frequentes, atendimento presencial, horários por dia da semana |
+| Planos | Mostrar ou esconder a página de planos; nome, preço mensal e anual, itens incluídos, links de pagamento e plano em destaque |
 
 As alterações aparecem no site na hora.
 
 ## Colocar no ar
 
 1. **Configurar o Firebase:** siga o [SETUP-FIREBASE.md](SETUP-FIREBASE.md), o que inclui criar o login da Claudia.
-2. **Publicar:** faça commit e push na branch `main`. O GitHub Pages (Settings → Pages → Deploy from a branch → `main` / root) publica em cerca de 1 minuto.
+2. **Publicar:** se mudou classes do Tailwind no HTML ou no JS, rode `npm run build:css` antes. Depois faça commit e push na branch `main`. O GitHub Pages (Settings → Pages → Deploy from a branch → `main` / root) publica em cerca de 1 minuto.
 
 Enquanto o Firebase não estiver configurado, o site funciona com o conteúdo de [`js/defaults.js`](js/defaults.js) e o painel mostra "Painel indisponível".
 
@@ -30,6 +30,10 @@ Enquanto o Firebase não estiver configurado, o site funciona com o conteúdo de
 
 ```
 index.html                site (SPA com rotas por #)
+og-image.jpg              imagem de prévia ao compartilhar o link
+css/site.css              CSS gerado pelo Tailwind (não editar à mão)
+src/tailwind.css          origem do CSS, incluindo os componentes do painel
+tailwind.config.js        onde o Tailwind procura as classes usadas
 app.js                    roteador, menu, rodapé e agendamento
 pages.js                  páginas do site
 textos.js                 textos fixos da interface
@@ -45,6 +49,17 @@ firestore.rules           regras de acesso ao banco (colar no Console do Firebas
 firebase.json             configuração do emulador local
 ```
 
+## CSS (Tailwind)
+
+O CSS é gerado a partir das classes usadas no HTML e no JS. Sempre que usar uma classe nova, gere de novo:
+
+```bash
+npm install          # só na primeira vez
+npm run build:css    # ou npm run watch:css enquanto edita
+```
+
+Classes montadas por concatenação (ex.: `'bg-' + cor`) não são encontradas: escreva sempre o nome completo da classe.
+
 ## Testar localmente
 
 ```bash
@@ -56,5 +71,8 @@ python -m http.server 8000
 
 ## Observações
 
-- **Login de alunos:** "Entrar" e "Cadastrar" no site ainda são demonstração (ficam só no navegador). O login real é apenas o do painel admin.
+- **Sem área de alunos:** o único login é o do painel admin. Conteúdo pago deve ficar numa plataforma de cursos (ex.: Kiwify, Hotmart), com o link no card.
+- **Planos:** a página começa escondida. Ligue no painel só quando preços e itens estiverem confirmados.
+- **Política de Privacidade:** é um texto-base (`#privacidade`, em `pages.js`). Deve ser revisado pela profissional, de preferência com orientação jurídica.
+- **Prévia de compartilhamento:** as tags `og:*` do `index.html` usam o endereço do GitHub Pages. Se o domínio mudar, atualize-as.
 - **Pedidos de agendamento:** são enviados pelo WhatsApp e registrados no Firestore. Pelas regras de acesso, só o admin consegue ler esses registros.

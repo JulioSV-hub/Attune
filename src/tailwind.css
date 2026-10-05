@@ -1,0 +1,33 @@
+/* Origem do CSS do site e do painel. Gere css/site.css com: npm run build:css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Componentes do painel admin (admin/index.html). */
+@layer components {
+    .btn { @apply inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl font-medium text-sm transition disabled:opacity-60 disabled:cursor-wait; }
+    .btn-primary { @apply bg-teal-600 text-white hover:bg-teal-700 shadow-sm; }
+    .btn-outline { @apply border border-gray-300 text-gray-700 bg-white hover:border-teal-400 hover:text-teal-700; }
+    .btn-small { @apply px-3 py-1.5 text-xs; }
+    .input { @apply w-full px-3 py-2 border border-gray-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500; }
+    .label { @apply block text-sm font-medium text-gray-700 mb-1; }
+    .hint { @apply block text-xs text-gray-500 mt-1; }
+    .card { @apply bg-white rounded-2xl shadow-sm border border-gray-100 p-6; }
+    .tab { @apply px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100 whitespace-nowrap; }
+    .tab.active { @apply bg-teal-600 text-white hover:bg-teal-600; }
+    .icon-btn { @apply w-8 h-8 inline-flex items-center justify-center rounded-lg border border-gray-200 bg-white text-gray-600 hover:border-teal-400 hover:text-teal-700 disabled:opacity-30; }
+    .icon-btn.danger { @apply hover:border-red-400 hover:text-red-600; }
+    .form-error { @apply bg-red-50 border border-red-200 text-red-700 p-3 rounded-lg text-sm; }
+    .link-button { @apply text-sm text-teal-700 hover:underline; }
+    .admin-table { @apply w-full text-sm; }
+    .admin-table th { @apply text-left font-semibold text-gray-600 px-3 py-2 border-b border-gray-200 whitespace-nowrap; }
+    .admin-table td { @apply px-3 py-3 border-b border-gray-100 align-top; }
+    .muted { @apply text-xs text-gray-500; }
+    .status-badge { @apply inline-block text-xs px-2 py-1 rounded-full font-medium whitespace-nowrap; }
+    .status-pendente { @apply bg-amber-100 text-amber-800; }
+    .status-confirmado { @apply bg-teal-100 text-teal-800; }
+    .status-concluido { @apply bg-gray-100 text-gray-700; }
+    .status-cancelado { @apply bg-red-100 text-red-700; }
+    fieldset { @apply border border-gray-200 rounded-xl p-5 mb-6; }
+    legend { @apply px-2 font-semibold text-gray-800; }
+}

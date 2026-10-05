@@ -1,0 +1,12 @@
+{
+  "name": "sobre-voce",
+  "private": true,
+  "description": "Site Sobre você. Só o CSS tem etapa de build; o resto é estático.",
+  "scripts": {
+    "build:css": "tailwindcss -i src/tailwind.css -o css/site.css --minify",
+    "watch:css": "tailwindcss -i src/tailwind.css -o css/site.css --watch"
+  },
+  "devDependencies": {
+    "tailwindcss": "3.4.19"
+  }
+}

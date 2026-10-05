@@ -6,40 +6,13 @@
   <meta name="robots" content="noindex, nofollow">
   <title>Painel da Profissional - Sobre voc&ecirc;</title>
   <link rel="icon" type="image/svg+xml" href="../favicon.svg">
-  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="../css/site.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
     * { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
     [hidden] { display: none !important; }
-  </style>
-  <style type="text/tailwindcss">
-    .btn { @apply inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl font-medium text-sm transition disabled:opacity-60 disabled:cursor-wait; }
-    .btn-primary { @apply bg-teal-600 text-white hover:bg-teal-700 shadow-sm; }
-    .btn-outline { @apply border border-gray-300 text-gray-700 bg-white hover:border-teal-400 hover:text-teal-700; }
-    .btn-small { @apply px-3 py-1.5 text-xs; }
-    .input { @apply w-full px-3 py-2 border border-gray-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500; }
-    .label { @apply block text-sm font-medium text-gray-700 mb-1; }
-    .hint { @apply block text-xs text-gray-500 mt-1; }
-    .card { @apply bg-white rounded-2xl shadow-sm border border-gray-100 p-6; }
-    .tab { @apply px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100 whitespace-nowrap; }
-    .tab.active { @apply bg-teal-600 text-white hover:bg-teal-600; }
-    .icon-btn { @apply w-8 h-8 inline-flex items-center justify-center rounded-lg border border-gray-200 bg-white text-gray-600 hover:border-teal-400 hover:text-teal-700 disabled:opacity-30; }
-    .icon-btn.danger { @apply hover:border-red-400 hover:text-red-600; }
-    .form-error { @apply bg-red-50 border border-red-200 text-red-700 p-3 rounded-lg text-sm; }
-    .link-button { @apply text-sm text-teal-700 hover:underline; }
-    .admin-table { @apply w-full text-sm; }
-    .admin-table th { @apply text-left font-semibold text-gray-600 px-3 py-2 border-b border-gray-200 whitespace-nowrap; }
-    .admin-table td { @apply px-3 py-3 border-b border-gray-100 align-top; }
-    .muted { @apply text-xs text-gray-500; }
-    .status-badge { @apply inline-block text-xs px-2 py-1 rounded-full font-medium whitespace-nowrap; }
-    .status-pendente { @apply bg-amber-100 text-amber-800; }
-    .status-confirmado { @apply bg-teal-100 text-teal-800; }
-    .status-concluido { @apply bg-gray-100 text-gray-700; }
-    .status-cancelado { @apply bg-red-100 text-red-700; }
-    fieldset { @apply border border-gray-200 rounded-xl p-5 mb-6; }
-    legend { @apply px-2 font-semibold text-gray-800; }
   </style>
 </head>
 <body class="bg-gray-50 text-gray-800 antialiased">
@@ -229,6 +202,16 @@
                   <input type="tel" id="siteWhatsapp" maxlength="20" class="input" placeholder="5511987654321">
                   <span class="hint">Com 55 e DDD. Ex.: 55 11 98765-4321. Sem ele, o agendamento n&atilde;o envia.</span>
                 </div>
+                <div>
+                  <label for="siteEmail" class="label">E-mail de contato</label>
+                  <input type="email" id="siteEmail" maxlength="120" class="input" placeholder="contato@exemplo.com">
+                  <span class="hint">Aparece no rodap&eacute; e na Pol&iacute;tica de Privacidade.</span>
+                </div>
+                <div>
+                  <label for="siteInstagram" class="label">Instagram</label>
+                  <input type="text" id="siteInstagram" maxlength="80" class="input" placeholder="@seuperfil">
+                  <span class="hint">S&oacute; o nome do perfil ou o link. Aparece no rodap&eacute;.</span>
+                </div>
               </div>
             </fieldset>
 
@@ -256,6 +239,13 @@
             </fieldset>
 
             <fieldset>
+              <legend>Perguntas frequentes</legend>
+              <span class="hint mb-3">Aparecem na p&aacute;gina inicial, abaixo de "Sobre a Profissional". Sem perguntas, a se&ccedil;&atilde;o some.</span>
+              <div id="faqLista" class="space-y-3 mb-3"></div>
+              <button type="button" class="btn btn-outline btn-small" id="faqAdicionar">+ Adicionar pergunta</button>
+            </fieldset>
+
+            <fieldset>
               <legend>Agendamento</legend>
               <label class="flex items-center gap-2 mb-4"><input type="checkbox" id="sitePresencial"> Oferecer atendimento presencial</label>
               <label class="label">Hor&aacute;rios oferecidos no formul&aacute;rio</label>
@@ -277,7 +267,9 @@
         <!-- PLANOS -->
         <div data-panel="planos" hidden>
           <form class="card" id="planosForm" novalidate>
-            <p class="text-sm text-gray-600 mb-4">Pre&ccedil;os em reais por m&ecirc;s. No plano anual, informe o valor mensal equivalente. Os links de pagamento s&atilde;o opcionais: sem link, o bot&atilde;o "Assinar" leva ao cadastro do site.</p>
+            <label class="flex items-center gap-2 font-semibold mb-1"><input type="checkbox" id="planosAtiva"> Mostrar a p&aacute;gina de planos no site</label>
+            <span class="hint mb-4">Desligada, o item "Planos" some do menu e da p&aacute;gina inicial. Ligue s&oacute; quando os pre&ccedil;os e os itens abaixo estiverem confirmados.</span>
+            <p class="text-sm text-gray-600 mb-4">Pre&ccedil;os em reais por m&ecirc;s. No plano anual, informe o valor mensal equivalente. Os links de pagamento s&atilde;o opcionais: sem link, o bot&atilde;o leva ao seu WhatsApp.</p>
             <div id="planosLista"></div>
             <div class="mb-6">
               <label class="label">Plano em destaque ("Mais Popular")</label>

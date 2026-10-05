@@ -44,14 +44,15 @@ Para dar acesso a outra pessoa depois, repita os passos 3.3, 3.4 e 5 com o UID d
 1. Faça commit e push. O GitHub Pages publica o site (veja o [README](README.md)).
 2. A Claudia acessa <https://juliosv-hub.github.io/Sobre-voce/admin/> (ou o link **Área da profissional** no rodapé), digita o e-mail e clica em **Esqueci minha senha** para criar a própria senha. Assim você não fica sabendo a senha dela. Se ela entrar com a senha provisória, o painel pede a troca antes de liberar o acesso.
 3. No primeiro acesso, o painel copia sozinho para o banco o conteúdo atual do site: textos, cursos, materiais, atividades e planos.
-4. Na aba **Textos e dados**, ela preenche o **WhatsApp** e o **registro profissional** (COREN) e salva. Até o WhatsApp ser preenchido, o formulário de agendamento não envia nada.
+4. Na aba **Textos e dados**, ela preenche o **WhatsApp**, o **registro profissional** (COREN), o e-mail e o Instagram e salva. Até o WhatsApp ser preenchido, o formulário de agendamento não envia nada e o botão flutuante do WhatsApp não aparece.
+5. Na aba **Planos**, ela confere preços e itens e liga **Mostrar a página de planos no site** quando estiver tudo certo.
 
 ## O que fica onde
 
 | Dado | Onde | Quem lê | Quem altera |
 |---|---|---|---|
 | Textos, foto, WhatsApp, horários | `config/site` | Todos | Admin |
-| Planos | `config/planos` | Todos | Admin |
+| Planos e se a página aparece | `config/planos` | Todos | Admin |
 | Cursos e vídeos | `cursos/*` | Todos | Admin |
 | Materiais | `materiais/*` | Todos | Admin |
 | Atividades | `atividades/*` | Todos | Admin |
@@ -60,7 +61,7 @@ Para dar acesso a outra pessoa depois, repita os passos 3.3, 3.4 e 5 com o UID d
 
 ## Recomendações
 
-- **Conteúdo pago:** os links de cursos e materiais ficam no banco com leitura pública. O login de alunos do site ainda é só demonstração, então não use esses links para conteúdo que só assinantes podem ver. Para isso, use uma plataforma de cursos (ex.: Kiwify, Hotmart) e coloque no painel o link da página de venda ou o link de pagamento do plano.
+- **Conteúdo pago:** os links de cursos e materiais ficam no banco com leitura pública, então não use esses links para conteúdo que só assinantes podem ver. Para isso, use uma plataforma de cursos (ex.: Kiwify, Hotmart) e coloque no painel o link da página de venda ou o link de pagamento do plano.
 - **Limite a chave da API** (opcional, mas recomendado): no Google Cloud Console, abra **APIs e serviços → Credenciais**, clique na chave "Browser key", escolha **Restrições de aplicativo → Referenciadores HTTP** e adicione `https://juliosv-hub.github.io/*`.
 - **Spam de agendamentos:** as regras validam formato e tamanho de cada pedido, mas não limitam a quantidade. Se aparecer spam, ative o **App Check** com reCAPTCHA Enterprise (Firebase → App Check) e adicione a verificação no site.
 - **Backup:** o plano gratuito não faz backup automático. Os pedidos de agendamento também chegam pelo WhatsApp, então a perda de dados tem impacto baixo. Mesmo assim, evite excluir itens em massa.
