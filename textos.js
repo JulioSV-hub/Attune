@@ -32,6 +32,11 @@ const textos = {
   // About
   about_title: "Sobre a Profissional",
 
+  // Novidades
+  novidades_title: "Novidades",
+  novidades_subtitle: "O que foi publicado por aqui recentemente",
+  novidades_badge: "Novo",
+
   // FAQ
   faq_title: "Perguntas frequentes",
 

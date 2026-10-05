@@ -67,6 +67,7 @@
         <div class="opcoes print:hidden">
           ${temCiclos ? `<label>Ciclos: <select data-ciclos>${cfg.ciclos.opcoes.map(n => `<option value="${n}"${n === cfg.ciclos.padrao ? ' selected' : ''}>${n}</option>`).join('')}</select></label>` : ''}
           <label data-voz-opcao hidden><input type="checkbox" data-voz checked> Voz guia</label>
+          <label data-voz-escolha hidden>Voz: <select data-voz-nome></select></label>
           <label><input type="checkbox" data-som checked> Som ao trocar de etapa</label>
         </div>
         <p class="concluido" data-fim hidden></p>
@@ -89,7 +90,22 @@
     // Voz guia (js/leitor.js): lê cada etapa quando ela começa. Na respiração, só o comando curto.
     const voz = window.SVVoz;
     const vozLigada = () => Boolean(voz?.disponivel && !$('voz-opcao').hidden && $('voz').checked);
-    voz?.pronto.then(() => { if (voz.disponivel) $('voz-opcao').hidden = false; });
+    voz?.pronto.then(() => {
+      if (!voz.disponivel) return;
+      $('voz-opcao').hidden = false;
+      // Lista de vozes só quando o aparelho tem mais de uma em português.
+      if (voz.vozes.length > 1) {
+        const sel = $('voz-nome');
+        sel.innerHTML = voz.vozes.map(v => `<option value="${esc(v.nome)}">${esc(v.rotulo)}</option>`).join('');
+        sel.value = voz.vozAtual;
+        $('voz-escolha').hidden = false;
+        sel.addEventListener('change', e => {
+          voz.usarVoz(e.target.value);
+          // Prova a voz escolhida com a etapa atual.
+          if (vozLigada()) voz.falar(seq[etapaAtual]?.titulo || 'Voz escolhida.');
+        });
+      }
+    });
 
     function mostrarEtapa(e) {
       if (vozLigada()) voz.falar(e.fase ? e.titulo : `${e.titulo}. ${e.texto || ''}`);

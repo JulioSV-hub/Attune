@@ -77,6 +77,8 @@ function renderHome() {
     </div>
   </section>
 
+  ${renderNovidades()}
+
   ${renderFaq()}
 
   <!-- CTA Section -->
@@ -127,6 +129,66 @@ function renderFeatureCard(emoji, title, desc, link) {
     <h3 class="text-xl font-bold text-gray-800 mb-3 group-hover:text-teal-600 transition">${title}</h3>
     <p class="text-gray-600 leading-relaxed">${desc}</p>
   </a>`;
+}
+
+// Novidades: conteúdos com link, dos mais recentes para os mais antigos.
+// Usa publicadoEm (quando ganhou o link); sem ela, cai em criadoEm.
+function dataPublicacao(item) {
+  const t = item.publicadoEm || item.criadoEm;
+  return Number(t?.seconds || t?._seconds || 0);
+}
+
+function novidades(limite = 3) {
+  const colecoes = [
+    ['cursos', 'courses', 'cursos'],
+    ['materiais', 'materials', 'materiais'],
+    ['atividades', 'activities', 'atividades'],
+  ];
+  return colecoes
+    .flatMap(([chave, pagina, grupo]) => (content[chave] || []).map(item => ({ ...item, pagina, grupo })))
+    .filter(item => safeUrl(item.link) && dataPublicacao(item) > 0)
+    .sort((a, b) => dataPublicacao(b) - dataPublicacao(a))
+    .slice(0, limite);
+}
+
+// "Novo" no que entrou nos últimos 30 dias.
+function ehNovo(item) {
+  return (Date.now() / 1000 - dataPublicacao(item)) < 30 * 24 * 3600;
+}
+
+function renderNovidades() {
+  const itens = novidades();
+  if (!itens.length) return '';
+  const quando = seg => new Date(seg * 1000).toLocaleDateString('pt-BR', { day: 'numeric', month: 'long' });
+  return `
+  <section class="py-20 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-800 mb-4">${t('novidades_title')}</h2>
+      <p class="text-center text-gray-600 mb-12">${t('novidades_subtitle')}</p>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        ${itens.map(item => {
+          const url = safeUrl(item.link);
+          const novaAba = LINK_INTERNO.test(url) ? '' : ' target="_blank" rel="noopener"';
+          const detalhe = Number(item.paginas) > 0 ? `${Number(item.paginas)} ${t('materials_pages')}`
+            : Number(item.aulas) > 0 ? `${Number(item.aulas)} ${t('courses_lessons')}`
+            : Number(item.duracao) > 0 ? `${Number(item.duracao)} ${t('activities_duration')}` : '';
+          return `
+        <a href="${esc(url)}"${novaAba} class="block bg-white rounded-2xl shadow-sm hover:shadow-lg border border-gray-100 p-6 transition-all hover:-translate-y-1 group">
+          <div class="flex items-start justify-between mb-3 gap-2">
+            <span class="text-4xl">${esc(item.icone)}</span>
+            <div class="flex flex-col items-end gap-1.5">
+              ${ehNovo(item) ? `<span class="text-xs px-2 py-1 rounded-full bg-amber-100 text-amber-800 font-bold">${t('novidades_badge')}</span>` : ''}
+              ${tipoBadge(item.grupo, item.tipo)}
+            </div>
+          </div>
+          <h3 class="text-lg font-bold text-gray-800 mb-2 group-hover:text-teal-600 transition">${esc(item.titulo)}</h3>
+          <p class="text-gray-600 text-sm mb-4">${esc(item.descricao)}</p>
+          <p class="text-xs text-gray-500">${quando(dataPublicacao(item))}${detalhe ? ` · ${detalhe}` : ''}</p>
+        </a>`;
+        }).join('')}
+      </div>
+    </div>
+  </section>`;
 }
 
 function renderFaq() {

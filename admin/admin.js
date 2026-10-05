@@ -607,10 +607,14 @@ function criarEditor(colecao) {
     withBusy(form.querySelector('button[type=submit]'), async () => {
       try {
         if (editId) {
+          const antes = itens.find(x => x.id === editId);
+          // publicadoEm = quando o conteúdo passou a ter link; é o que ordena as Novidades no site.
+          if (dados.link && !antes?.publicadoEm) dados.publicadoEm = fb.serverTimestamp();
           await fb.updateDoc(fb.doc(fb.db, colecao, editId), { ...dados, atualizadoEm: fb.serverTimestamp() });
         } else {
           const ordem = Math.max(0, ...itens.map(x => Number(x.ordem) || 0)) + 1;
-          await fb.setDoc(fb.doc(fb.collection(fb.db, colecao)), { ...dados, ordem, criadoEm: fb.serverTimestamp() });
+          const agora = fb.serverTimestamp();
+          await fb.setDoc(fb.doc(fb.collection(fb.db, colecao)), { ...dados, ordem, criadoEm: agora, ...(dados.link ? { publicadoEm: agora } : {}) });
         }
         await carregar();
         fechar();
@@ -699,10 +703,12 @@ function criarProntos(colecao) {
           const extra = {};
           if (campos.paginas) extra.paginas = Number(campos.paginas);
           if (campos.duracao) extra.duracao = Number(campos.duracao);
+          if (!existente.publicadoEm) extra.publicadoEm = fb.serverTimestamp();
           await fb.updateDoc(fb.doc(fb.db, colecao, existente.id), { link, ...extra, atualizadoEm: fb.serverTimestamp() });
         } else {
           const ordem = Math.min(1, ...itens.map(x => Number(x.ordem) || 0)) - 1;
-          await fb.setDoc(fb.doc(fb.collection(fb.db, colecao)), { ...campos, link, ordem, criadoEm: fb.serverTimestamp() });
+          const agora = fb.serverTimestamp();
+          await fb.setDoc(fb.doc(fb.collection(fb.db, colecao)), { ...campos, link, ordem, criadoEm: agora, publicadoEm: agora });
         }
         await editores[colecao].carregar();
         showNotification(existente ? 'Publicado! O card que já existia agora abre o conteúdo.' : 'Publicado! Já aparece no site, em primeiro lugar.');

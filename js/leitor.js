@@ -7,13 +7,38 @@
   if (!synth || !window.SpeechSynthesisUtterance) return;
 
   // Prefere vozes em pt-BR mais naturais (Edge "Natural/Online", Google), depois qualquer pt-BR, depois pt.
+  const CHAVE_VOZ = 'sobrevoce.voz';
   let voz = null;
+  let vozesPt = [];
+
   function escolherVoz() {
     const vozes = synth.getVoices();
     const pontos = v => (v.lang.replace('_', '-').toLowerCase().startsWith('pt-br') ? 10 : v.lang.toLowerCase().startsWith('pt') ? 5 : -100)
       + (/natural|online/i.test(v.name) ? 3 : /google/i.test(v.name) ? 2 : 0);
-    voz = vozes.filter(v => pontos(v) > 0).sort((a, b) => pontos(b) - pontos(a))[0] || null;
+    vozesPt = vozes.filter(v => pontos(v) > 0).sort((a, b) => pontos(b) - pontos(a));
+    const salva = localStorage.getItem(CHAVE_VOZ);
+    voz = vozesPt.find(v => v.name === salva) || vozesPt[0] || null;
     return vozes.length;
+  }
+
+  function usarVoz(nome) {
+    const escolhida = vozesPt.find(v => v.name === nome);
+    if (!escolhida) return;
+    voz = escolhida;
+    try { localStorage.setItem(CHAVE_VOZ, nome); } catch { /* navegação privada */ }
+  }
+
+  // Nome curto para a lista: "Microsoft Francisca Online (Natural) - Portuguese (Brazil)" vira "Francisca (natural)".
+  function nomeCurto(v) {
+    let n = v.name
+      .replace(/^(Microsoft|Google|Apple)\s+/i, '')
+      .replace(/\s*[-–]\s*(Portuguese|Portugu[eê]s).*$/i, '')
+      .replace(/\s*\((Brazil|Brasil|Portugal|Portuguese[^)]*)\)/gi, '')
+      .trim();
+    const natural = /natural/i.test(v.name);
+    n = n.replace(/\s*(Online|Natural)\s*/gi, ' ').replace(/\(\s*\)/g, '').replace(/\s+/g, ' ').trim() || v.name;
+    const pt = v.lang.replace('_', '-').toLowerCase().startsWith('pt-br') ? '' : ' · Portugal';
+    return `${n}${natural ? ' (natural)' : ''}${pt}`;
   }
 
   // Algumas vozes carregam depois da página: espera até 2 s antes de decidir.
@@ -40,6 +65,9 @@
 
   window.SVVoz = {
     pronto,
+    get vozes() { return vozesPt.map(v => ({ nome: v.name, rotulo: nomeCurto(v) })); },
+    get vozAtual() { return voz?.name || ''; },
+    usarVoz,
     // Sem lista de vozes (alguns Android), tenta falar mesmo assim com lang pt-BR.
     get disponivel() { return Boolean(voz) || synth.getVoices().length === 0; },
     falar(texto) { parar(); falar(texto); },
@@ -197,8 +225,11 @@
             <span class="leitor-rotulo">Ouvindo</span>
             <span class="leitor-capitulo" data-capitulo></span>
           </div>
-          <label class="leitor-velocidade"><span class="sr-only">Velocidade</span>
-            <select data-velocidade>
+          <label class="leitor-selecao" data-voz-campo hidden><span class="sr-only">Voz</span>
+            <select data-voz title="Voz da leitura"></select>
+          </label>
+          <label class="leitor-selecao"><span class="sr-only">Velocidade</span>
+            <select data-velocidade title="Velocidade da leitura">
               ${[0.8, 0.9, 1, 1.15, 1.3, 1.5].map(v => `<option value="${v}"${v === 1 ? ' selected' : ''}>${String(v).replace('.', ',')}×</option>`).join('')}
             </select>
           </label>
@@ -216,6 +247,18 @@
       velocidade = Number(e.target.value);
       if (tocando) recomecar();
     });
+    // Lista de vozes: só aparece quando o aparelho tem mais de uma em português.
+    const campoVoz = barra.querySelector('[data-voz-campo]');
+    const seletorVoz = barra.querySelector('[data-voz]');
+    if (vozesPt.length > 1) {
+      seletorVoz.innerHTML = vozesPt.map(v => `<option value="${v.name.replace(/"/g, '&quot;')}">${nomeCurto(v)}</option>`).join('');
+      seletorVoz.value = voz?.name || '';
+      campoVoz.hidden = false;
+      seletorVoz.addEventListener('change', e => {
+        usarVoz(e.target.value);
+        if (tocando) recomecar();
+      });
+    }
     barra.querySelector('[data-fechar]').addEventListener('click', () => {
       tocando = false;
       parar();

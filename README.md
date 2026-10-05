@@ -19,6 +19,8 @@ Site da enfermeira Claudia Alves de Assis, pós-graduada em psiquiatria, com cur
 
 As alterações aparecem no site na hora.
 
+A seção **Novidades** da página inicial é automática: mostra os 3 conteúdos com link publicados mais recentemente (cursos, materiais e atividades), com selo "Novo" nos primeiros 30 dias. A data vem do campo `publicadoEm`, gravado quando o conteúdo ganha um link.
+
 ## Colocar no ar
 
 1. **Configurar o Firebase:** siga o [SETUP-FIREBASE.md](SETUP-FIREBASE.md), o que inclui criar o login da Claudia.
@@ -70,7 +72,7 @@ Cada e-book é uma página em `ebooks/` (ex.: `ebooks/comunicacao-assertiva.html
 
 As atividades interativas ficam em `atividades/` e funcionam do mesmo jeito, listadas em [`atividades/index.json`](atividades/index.json) e publicadas pela aba **Atividades** do painel. Cada página define a atividade em `window.ATIVIDADE` (etapas com tempo, ou campos de diário) e usa o mecanismo comum [`atividades/atividade.js`](atividades/atividade.js). O que a pessoa escreve nos diários fica só no navegador dela.
 
-**Ouvir em vez de ler:** e-books e atividades guiadas carregam [`js/leitor.js`](js/leitor.js), que usa a voz em português do próprio aparelho (Web Speech API, sem custo). Nos e-books aparece o botão **Ouvir** e uma barra com pausa, capítulos e velocidade; nas atividades guiadas, a opção **Voz guia**. Se o aparelho não tiver voz em português, nada aparece. Para usar gravações da profissional no futuro, é só trocar a leitura por arquivos de áudio no mesmo player.
+**Ouvir em vez de ler:** e-books e atividades guiadas carregam [`js/leitor.js`](js/leitor.js), que usa a voz em português do próprio aparelho (Web Speech API, sem custo). Nos e-books aparece o botão **Ouvir** e uma barra com pausa, capítulos, escolha da voz e velocidade; nas atividades guiadas, a opção **Voz guia** com a mesma escolha de voz. A voz escolhida é guardada no navegador de quem acessa (`sobrevoce.voz`), e a lista só aparece quando o aparelho tem mais de uma voz em português. Se o aparelho não tiver voz em português, nada aparece. Para usar gravações da profissional no futuro, é só trocar a leitura por arquivos de áudio no mesmo player.
 
 Depois de editar o texto de um e-book, gere o PDF de novo (precisa do Edge ou do Chrome instalado):
 
